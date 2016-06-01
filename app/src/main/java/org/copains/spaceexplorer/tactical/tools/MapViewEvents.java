@@ -17,7 +17,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.res.Resources;
 import android.util.Log;
 import android.view.MotionEvent;
 
@@ -27,7 +26,7 @@ public class MapViewEvents {
 		TEAM_POSITIONING,
 		STANDARD,
 		ACTION_HIGLIGHT
-	};
+	}
 
 	private static MapViewEvents instance = null;
 	
@@ -43,9 +42,9 @@ public class MapViewEvents {
 	private MapView parentView;
 	
 	private MapViewEvents() {
-		positioningEvents = new ArrayList<TeamPositioningBlock>();
-		visibleMapEvents = new ArrayList<VisibleMapBlock>();
-		lifeFormEvents = new ArrayList<LifeFormBlock>();
+		positioningEvents = new ArrayList<>();
+		visibleMapEvents = new ArrayList<>();
+		lifeFormEvents = new ArrayList<>();
 	}
 	
 	public static MapViewEvents getInstance() {
@@ -56,8 +55,8 @@ public class MapViewEvents {
 	}
 
 	public void reinitVisibleMapEvents() {
-		visibleMapEvents = new ArrayList<VisibleMapBlock>();		
-		lifeFormEvents = new ArrayList<LifeFormBlock>();
+		visibleMapEvents = new ArrayList<>();
+		lifeFormEvents = new ArrayList<>();
 	}
 	
 	/**
@@ -112,7 +111,7 @@ public class MapViewEvents {
 							+ " y="+block.getMapPosition().getY());
 					positioningSelectedMember.setPosX((short)block.getMapPosition().getX());
 					positioningSelectedMember.setPosY((short)block.getMapPosition().getY());
-					positioningEvents = new ArrayList<TeamPositioningBlock>();
+					positioningEvents = new ArrayList<>();
 					positioningSelectedMember = null;
 					// checking if there's remaining members to place
 					int remaining = 0;
@@ -132,16 +131,16 @@ public class MapViewEvents {
 			}}
 			break;
 		case STANDARD:
-			visibleMapEvents = new ArrayList<VisibleMapBlock>();
+			visibleMapEvents = new ArrayList<>();
 			Log.i("Space","Dans STD event");
 			for (LifeFormBlock block : lifeFormEvents) {
 				if (block.isTargeted(event.getX(), event.getY())) {
 					// use context
 					Log.i("Space","lifeform block targeted");
-					ArrayList<CharSequence> list = new ArrayList<CharSequence>();
+					ArrayList<CharSequence> list = new ArrayList<>();
 					LifeForm form = block.getLifeForm();
 					selectedLifeForm = form;
-					currentActions = new ArrayList<Integer>();
+					currentActions = new ArrayList<>();
 					if (form.canMove()) {
 						list.add(context.getResources().getText(R.string.move));
 						currentActions.add(R.string.move);
@@ -185,6 +184,9 @@ public class MapViewEvents {
 					// handling door opening actions
 					if (highlightAction == R.string.open) {
 						Door d = mission.getDoor(block.getMapPosition());
+						if (null == d) {
+							return (false);
+						}
 						Log.i("SpaceExplorer", "opening door : " + d.toString());
 						d.setOpen(true);
 						//if (null != selectedLifeForm)
@@ -192,7 +194,7 @@ public class MapViewEvents {
 						short remaining = (short) (form.getMovementPoints() - 1);
 						form.setMovementPoints(remaining);
 						viewMode = MapViewMode.STANDARD;
-						visibleMapEvents = new ArrayList<VisibleMapBlock>();
+						visibleMapEvents = new ArrayList<>();
 						selectedLifeForm = null;
 						parentView.invalidate();
 						return (true);
@@ -205,7 +207,7 @@ public class MapViewEvents {
 						selectedLifeForm.setPosY((short)block.getMapPosition().getY());
 						selectedLifeForm.setMovementPoints((short)0);
 						viewMode = MapViewMode.STANDARD;
-						visibleMapEvents = new ArrayList<VisibleMapBlock>();
+						visibleMapEvents = new ArrayList<>();
 						selectedLifeForm = null;
 						parentView.invalidate();
 						return (true);
@@ -217,7 +219,7 @@ public class MapViewEvents {
 						// TODO: do shoot
 						selectedLifeForm.setActionPoints((short)0);
 						viewMode = MapViewMode.STANDARD;
-						visibleMapEvents = new ArrayList<VisibleMapBlock>();
+						visibleMapEvents = new ArrayList<>();
 						selectedLifeForm = null;
 						parentView.invalidate();
 						return (true);
