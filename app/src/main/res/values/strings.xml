@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, SpaceExplorer!</string>
+    <string name="app_name">SpaceExplorer</string>
+    <string name="move">Déplacer</string>
+    <string name="open">Ouvrir</string>
+    <string name="action">Attaque</string>
+    <string name="cancel">Annuler</string>
+    <string name="action_box_title">Action</string>
+    <string name="end_turn">Fin de tour</string>
+</resources>
