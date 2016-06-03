@@ -28,7 +28,7 @@ import android.view.View;
 
 public class MapView extends View {
 
-	public static final int TILE_SIZE = 60;
+	public static int TILE_SIZE = 60;
 	
 	private GestureDetector gestureDetector;
 	
@@ -48,6 +48,12 @@ public class MapView extends View {
 	protected void onDraw(Canvas canvas) {
 		Log.i("Space", "Canvas Height " +canvas.getHeight());
 		Log.i("Space", "Canvas width " + canvas.getWidth());
+        int minSize = Math.min(canvas.getHeight(), canvas.getWidth());
+        if (minSize > 1400) {
+            TILE_SIZE = 180;
+        } else if (minSize > 1000) {
+            TILE_SIZE = 120;
+        }
 		StarshipMap map = StarshipMap.getInstance();
 		Coordinates display = MapViewHelper.getInstance(map, canvas).getDisplayAreaStart();
 		MapViewEvents events = MapViewEvents.getInstance();
