@@ -8,7 +8,7 @@ import org.copains.spaceexplorer.game.WeaponType;
  * @author pes
  *
  */
-public class AlienCrawler extends LifeForm {
+public class AlienCrawler extends LifeForm implements Alien {
 	
 	public AlienCrawler() {
 		setRangeWeapon(WeaponType.NONE);
@@ -26,4 +26,8 @@ public class AlienCrawler extends LifeForm {
 		setMovementPoints((short) 8);
 	}
 
+	@Override
+	public boolean isAlien() {
+		return true;
+	}
 }

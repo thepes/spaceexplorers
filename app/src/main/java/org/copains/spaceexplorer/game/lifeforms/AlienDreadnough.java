@@ -2,7 +2,7 @@ package org.copains.spaceexplorer.game.lifeforms;
 
 import org.copains.spaceexplorer.game.WeaponType;
 
-public class AlienDreadnough extends LifeForm {
+public class AlienDreadnough extends LifeForm implements Alien {
 	
 	public AlienDreadnough() {
 		setRangeWeapon(WeaponType.MULTI);
@@ -20,4 +20,8 @@ public class AlienDreadnough extends LifeForm {
 		setMovementPoints((short) 2);
 	}
 
+	@Override
+	public boolean isAlien() {
+		return true;
+	}
 }

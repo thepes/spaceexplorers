@@ -2,7 +2,7 @@ package org.copains.spaceexplorer.game.lifeforms;
 
 import org.copains.spaceexplorer.game.WeaponType;
 
-public class AlienClone extends LifeForm {
+public class AlienClone extends LifeForm implements Alien {
 	
 	public AlienClone() {
 		setRangeWeapon(WeaponType.RIFLE);
@@ -20,4 +20,8 @@ public class AlienClone extends LifeForm {
 		setMovementPoints((short) 6);
 	}
 
+	@Override
+	public boolean isAlien() {
+		return true;
+	}
 }

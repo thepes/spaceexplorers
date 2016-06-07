@@ -174,6 +174,11 @@ public class CurrentMission {
 				return (marine);
 			}
 		}
+		for (LifeForm alien : aliens) {
+			if ((alien.getPosX() == (short)pos.getX()) && (alien.getPosY() == (short)pos.getY())) {
+				return (alien);
+			}
+		}
 		return (null);
 	}
 	

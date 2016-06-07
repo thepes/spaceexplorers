@@ -1,8 +1,8 @@
 package org.copains.spaceexplorer.tactical.views;
 
 import org.copains.spaceexplorer.R;
+import org.copains.spaceexplorer.game.lifeforms.Human;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
-import org.copains.spaceexplorer.tactical.events.VisibleMapBlock;
 import org.copains.spaceexplorer.tactical.objects.Coordinates;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
 import org.copains.spaceexplorer.tactical.objects.StarshipMap;
@@ -14,16 +14,13 @@ import org.copains.spaceexplorer.tactical.tools.MapViewEvents.MapViewMode;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 
 public class MapView extends View {
@@ -34,7 +31,6 @@ public class MapView extends View {
 	
 	public MapView(Context context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public MapView(Context context,AttributeSet atttributes) {
@@ -99,8 +95,10 @@ public class MapView extends View {
 							TILE_SIZE+(x*TILE_SIZE), TILE_SIZE+(y*TILE_SIZE), lf);
 					//paint.setARGB(255, 250, 50, 250);
 					//canvas.drawRect(r, paint);
-					BitmapDrawable drawable = (BitmapDrawable)getResources().getDrawable(R.drawable.marine);
-					canvas.drawBitmap(drawable.getBitmap(), null, r, null);
+                    if (lf instanceof Human) {
+                        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.marine);
+                        canvas.drawBitmap(drawable.getBitmap(), null, r, null);
+                    }
 				}
 			}
 		}
@@ -159,11 +157,11 @@ public class MapView extends View {
         }*/
 		return (true);
 	}
-	
+
 	private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
-		
+
 		float totalX = 0, totalY = 0;
-		
+
 		public boolean onScroll(android.view.MotionEvent event1, android.view.MotionEvent event2, float distanceX, float distanceY) {
 			totalX += distanceX;
 			totalY += distanceY;
@@ -184,20 +182,20 @@ public class MapView extends View {
 				invalidate();
 			}
 			return (shouldMove);
-		};
-		
+		}
+
 		public boolean onSingleTapConfirmed(MotionEvent event) {
 			MapViewEvents events = MapViewEvents.getInstance();
 			if (events.checkEvent(event)) {
 				invalidate();
 			}
 			return (false);
-		};
+		}
 	};
-	
+
 	@Override
 	protected void onCreateContextMenu(android.view.ContextMenu menu) {
 		menu.add("Fin de Tour");
-	};
+	}
 
 }

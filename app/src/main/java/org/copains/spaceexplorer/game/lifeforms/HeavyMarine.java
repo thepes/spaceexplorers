@@ -2,7 +2,7 @@ package org.copains.spaceexplorer.game.lifeforms;
 
 import org.copains.spaceexplorer.game.WeaponType;
 
-public class HeavyMarine extends LifeForm {
+public class HeavyMarine extends LifeForm implements Human {
 
 	public HeavyMarine(WeaponType weapon) {
 		setRangeWeapon(weapon);
@@ -19,4 +19,8 @@ public class HeavyMarine extends LifeForm {
 		setMovementPoints((short) 4);
 	}
 
+	@Override
+	public boolean isHuman() {
+		return true;
+	}
 }
