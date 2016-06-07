@@ -1,6 +1,7 @@
 package org.copains.spaceexplorer.tactical.views;
 
 import org.copains.spaceexplorer.R;
+import org.copains.spaceexplorer.game.lifeforms.Alien;
 import org.copains.spaceexplorer.game.lifeforms.Human;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.tactical.objects.Coordinates;
@@ -97,6 +98,9 @@ public class MapView extends View {
 					//canvas.drawRect(r, paint);
                     if (lf instanceof Human) {
                         BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.marine);
+                        canvas.drawBitmap(drawable.getBitmap(), null, r, null);
+                    } else if (lf instanceof Alien) {
+                        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.alien);
                         canvas.drawBitmap(drawable.getBitmap(), null, r, null);
                     }
 				}
