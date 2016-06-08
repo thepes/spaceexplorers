@@ -11,6 +11,7 @@ import org.copains.spaceexplorer.tactical.tools.MapViewEvents;
 import org.copains.spaceexplorer.tactical.tools.MapViewHelper;
 import org.copains.spaceexplorer.tactical.tools.PathFinder;
 import org.copains.spaceexplorer.tactical.tools.MapViewEvents.MapViewMode;
+import org.copains.spaceexplorer.tactical.ui.LifeFormDetails;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -110,9 +111,14 @@ public class MapView extends View {
 			displayTeamPositioning(canvas);
 			MapViewEvents.getInstance().setViewMode(MapViewMode.TEAM_POSITIONING);
 		}
-		if (events.getViewMode() == MapViewMode.ACTION_HIGLIGHT) {
-			PathFinder.getInstance().drawHighlight(canvas);
-		}
+        switch (events.getViewMode()) {
+            case ACTION_HIGLIGHT:
+                PathFinder.getInstance().drawHighlight(canvas);
+                break;
+            case LIFEFORM_DETAILS:
+                LifeFormDetails.drawModal(canvas, events.getSelectedLifeForm());
+                break;
+        }
 		//canvas.save();
 	}
 	

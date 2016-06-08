@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.copains.spaceexplorer.R;
+import org.copains.spaceexplorer.game.lifeforms.Alien;
+import org.copains.spaceexplorer.game.lifeforms.Human;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.game.objects.Door;
 import org.copains.spaceexplorer.tactical.events.LifeFormBlock;
@@ -11,6 +13,7 @@ import org.copains.spaceexplorer.tactical.events.TeamPositioningBlock;
 import org.copains.spaceexplorer.tactical.events.VisibleMapBlock;
 import org.copains.spaceexplorer.tactical.objects.Coordinates;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
+import org.copains.spaceexplorer.tactical.ui.LifeFormDetails;
 import org.copains.spaceexplorer.tactical.views.MapView;
 
 import android.app.AlertDialog;
@@ -25,7 +28,8 @@ public class MapViewEvents {
 	public enum MapViewMode {
 		TEAM_POSITIONING,
 		STANDARD,
-		ACTION_HIGLIGHT
+		ACTION_HIGLIGHT,
+        LIFEFORM_DETAILS
 	}
 
 	private static MapViewEvents instance = null;
@@ -94,142 +98,160 @@ public class MapViewEvents {
 	public boolean checkEvent(MotionEvent event) {
 		CurrentMission mission = CurrentMission.getInstance();
 		switch (viewMode) {
-		case TEAM_POSITIONING:
-			if (null == positioningSelectedMember)
-			{
-				for (TeamPositioningBlock block : positioningEvents) {
-					if (block.isTargeted(event.getX(), event.getY())) {
-						Log.i("Space","Member selected : " + block.getMemberIndex());
-						positioningSelectedMember = CurrentMission.getInstance().getTeamMember(block.getMemberIndex());
-						break;
-					}
-				}
-			} else {
-			for (VisibleMapBlock block : visibleMapEvents) {
-				if (block.isTargeted(event.getX(), event.getY())) {
-					Log.i("space","map select : x="+block.getMapPosition().getX()
-							+ " y="+block.getMapPosition().getY());
-					positioningSelectedMember.setPosX((short)block.getMapPosition().getX());
-					positioningSelectedMember.setPosY((short)block.getMapPosition().getY());
-					positioningEvents = new ArrayList<>();
-					positioningSelectedMember = null;
-					// checking if there's remaining members to place
-					int remaining = 0;
-					for (int i = 0 ; i < 6 ; i++) {
-						LifeForm marine = mission.getTeamMember(i);
-						if (marine.getPosX() == -1) {
-							remaining++;
-						}
-					}
-					if (remaining == 0)
-					{
-						mission.setTeamInPosition(true);
-						viewMode = MapViewMode.STANDARD;
-					}
-					return (true);
-				}
-			}}
-			break;
-		case STANDARD:
-			visibleMapEvents = new ArrayList<>();
-			Log.i("Space","Dans STD event");
-			for (LifeFormBlock block : lifeFormEvents) {
-				if (block.isTargeted(event.getX(), event.getY())) {
-					// use context
-					Log.i("Space","lifeform block targeted");
-					ArrayList<CharSequence> list = new ArrayList<>();
-					LifeForm form = block.getLifeForm();
-					selectedLifeForm = form;
-					currentActions = new ArrayList<>();
-					if (form.canMove()) {
-						list.add(context.getResources().getText(R.string.move));
-						currentActions.add(R.string.move);
-					}
-					if (form.canOpenDoor()) {
-						list.add(context.getResources().getText(R.string.open));						
-						currentActions.add(R.string.open);
-					}
-					if (form.canDoAction()) {
-						list.add(context.getResources().getText(R.string.action));
-						currentActions.add(R.string.action);
-					}
-					list.add(context.getResources().getText(R.string.cancel));
-					currentActions.add(R.string.cancel);
-					AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
-					dialogBuilder.setTitle(context.getResources().getText(R.string.action_box_title));
-					CharSequence[] contents = new CharSequence[1];
-					dialogBuilder.setItems(list.toArray(contents), new OnClickListener() {
+            case TEAM_POSITIONING:
+                if (null == positioningSelectedMember) {
+                    for (TeamPositioningBlock block : positioningEvents) {
+                        if (block.isTargeted(event.getX(), event.getY())) {
+                            Log.i("Space", "Member selected : " + block.getMemberIndex());
+                            positioningSelectedMember = CurrentMission.getInstance().getTeamMember(block.getMemberIndex());
+                            break;
+                        }
+                    }
+                } else {
+                    for (VisibleMapBlock block : visibleMapEvents) {
+                        if (block.isTargeted(event.getX(), event.getY())) {
+                            Log.i("space", "map select : x=" + block.getMapPosition().getX()
+                                    + " y=" + block.getMapPosition().getY());
+                            positioningSelectedMember.setPosX((short) block.getMapPosition().getX());
+                            positioningSelectedMember.setPosY((short) block.getMapPosition().getY());
+                            positioningEvents = new ArrayList<>();
+                            positioningSelectedMember = null;
+                            // checking if there's remaining members to place
+                            int remaining = 0;
+                            for (int i = 0; i < 6; i++) {
+                                LifeForm marine = mission.getTeamMember(i);
+                                if (marine.getPosX() == -1) {
+                                    remaining++;
+                                }
+                            }
+                            if (remaining == 0) {
+                                mission.setTeamInPosition(true);
+                                viewMode = MapViewMode.STANDARD;
+                            }
+                            return (true);
+                        }
+                    }
+                }
+                break;
+            case STANDARD:
+                visibleMapEvents = new ArrayList<>();
+                Log.i("Space", "Dans STD event");
+                for (LifeFormBlock block : lifeFormEvents) {
+                    if (block.isTargeted(event.getX(), event.getY())) {
+                        // use context
+                        Log.i("Space", "lifeform block targeted");
+                        LifeForm form = block.getLifeForm();
+                        selectedLifeForm = form;
+                        if (selectedLifeForm instanceof Human) {
+                            createHumanActionMenu(form);
+                        } else if (selectedLifeForm instanceof Alien) {
+                            displayLifeFormDetails(form);
+                        }
+                    }
+                }
+                break;
+            case ACTION_HIGLIGHT:
+                for (VisibleMapBlock block : visibleMapEvents) {
+                    if (block.isTargeted(event.getX(), event.getY())) {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							if (currentActions.get(which) == R.string.cancel)
-								return;
-							Log.i("Space","Item selected: (" +which+") " );
-							Log.i("Space","Action: " +context.getResources().getText(currentActions.get(which)));
-							viewMode = MapViewMode.ACTION_HIGLIGHT;
-							highlightAction = currentActions.get(which);
-							parentView.invalidate();
-						}
-						
-					});
-					AlertDialog alert = dialogBuilder.create();
-					alert.show();
-				}
-			}
-			break;
-		case ACTION_HIGLIGHT:
-			for (VisibleMapBlock block : visibleMapEvents) {
-				if (block.isTargeted(event.getX(), event.getY())) {
-					
-					// handling door opening actions
-					if (highlightAction == R.string.open) {
-						Door d = mission.getDoor(block.getMapPosition());
-						if (null == d) {
-							return (false);
-						}
-						Log.i("SpaceExplorer", "opening door : " + d.toString());
-						d.setOpen(true);
-						//if (null != selectedLifeForm)
-						LifeForm form = getSelectedLifeForm();
-						short remaining = (short) (form.getMovementPoints() - 1);
-						form.setMovementPoints(remaining);
-						viewMode = MapViewMode.STANDARD;
-						visibleMapEvents = new ArrayList<>();
-						selectedLifeForm = null;
-						parentView.invalidate();
-						return (true);
-					}
-					
-					// handling movement
-					// a unit can only move once
-					if (highlightAction == R.string.move) {
-						selectedLifeForm.setPosX((short)block.getMapPosition().getX());
-						selectedLifeForm.setPosY((short)block.getMapPosition().getY());
-						selectedLifeForm.setMovementPoints((short)0);
-						viewMode = MapViewMode.STANDARD;
-						visibleMapEvents = new ArrayList<>();
-						selectedLifeForm = null;
-						parentView.invalidate();
-						return (true);
-					}
-					
-					// handling action (shoot)
-					// a unit can only shoot once
-					if (highlightAction == R.string.action) {
-						// TODO: do shoot
-						selectedLifeForm.setActionPoints((short)0);
-						viewMode = MapViewMode.STANDARD;
-						visibleMapEvents = new ArrayList<>();
-						selectedLifeForm = null;
-						parentView.invalidate();
-						return (true);
-					}
-				}
-			}
-			break;
-		}
+                        // handling door opening actions
+                        if (highlightAction == R.string.open) {
+                            Door d = mission.getDoor(block.getMapPosition());
+                            if (null == d) {
+                                return (false);
+                            }
+                            Log.i("SpaceExplorer", "opening door : " + d.toString());
+                            d.setOpen(true);
+                            //if (null != selectedLifeForm)
+                            LifeForm form = getSelectedLifeForm();
+                            short remaining = (short) (form.getMovementPoints() - 1);
+                            form.setMovementPoints(remaining);
+                            viewMode = MapViewMode.STANDARD;
+                            visibleMapEvents = new ArrayList<>();
+                            selectedLifeForm = null;
+                            parentView.invalidate();
+                            return (true);
+                        }
+
+                        // handling movement
+                        // a unit can only move once
+                        if (highlightAction == R.string.move) {
+                            selectedLifeForm.setPosX((short) block.getMapPosition().getX());
+                            selectedLifeForm.setPosY((short) block.getMapPosition().getY());
+                            selectedLifeForm.setMovementPoints((short) 0);
+                            viewMode = MapViewMode.STANDARD;
+                            visibleMapEvents = new ArrayList<>();
+                            selectedLifeForm = null;
+                            parentView.invalidate();
+                            return (true);
+                        }
+
+                        // handling action (shoot)
+                        // a unit can only shoot once
+                        if (highlightAction == R.string.action) {
+                            // TODO: do shoot
+                            selectedLifeForm.setActionPoints((short) 0);
+                            viewMode = MapViewMode.STANDARD;
+                            visibleMapEvents = new ArrayList<>();
+                            selectedLifeForm = null;
+                            parentView.invalidate();
+                            return (true);
+                        }
+                    }
+                }
+                break;
+            case LIFEFORM_DETAILS:
+                viewMode = MapViewMode.STANDARD;
+                Log.i("spaceexplorers","Fin du mode LF details");
+                selectedLifeForm = null;
+                parentView.invalidate();
+                return (true);
+        }
 		return (false);
 	}
+
+    private void displayLifeFormDetails(LifeForm form) {
+        viewMode = MapViewMode.LIFEFORM_DETAILS;
+        parentView.invalidate();
+    }
+
+    private void createHumanActionMenu(LifeForm form) {
+        ArrayList<CharSequence> list = new ArrayList<>();
+        currentActions = new ArrayList<>();
+        if (form.canMove()) {
+            list.add(context.getResources().getText(R.string.move));
+            currentActions.add(R.string.move);
+        }
+        if (form.canOpenDoor()) {
+            list.add(context.getResources().getText(R.string.open));
+            currentActions.add(R.string.open);
+        }
+        if (form.canDoAction()) {
+            list.add(context.getResources().getText(R.string.action));
+            currentActions.add(R.string.action);
+        }
+        list.add(context.getResources().getText(R.string.cancel));
+        currentActions.add(R.string.cancel);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        dialogBuilder.setTitle(context.getResources().getText(R.string.action_box_title));
+        CharSequence[] contents = new CharSequence[1];
+        dialogBuilder.setItems(list.toArray(contents), new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (currentActions.get(which) == R.string.cancel)
+                    return;
+                Log.i("Space","Item selected: (" +which+") " );
+                Log.i("Space","Action: " +context.getResources().getText(currentActions.get(which)));
+                viewMode = MapViewMode.ACTION_HIGLIGHT;
+                highlightAction = currentActions.get(which);
+                parentView.invalidate();
+            }
+
+        });
+        AlertDialog alert = dialogBuilder.create();
+        alert.show();
+    }
 
 	/**
 	 * @param context the context to set
@@ -241,7 +263,7 @@ public class MapViewEvents {
 	/**
 	 * @return the highlightAction
 	 */
-	public int getHighlightAction() {
+    protected int getHighlightAction() {
 		return highlightAction;
 	}
 
