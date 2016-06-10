@@ -10,8 +10,9 @@ public class AlienDreadnough extends LifeForm implements Alien {
 		setMovementPoints((short) 2);
 		setArmor((short) 3);
 		setLife((short) 4);
+		setMaxLife((short) 4);
 		setMeleeWeaponDamage((short) 1);
-
+		setName("Dreadnough");
 	}
 
 	@Override

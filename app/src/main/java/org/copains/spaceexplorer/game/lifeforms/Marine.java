@@ -10,7 +10,9 @@ public class Marine extends LifeForm implements Human {
 		setMovementPoints((short) 6);
 		setArmor((short) 0);
 		setLife((short) 6);
-		setMeleeWeaponDamage((short) 1);
+		setMaxLife((short) 6);
+        setMeleeWeaponDamage((short) 1);
+		setName("Marine");
 	}
 
 	@Override

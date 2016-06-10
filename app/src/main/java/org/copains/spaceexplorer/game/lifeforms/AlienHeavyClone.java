@@ -10,8 +10,9 @@ public class AlienHeavyClone extends LifeForm implements Alien {
 		setMovementPoints((short) 4);
 		setArmor((short) 1);
 		setLife((short) 4);
+		setMaxLife((short) 4);
 		setMeleeWeaponDamage((short) 1);
-
+		setName("Clone Blindé");
 	}
 
 	@Override

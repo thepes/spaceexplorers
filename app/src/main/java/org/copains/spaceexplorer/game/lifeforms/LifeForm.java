@@ -10,10 +10,12 @@ public abstract class LifeForm {
 	private short actionPoints;
 	private short movementPoints;
 	private short life;
-	
+    private short maxLife;
+
 	private WeaponType rangeWeapon;
 	private short meleeWeaponDamage;
 	private short armor;
+	private String name;
 	
 	private short posX = -1;
 	private short posY = -1;
@@ -148,4 +150,19 @@ public abstract class LifeForm {
 
 	public abstract void endTurn();
 
+	public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public short getMaxLife() {
+        return maxLife;
+    }
+
+    public void setMaxLife(short maxLife) {
+        this.maxLife = maxLife;
+    }
 }

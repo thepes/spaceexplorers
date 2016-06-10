@@ -10,8 +10,9 @@ public class AlienClone extends LifeForm implements Alien {
 		setMovementPoints((short) 6);
 		setArmor((short) 0);
 		setLife((short) 4);
+		setMaxLife((short) 4);
 		setMeleeWeaponDamage((short) 1);
-
+		setName("Clone");
 	}
 
 	@Override

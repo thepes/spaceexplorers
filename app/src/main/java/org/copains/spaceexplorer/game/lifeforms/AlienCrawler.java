@@ -16,8 +16,9 @@ public class AlienCrawler extends LifeForm implements Alien {
 		setMovementPoints((short) 8);
 		setArmor((short) 0);
 		setLife((short) 6);
+		setMaxLife((short) 6);
 		setMeleeWeaponDamage((short) 2);
-
+		setName("Crawler");
 	}
 
 	@Override

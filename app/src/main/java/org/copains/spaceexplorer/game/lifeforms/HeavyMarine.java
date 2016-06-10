@@ -10,7 +10,9 @@ public class HeavyMarine extends LifeForm implements Human {
 		setMovementPoints((short) 4);
 		setArmor((short) 1);
 		setLife((short) 6);
-		setMeleeWeaponDamage((short) 1);
+        setMaxLife((short) 6);
+        setMeleeWeaponDamage((short) 1);
+		setName("Marine blindé");
 	}
 
 	@Override
