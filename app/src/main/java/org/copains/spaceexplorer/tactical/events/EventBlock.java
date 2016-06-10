@@ -20,7 +20,6 @@ public abstract class EventBlock {
 	
 	@Override
 	public boolean equals(Object o) {
-		Log.i("Space","dans EventBlock Equals");
 		EventBlock eb = (EventBlock)o;
 		return ((x1 == eb.x1) && (x2 == eb.x2) && (y1 == eb.y1) && (y2 == eb.y2));
 	}

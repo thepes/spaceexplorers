@@ -52,7 +52,6 @@ public class StarshipMap implements Serializable {
             }
             initFromStringArray(fileContent);
             } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -70,7 +69,6 @@ public class StarshipMap implements Serializable {
             }
             initFromStringArray(fileContent);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -132,7 +130,6 @@ public class StarshipMap implements Serializable {
     					rooms.put(cell, roomCells);
     				}
     				Coordinates coord = new Coordinates(x, y-sizeY);
-    				Log.i("spaceexplorers","Adding Coord for room " + cell + " x:" + x + " y:" + (y-sizeY));
     				roomCells.add(coord);
     			}
     		}
@@ -235,7 +232,6 @@ public class StarshipMap implements Serializable {
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return super.toString();
 	}
 

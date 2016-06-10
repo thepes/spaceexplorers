@@ -190,6 +190,7 @@ public class MapViewEvents {
                         // a unit can only shoot once
                         if (highlightAction == R.string.action) {
                             // TODO: do shoot
+                            Coordinates coord = block.getMapPosition();
                             selectedLifeForm.setActionPoints((short) 0);
                             viewMode = MapViewMode.STANDARD;
                             visibleMapEvents = new ArrayList<>();
