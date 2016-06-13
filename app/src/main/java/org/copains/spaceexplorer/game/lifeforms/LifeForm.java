@@ -42,6 +42,8 @@ public abstract class LifeForm {
 				|| (mission.doorIsOpenable(new Coordinates(posX, posY-1)))
 				|| (mission.doorIsOpenable(new Coordinates(posX, posY+1))));
 	}
+
+    public abstract int getSpriteId();
 	
 	public boolean openDoor() {
 		return (true);

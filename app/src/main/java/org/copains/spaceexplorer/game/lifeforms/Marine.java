@@ -1,5 +1,6 @@
 package org.copains.spaceexplorer.game.lifeforms;
 
+import org.copains.spaceexplorer.R;
 import org.copains.spaceexplorer.game.WeaponType;
 
 public class Marine extends LifeForm implements Human {
@@ -26,4 +27,10 @@ public class Marine extends LifeForm implements Human {
 	public boolean isHuman() {
 		return true;
 	}
+
+	@Override
+	public int getSpriteId() {
+		return R.drawable.marine;
+	}
+
 }

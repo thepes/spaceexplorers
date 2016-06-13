@@ -1,5 +1,6 @@
 package org.copains.spaceexplorer.game.lifeforms;
 
+import org.copains.spaceexplorer.R;
 import org.copains.spaceexplorer.game.WeaponType;
 
 public class AlienClone extends LifeForm implements Alien {
@@ -13,6 +14,11 @@ public class AlienClone extends LifeForm implements Alien {
 		setMaxLife((short) 4);
 		setMeleeWeaponDamage((short) 1);
 		setName("Clone");
+	}
+
+	@Override
+	public int getSpriteId() {
+		return R.drawable.alien;
 	}
 
 	@Override

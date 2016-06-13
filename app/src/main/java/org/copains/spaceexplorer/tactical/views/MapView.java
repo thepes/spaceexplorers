@@ -95,13 +95,8 @@ public class MapView extends View {
 							TILE_SIZE+(x*TILE_SIZE), TILE_SIZE+(y*TILE_SIZE), lf);
 					//paint.setARGB(255, 250, 50, 250);
 					//canvas.drawRect(r, paint);
-                    if (lf instanceof Human) {
-                        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.marine);
-                        canvas.drawBitmap(drawable.getBitmap(), null, r, null);
-                    } else if (lf instanceof Alien) {
-                        BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(R.drawable.alien);
-                        canvas.drawBitmap(drawable.getBitmap(), null, r, null);
-                    }
+                    BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(lf.getSpriteId());
+                    canvas.drawBitmap(drawable.getBitmap(), null, r, null);
 				}
 			}
 		}
