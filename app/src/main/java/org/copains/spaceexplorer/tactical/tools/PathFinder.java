@@ -87,7 +87,6 @@ public class PathFinder {
 	public boolean canShootRifle(int x, int y, LifeForm form) {
 		boolean canShoot = true;
 		// checking lines
-		Log.i("SpaceExplorers", "Checking : x = " + x + " y = " + y);
 		LineEquation eq = new LineEquation(x, y, form.getPosX(), form.getPosY());
 		if (x == form.getPosX()) {
 			int i = form.getPosY();
@@ -120,7 +119,6 @@ public class PathFinder {
 			else
 				i--;			
 			int j = eq.getY(i);
-			Log.i("SpaceExplorers", "Crossing : x = " + i + " y = " + j);
 			if (!canShootOver(new Coordinates(i, j)))
 				return (false);
 		}
@@ -310,9 +308,7 @@ public class PathFinder {
 		CurrentMission mission = CurrentMission.getInstance();
 		short relief = map.getRelief(c.getX(), c.getY());
 		
-		Log.i("SpaceExplorers","relief : " + relief);
 		if (null != mission.getLifeFormOnMap(c)) {
-			Log.i("SpaceExplorers","lifeform not null");
 			return (false);
 		}
 		if ((relief == StarshipMap.FLOOR) || (relief == StarshipMap.START)) {

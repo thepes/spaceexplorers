@@ -44,9 +44,7 @@ public class MapView extends View {
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		Log.i("Space", "Canvas Height " +canvas.getHeight());
-		Log.i("Space", "Canvas width " + canvas.getWidth());
-        int minSize = Math.min(canvas.getHeight(), canvas.getWidth());
+		int minSize = Math.min(canvas.getHeight(), canvas.getWidth());
         if (minSize > 1400) {
             TILE_SIZE = 180;
         } else if (minSize > 1000) {
@@ -139,7 +137,6 @@ public class MapView extends View {
 				LifeForm teamMember = mission.getTeamMember(x+y*3);
 				if (teamMember.getPosX() == -1) {
 					r = new RectF(delta + x*(delta+TILE_SIZE) ,5+y*(TILE_SIZE+5),delta + x*(delta+TILE_SIZE)+TILE_SIZE,5+y*(TILE_SIZE+5)+TILE_SIZE);
-					Log.i("spaceexplorers","Position pour x,y : (" + x + "," + y + ") : " +  r.toShortString());
 					paint.setARGB(255, 250, 50, 250);
 					canvas.drawRect(r, paint);
 					events.addPositioningEvent(delta + x*(delta+TILE_SIZE) ,

@@ -165,4 +165,8 @@ public abstract class LifeForm {
     public void setMaxLife(short maxLife) {
         this.maxLife = maxLife;
     }
+
+	public void removeLife(short damage) {
+		life -= damage;
+	}
 }

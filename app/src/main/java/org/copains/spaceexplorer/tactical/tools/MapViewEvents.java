@@ -8,6 +8,7 @@ import org.copains.spaceexplorer.game.lifeforms.Alien;
 import org.copains.spaceexplorer.game.lifeforms.Human;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.game.objects.Door;
+import org.copains.spaceexplorer.tactical.actions.AttackMg;
 import org.copains.spaceexplorer.tactical.events.LifeFormBlock;
 import org.copains.spaceexplorer.tactical.events.TeamPositioningBlock;
 import org.copains.spaceexplorer.tactical.events.VisibleMapBlock;
@@ -110,8 +111,6 @@ public class MapViewEvents {
                 } else {
                     for (VisibleMapBlock block : visibleMapEvents) {
                         if (block.isTargeted(event.getX(), event.getY())) {
-                            Log.i("space", "map select : x=" + block.getMapPosition().getX()
-                                    + " y=" + block.getMapPosition().getY());
                             positioningSelectedMember.setPosX((short) block.getMapPosition().getX());
                             positioningSelectedMember.setPosY((short) block.getMapPosition().getY());
                             positioningEvents = new ArrayList<>();
@@ -135,11 +134,9 @@ public class MapViewEvents {
                 break;
             case STANDARD:
                 visibleMapEvents = new ArrayList<>();
-                Log.i("Space", "Dans STD event");
                 for (LifeFormBlock block : lifeFormEvents) {
                     if (block.isTargeted(event.getX(), event.getY())) {
                         // use context
-                        Log.i("Space", "lifeform block targeted");
                         LifeForm form = block.getLifeForm();
                         selectedLifeForm = form;
                         if (selectedLifeForm instanceof Human) {
@@ -192,6 +189,7 @@ public class MapViewEvents {
                             // TODO: do shoot
                             Coordinates coord = block.getMapPosition();
                             selectedLifeForm.setActionPoints((short) 0);
+                            AttackMg.shoot(selectedLifeForm,coord);
                             viewMode = MapViewMode.STANDARD;
                             visibleMapEvents = new ArrayList<>();
                             selectedLifeForm = null;
