@@ -1,8 +1,6 @@
 package org.copains.spaceexplorer.tactical.views;
 
 import org.copains.spaceexplorer.R;
-import org.copains.spaceexplorer.game.lifeforms.Alien;
-import org.copains.spaceexplorer.game.lifeforms.Human;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.tactical.objects.Coordinates;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
@@ -12,6 +10,7 @@ import org.copains.spaceexplorer.tactical.tools.MapViewHelper;
 import org.copains.spaceexplorer.tactical.tools.PathFinder;
 import org.copains.spaceexplorer.tactical.tools.MapViewEvents.MapViewMode;
 import org.copains.spaceexplorer.tactical.ui.LifeFormDetails;
+import org.copains.spaceexplorer.tactical.ui.ModalInfo;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -20,7 +19,6 @@ import android.graphics.RectF;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -110,6 +108,10 @@ public class MapView extends View {
                 break;
             case LIFEFORM_DETAILS:
                 LifeFormDetails.drawModal(canvas, events.getSelectedLifeForm());
+                break;
+			case MODAL_DISPLAYED:
+                ModalInfo info = events.getModalInfo();
+                info.draw(canvas,getContext());
                 break;
         }
 		//canvas.save();

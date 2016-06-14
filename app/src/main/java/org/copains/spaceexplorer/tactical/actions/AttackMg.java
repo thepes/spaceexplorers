@@ -31,11 +31,16 @@ public class AttackMg {
             res.setErrorMessage("Pas de tir ami");
             return res;
         }
-        if (WeaponMg.computeRangedWeaponTouchSuccess(attacker)) {
+        WeaponMg weaponMg = new WeaponMg();
+        if (weaponMg.computeRangedWeaponTouchSuccess(attacker)) {
+            res.setAttacker(attacker);
+            res.setDefender(attackedLf);
             Log.i("spaceexplorers","Target touched");
             //TODO: handle LASERS and EXPLOSIVES (laser do a roll for each lifeform on the line
             // and explosive for each lifeform on surrounding cells
-            short damage = WeaponMg.getWeaponDamage(attacker);
+            short damage = weaponMg.getWeaponDamage(attacker);
+            res.setLostLifePoints(weaponMg.getLastDamage());
+            res.setDiceResult(weaponMg.getLastDiceRoll());
             Log.i("spaceexlorers","damage : " + damage);
             if (damage >= attackedLf.getLife()) {
                 Log.i("spaceexplorers","Target destroyed");
@@ -45,7 +50,7 @@ public class AttackMg {
                 Log.i("spaceexplorers","Remaining Life : " + attackedLf.getLife());
             }
         }
-        return null;
+        return res;
     }
 
 }

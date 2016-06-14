@@ -12,9 +12,12 @@ import org.copains.spaceexplorer.tactical.actions.AttackMg;
 import org.copains.spaceexplorer.tactical.events.LifeFormBlock;
 import org.copains.spaceexplorer.tactical.events.TeamPositioningBlock;
 import org.copains.spaceexplorer.tactical.events.VisibleMapBlock;
+import org.copains.spaceexplorer.tactical.objects.AttackResult;
 import org.copains.spaceexplorer.tactical.objects.Coordinates;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
+import org.copains.spaceexplorer.tactical.ui.AttackDetails;
 import org.copains.spaceexplorer.tactical.ui.LifeFormDetails;
+import org.copains.spaceexplorer.tactical.ui.ModalInfo;
 import org.copains.spaceexplorer.tactical.views.MapView;
 
 import android.app.AlertDialog;
@@ -30,7 +33,8 @@ public class MapViewEvents {
 		TEAM_POSITIONING,
 		STANDARD,
 		ACTION_HIGLIGHT,
-        LIFEFORM_DETAILS
+        LIFEFORM_DETAILS,
+        MODAL_DISPLAYED
 	}
 
 	private static MapViewEvents instance = null;
@@ -45,6 +49,7 @@ public class MapViewEvents {
 	private List<Integer> currentActions;
 	private int highlightAction;
 	private MapView parentView;
+    private ModalInfo modalInfo;
 	
 	private MapViewEvents() {
 		positioningEvents = new ArrayList<>();
@@ -189,8 +194,10 @@ public class MapViewEvents {
                             // TODO: do shoot
                             Coordinates coord = block.getMapPosition();
                             selectedLifeForm.setActionPoints((short) 0);
-                            AttackMg.shoot(selectedLifeForm,coord);
-                            viewMode = MapViewMode.STANDARD;
+                            AttackResult attackResult = AttackMg.shoot(selectedLifeForm,coord);
+                            AttackDetails details = new AttackDetails(attackResult);
+                            modalInfo = details;
+                            viewMode = MapViewMode.MODAL_DISPLAYED;
                             visibleMapEvents = new ArrayList<>();
                             selectedLifeForm = null;
                             parentView.invalidate();
@@ -200,8 +207,10 @@ public class MapViewEvents {
                 }
                 break;
             case LIFEFORM_DETAILS:
+            case MODAL_DISPLAYED:
                 viewMode = MapViewMode.STANDARD;
-                Log.i("spaceexplorers","Fin du mode LF details");
+                Log.i("spaceexplorers","Fin du mode modal");
+                modalInfo = null;
                 selectedLifeForm = null;
                 parentView.invalidate();
                 return (true);
@@ -300,5 +309,9 @@ public class MapViewEvents {
 	public void setParentView(MapView parentView) {
 		this.parentView = parentView;
 	}
+
+    public ModalInfo getModalInfo() {
+        return modalInfo;
+    }
 	
 }
