@@ -6,6 +6,7 @@ import java.util.Random;
 
 import org.copains.spaceexplorer.ai.manager.AlienMg;
 import org.copains.spaceexplorer.game.WeaponType;
+import org.copains.spaceexplorer.game.lifeforms.Alien;
 import org.copains.spaceexplorer.game.lifeforms.HeavyMarine;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.game.lifeforms.Marine;
@@ -20,6 +21,7 @@ public class CurrentMission {
 	private boolean teamInPosition = false;
 	private LifeForm team[] = new LifeForm[6];
 	private List<LifeForm> aliens;
+    private List<LifeForm> graveyard;
 	private List<Door> doors;
 	
 	private CurrentMission() {
@@ -31,11 +33,12 @@ public class CurrentMission {
 		team[5] = new HeavyMarine(WeaponType.HEAVY_RIFLE);
 		initDoors();
 		initAliens();
+        graveyard = new ArrayList<>();
 	}
 	
 	private void initAliens() {
 		Random rnd = new Random();
-		aliens = new ArrayList<LifeForm>();
+		aliens = new ArrayList<>();
 		StarshipMap map = StarshipMap.getInstance();
 		AlienMg alienMg = AlienMg.getInstance();
 		while (alienMg.getRemainingAliens() > 0) {
@@ -59,7 +62,7 @@ public class CurrentMission {
 	}
 
 	private void initDoors() {
-		doors = new ArrayList<Door>();
+		doors = new ArrayList<>();
 		StarshipMap map = StarshipMap.getInstance();
 		for (int y = 0 ; y < map.getSizeY() ; y++)
 		for (int x = 0 ; x < map.getSizeX() ; x++) {
@@ -121,7 +124,7 @@ public class CurrentMission {
 		if (null == coord) {
 			return (null);
 		}
-		ArrayList<Door> doors = new ArrayList<Door>();
+		ArrayList<Door> doors = new ArrayList<>();
 		Coordinates tmp = new Coordinates(coord.getX()-1,coord.getY());
 		Door d = getDoor(tmp);
 		if (canAdd(d, onlyClosed)) {
@@ -201,5 +204,17 @@ public class CurrentMission {
 			lf.endTurn();
 		}
 		return (true);
+	}
+
+    /**
+     * this method should be called when a lifeform is dead.
+     * we put it in a graveyard to be able to do end of game stats
+     * @param attackedLf the lifeform to remove
+     */
+	public void removeLifeFormFromMap(LifeForm attackedLf) {
+        graveyard.add(attackedLf);
+        if (attackedLf instanceof Alien) {
+            aliens.remove(attackedLf);
+        }
 	}
 }

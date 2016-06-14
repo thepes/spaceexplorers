@@ -41,9 +41,10 @@ public class AttackMg {
             short damage = weaponMg.getWeaponDamage(attacker);
             res.setLostLifePoints(weaponMg.getLastDamage());
             res.setDiceResult(weaponMg.getLastDiceRoll());
-            Log.i("spaceexlorers","damage : " + damage);
+            Log.i("spaceexplorers","damage : " + damage);
             if (damage >= attackedLf.getLife()) {
                 Log.i("spaceexplorers","Target destroyed");
+                mission.removeLifeFormFromMap(attackedLf);
                 //TODO: remove life form from mission
             } else {
                 attackedLf.removeLife(damage);
