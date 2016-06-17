@@ -1,12 +1,19 @@
 package org.copains.spaceexplorer.tactical.ui;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 
+import org.copains.spaceexplorer.R;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.tactical.objects.AttackResult;
+import org.copains.spaceexplorer.tactical.views.MapView;
+import org.copains.tools.dice.DiceMg;
 
 /**
  * Created by Sébastien Delaire <the.pes@gmail.com>
@@ -19,7 +26,7 @@ public class AttackDetails implements ModalInfo {
     private int dice, damage;
 
     public AttackDetails(LifeForm attacker, LifeForm defender, int diceResult, int damage) {
-        dice = diceResult;
+        this.dice = diceResult;
         this.attacker = attacker;
         this.defender = defender;
         this.damage = damage;
@@ -44,6 +51,15 @@ public class AttackDetails implements ModalInfo {
         paint.setAntiAlias(true);
         paint.setARGB(100,0,50,50);
         canvas.drawRect(rect,paint);
+        int centerH = (left+right)/2;
+        int centerV = (top+bottom)/2;
+        int diceX = centerH - (MapView.TILE_SIZE/2);
+        int diceY = centerV - (MapView.TILE_SIZE/2);
+        Rect r = new Rect(diceX,diceY,diceX + MapView.TILE_SIZE, diceY+MapView.TILE_SIZE);
+        Log.i("spaceexplorers","DiceForBitmap : " + dice);
+
+        canvas.drawBitmap(DiceMg.getBitmap(context,dice),null,r,null);
+
         return true;
     }
 

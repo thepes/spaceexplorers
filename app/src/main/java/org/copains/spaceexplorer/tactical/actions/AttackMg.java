@@ -40,7 +40,6 @@ public class AttackMg {
             // and explosive for each lifeform on surrounding cells
             short damage = weaponMg.getWeaponDamage(attacker);
             res.setLostLifePoints(weaponMg.getLastDamage());
-            res.setDiceResult(weaponMg.getLastDiceRoll());
             Log.i("spaceexplorers","damage : " + damage);
             if (damage >= attackedLf.getLife()) {
                 Log.i("spaceexplorers","Target destroyed");
@@ -51,6 +50,7 @@ public class AttackMg {
                 Log.i("spaceexplorers","Remaining Life : " + attackedLf.getLife());
             }
         }
+        res.setDiceResult(weaponMg.getLastDiceRoll());
         return res;
     }
 
