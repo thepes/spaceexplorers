@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import org.copains.tools.ui.ModalTools;
+import org.copains.tools.ui.StringAndFontTools;
 
 /**
  * Created by Sébastien Delaire <the.pes@gmail.com>
@@ -27,7 +28,9 @@ public class ModalMessage implements ModalInfo {
         paint.setStyle(Paint.Style.FILL);
         paint.setAntiAlias(true);
         paint.setARGB(255,255,0,0);
-        canvas.drawText(message,box.left, box.top, paint);
+        int textsize = StringAndFontTools.getStandardTextSize(canvas);
+        paint.setTextSize(textsize);
+        canvas.drawText(message,box.left + MARGIN , box.top + textsize + MARGIN, paint);
         return false;
     }
 }
