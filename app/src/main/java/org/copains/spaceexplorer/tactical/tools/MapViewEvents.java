@@ -18,6 +18,7 @@ import org.copains.spaceexplorer.tactical.objects.CurrentMission;
 import org.copains.spaceexplorer.tactical.ui.AttackDetails;
 import org.copains.spaceexplorer.tactical.ui.LifeFormDetails;
 import org.copains.spaceexplorer.tactical.ui.ModalInfo;
+import org.copains.spaceexplorer.tactical.ui.ModalMessage;
 import org.copains.spaceexplorer.tactical.views.MapView;
 
 import android.app.AlertDialog;
@@ -195,8 +196,13 @@ public class MapViewEvents {
                             Coordinates coord = block.getMapPosition();
                             selectedLifeForm.setActionPoints((short) 0);
                             AttackResult attackResult = AttackMg.shoot(selectedLifeForm,coord);
-                            AttackDetails details = new AttackDetails(attackResult);
-                            modalInfo = details;
+                            if (!attackResult.hasError()) {
+                                AttackDetails details = new AttackDetails(attackResult);
+                                modalInfo = details;
+                            } else {
+                                ModalMessage msg = new ModalMessage((attackResult.getErrorMessage()));
+                                modalInfo = msg;
+                            }
                             viewMode = MapViewMode.MODAL_DISPLAYED;
                             visibleMapEvents = new ArrayList<>();
                             selectedLifeForm = null;

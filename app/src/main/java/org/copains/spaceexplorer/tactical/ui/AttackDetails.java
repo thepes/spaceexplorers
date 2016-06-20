@@ -54,7 +54,7 @@ public class AttackDetails implements ModalInfo {
         int centerH = (left+right)/2;
         int centerV = (top+bottom)/2;
         int diceX = centerH - (MapView.TILE_SIZE/2);
-        int diceY = centerV - (MapView.TILE_SIZE/2);
+        int diceY = bottom - MapView.TILE_SIZE - 20;
         Rect r = new Rect(diceX,diceY,diceX + MapView.TILE_SIZE, diceY+MapView.TILE_SIZE);
         Log.i("spaceexplorers","DiceForBitmap : " + dice);
 

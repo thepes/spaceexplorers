@@ -17,7 +17,7 @@ public class AttackResult {
 
     private LifeForm attacker, defender;
 
-    public boolean isHasError() {
+    public boolean hasError() {
         return hasError;
     }
 
