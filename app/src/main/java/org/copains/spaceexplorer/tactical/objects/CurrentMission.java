@@ -233,4 +233,11 @@ public class CurrentMission {
     public List<LifeForm> getTargetableLifeForms() {
         return targetableLifeForms;
     }
+
+    public boolean isTargeted(LifeForm attackedLf) {
+        if (null == targetableLifeForms) {
+            return false;
+        }
+        return targetableLifeForms.contains(attackedLf);
+    }
 }

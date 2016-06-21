@@ -23,12 +23,17 @@ public class AttackMg {
         if (null == attackedLf) {
             Log.i("spaceexplorers", "No Life Form here");
             res.setHasError(true);
-            res.setErrorMessage("No Life Form here");
+            res.setErrorMessage("Pas d'ennemi ici");
             return res;
         }
         if (attackedLf instanceof Human) {
             res.setHasError(true);
             res.setErrorMessage("Pas de tir ami");
+            return res;
+        }
+        if (!mission.isTargeted(attackedLf)) {
+            res.setHasError(true);
+            res.setErrorMessage("Impossible d'atteindre la cible");
             return res;
         }
         WeaponMg weaponMg = new WeaponMg();
