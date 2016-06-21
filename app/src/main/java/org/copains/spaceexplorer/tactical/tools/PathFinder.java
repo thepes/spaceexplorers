@@ -175,6 +175,7 @@ public class PathFinder {
 		case R.string.action:
 			shootGrid = new Hashtable<String, Coordinates>();
 			exploredGrid = new Hashtable<String, Coordinates>();
+            mission.reinitAttack();
 			switch (form.getRangeWeapon())
 			{
 			case LASER:
@@ -199,6 +200,17 @@ public class PathFinder {
 					events.addVisibleMapEvent((int)rect.left, (int)rect.top, (int)rect.right, (int)rect.bottom, tile);
 				}
 			}
+            for (LifeForm lf : mission.getTargetableLifeForms()) {
+                RectF rect = viewHelper.convertTileToDisplayRect(lf.getCoordinates());
+                if (null != rect) {
+                    Paint paint = new Paint();
+                    paint.setStyle(Style.FILL);
+                    paint.setAntiAlias(true);
+                    paint.setARGB(100, 255, 0, 0);
+                    c.drawRect(rect, paint);
+                    events.addVisibleMapEvent((int)rect.left, (int)rect.top, (int)rect.right, (int)rect.bottom, lf.getCoordinates());
+                }
+            }
 			break;
 		default:
 			break;
@@ -300,7 +312,7 @@ public class PathFinder {
 	
 	/**
 	 * verifie si une case est "traversable"
-	 * @param relief
+	 * @param c
 	 * @return
 	 */
 	private boolean canShootOver(Coordinates c) {
@@ -309,6 +321,8 @@ public class PathFinder {
 		short relief = map.getRelief(c.getX(), c.getY());
 		
 		if (null != mission.getLifeFormOnMap(c)) {
+			// shooting line stops on lifeform but lifeform is "hitable" so add it in a list
+            mission.addTargetableLifeForm(mission.getLifeFormOnMap(c));
 			return (false);
 		}
 		if ((relief == StarshipMap.FLOOR) || (relief == StarshipMap.START)) {

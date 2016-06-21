@@ -22,6 +22,7 @@ public class CurrentMission {
 	private LifeForm team[] = new LifeForm[6];
 	private List<LifeForm> aliens;
     private List<LifeForm> graveyard;
+	private List<LifeForm> targetableLifeForms;
 	private List<Door> doors;
 	
 	private CurrentMission() {
@@ -217,4 +218,19 @@ public class CurrentMission {
             aliens.remove(attackedLf);
         }
 	}
+
+	public void addTargetableLifeForm(LifeForm lifeFormOnMap) {
+        if (null == targetableLifeForms) {
+            targetableLifeForms = new ArrayList<>();
+        }
+        targetableLifeForms.add(lifeFormOnMap);
+	}
+
+    public void reinitAttack() {
+        targetableLifeForms = null;
+    }
+
+    public List<LifeForm> getTargetableLifeForms() {
+        return targetableLifeForms;
+    }
 }

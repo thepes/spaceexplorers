@@ -31,6 +31,8 @@ public class ModalMessage implements ModalInfo {
         int textsize = StringAndFontTools.getStandardTextSize(canvas);
         paint.setTextSize(textsize);
         canvas.drawText(message,box.left + MARGIN , box.top + textsize + MARGIN, paint);
+        canvas.drawText("Test de message super long pour voir si ça tient dans l'écran ou si il est capable de faire des retours à la ligne\n et moi je test le retour à la ligne",
+                box.left + MARGIN , box.top + (textsize + MARGIN)*2, paint);
         return false;
     }
 }
