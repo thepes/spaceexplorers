@@ -104,6 +104,7 @@ public class MapView extends View {
                 MapViewEvents.getInstance().setViewMode(MapViewMode.TEAM_POSITIONING);
             }
 		}
+        // TODO: add an icon or a menu item to center on next unit with remaining action
         switch (events.getViewMode()) {
             case ACTION_HIGLIGHT:
                 PathFinder.getInstance().drawHighlight(canvas);

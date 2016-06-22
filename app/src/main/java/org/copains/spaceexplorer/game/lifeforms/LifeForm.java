@@ -171,4 +171,10 @@ public abstract class LifeForm {
 	public void removeLife(short damage) {
 		life -= damage;
 	}
+
+	public boolean shouldTargetRangedAttack() {
+		if (rangeWeapon == WeaponType.RIFLE || rangeWeapon == WeaponType.HEAVY_RIFLE)
+            return true;
+        return false;
+	}
 }

@@ -200,15 +200,17 @@ public class PathFinder {
 					events.addVisibleMapEvent((int)rect.left, (int)rect.top, (int)rect.right, (int)rect.bottom, tile);
 				}
 			}
-            for (LifeForm lf : mission.getTargetableLifeForms()) {
-                RectF rect = viewHelper.convertTileToDisplayRect(lf.getCoordinates());
-                if (null != rect) {
-                    Paint paint = new Paint();
-                    paint.setStyle(Style.FILL);
-                    paint.setAntiAlias(true);
-                    paint.setARGB(100, 255, 0, 0);
-                    c.drawRect(rect, paint);
-                    events.addVisibleMapEvent((int)rect.left, (int)rect.top, (int)rect.right, (int)rect.bottom, lf.getCoordinates());
+            if (null != mission.getTargetableLifeForms()) {
+                for (LifeForm lf : mission.getTargetableLifeForms()) {
+                    RectF rect = viewHelper.convertTileToDisplayRect(lf.getCoordinates());
+                    if (null != rect) {
+                        Paint paint = new Paint();
+                        paint.setStyle(Style.FILL);
+                        paint.setAntiAlias(true);
+                        paint.setARGB(100, 255, 0, 0);
+                        c.drawRect(rect, paint);
+                        events.addVisibleMapEvent((int) rect.left, (int) rect.top, (int) rect.right, (int) rect.bottom, lf.getCoordinates());
+                    }
                 }
             }
 			break;
