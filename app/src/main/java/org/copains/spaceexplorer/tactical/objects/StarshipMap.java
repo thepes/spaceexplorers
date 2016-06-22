@@ -12,8 +12,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import android.util.Log;
-
 public class StarshipMap implements Serializable {
 
 	/**
@@ -62,8 +60,8 @@ public class StarshipMap implements Serializable {
             //name = map.getName();
         	InputStreamReader reader = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(reader);
-            String currentLine = null;
-            ArrayList< String > fileContent = new ArrayList < String >();
+            String currentLine;
+            ArrayList< String > fileContent = new ArrayList <>();
             while ((currentLine = br.readLine()) != null) {
                 fileContent.add(currentLine);
             }
@@ -96,9 +94,9 @@ public class StarshipMap implements Serializable {
             String line = fileContent.get(y + 1);
             for (int x = 0; x < sizeX; x++) {
                 reliefs[x][y] =
-                        (short) Short.parseShort(
+                        Short.parseShort(
                                 "" + line.charAt(x));
-                if (reliefs[x][y] == 9) {
+                if (reliefs[x][y] == START) {
                 	if ((startX == 0) && (startY == 0)) {
                 		humanTopLeft = new Coordinates(x, y);
                 		startX = x;
@@ -126,7 +124,7 @@ public class StarshipMap implements Serializable {
     				// if it's not a number it's a room
     				List<Coordinates> roomCells = rooms.get(cell);
     				if (null == roomCells) {
-    					roomCells = new ArrayList<Coordinates>();
+    					roomCells = new ArrayList<>();
     					rooms.put(cell, roomCells);
     				}
     				Coordinates coord = new Coordinates(x, y-sizeY);
@@ -154,7 +152,7 @@ public class StarshipMap implements Serializable {
         String[][] ret = new String[sizeX][sizeY];
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 for (int i = -1; i < 2; i++) {
                     for (int j = -1; j < 2; j++) {
                         if ((topX + x + j < 0) || (topY + y + i < 0)
@@ -183,8 +181,8 @@ public class StarshipMap implements Serializable {
     public boolean isVersionSupported(String line) {
         String version = getVersion(line);
         boolean supported = false;
-        for (int i = 0; i < SUPPORTED_VERSIONS.length; i++) {
-            if (SUPPORTED_VERSIONS[i].equalsIgnoreCase(version))
+        for (String supportedVersion : SUPPORTED_VERSIONS) {
+            if (supportedVersion.equalsIgnoreCase(version))
                 supported = true;
         }
         return (supported);
@@ -192,7 +190,7 @@ public class StarshipMap implements Serializable {
     
     /***
      * initialize all map data (relief, size, rooms)
-     * @param fileContent
+     * @param fileContent the file content as String
      */
     private void initFromStringArray(List<String> fileContent) {
         if (!isVersionSupported(fileContent.get(fileContent.size() - 1)))

@@ -117,6 +117,13 @@ public class MapViewEvents {
                 } else {
                     for (VisibleMapBlock block : visibleMapEvents) {
                         if (block.isTargeted(event.getX(), event.getY())) {
+                            if (!block.isHumanStartZone()) {
+                                viewMode = MapViewMode.MODAL_DISPLAYED;
+                                modalInfo = new ModalMessage("Pas une zone de départ");
+                                positioningSelectedMember = null;
+                                parentView.invalidate();
+                                return true;
+                            }
                             positioningSelectedMember.setPosX((short) block.getMapPosition().getX());
                             positioningSelectedMember.setPosY((short) block.getMapPosition().getY());
                             positioningEvents = new ArrayList<>();

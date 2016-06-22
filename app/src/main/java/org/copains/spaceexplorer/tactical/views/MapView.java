@@ -99,8 +99,10 @@ public class MapView extends View {
 			}
 		}
 		if (!mission.isTeamInPosition()) {
-			displayTeamPositioning(canvas);
-			MapViewEvents.getInstance().setViewMode(MapViewMode.TEAM_POSITIONING);
+            if (!(MapViewEvents.getInstance().getViewMode() == MapViewMode.MODAL_DISPLAYED)) {
+                displayTeamPositioning(canvas);
+                MapViewEvents.getInstance().setViewMode(MapViewMode.TEAM_POSITIONING);
+            }
 		}
         switch (events.getViewMode()) {
             case ACTION_HIGLIGHT:
