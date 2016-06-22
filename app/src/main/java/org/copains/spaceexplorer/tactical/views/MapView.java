@@ -166,7 +166,8 @@ public class MapView extends View {
 
 		float totalX = 0, totalY = 0;
 
-		public boolean onScroll(android.view.MotionEvent event1, android.view.MotionEvent event2, float distanceX, float distanceY) {
+		@Override
+        public boolean onScroll(android.view.MotionEvent event1, android.view.MotionEvent event2, float distanceX, float distanceY) {
 			totalX += distanceX;
 			totalY += distanceY;
 			int moveX = 0, moveY = 0;
@@ -188,13 +189,22 @@ public class MapView extends View {
 			return (shouldMove);
 		}
 
-		public boolean onSingleTapConfirmed(MotionEvent event) {
+		@Override
+        public boolean onSingleTapConfirmed(MotionEvent event) {
 			MapViewEvents events = MapViewEvents.getInstance();
 			if (events.checkEvent(event)) {
 				invalidate();
 			}
 			return (false);
 		}
+
+		@Override
+        public void onLongPress(MotionEvent event) {
+            MapViewEvents events = MapViewEvents.getInstance();
+            if (events.checkLongPressEvent(event)) {
+                invalidate();
+            }
+        }
 	};
 
 	@Override

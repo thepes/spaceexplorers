@@ -29,8 +29,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 public class MapViewEvents {
-	
-	public enum MapViewMode {
+
+    public enum MapViewMode {
 		TEAM_POSITIONING,
 		STANDARD,
 		ACTION_HIGLIGHT,
@@ -224,6 +224,23 @@ public class MapViewEvents {
 		return (false);
 	}
 
+    /**
+     * Long press event displays info on lifeform at this moment
+     * @param event
+     * @return
+     */
+    public boolean checkLongPressEvent(MotionEvent event) {
+        for (LifeFormBlock block : lifeFormEvents) {
+            if (block.isTargeted(event.getX(), event.getY())) {
+                // use context
+                LifeForm form = block.getLifeForm();
+                selectedLifeForm = form;
+                displayLifeFormDetails(form);
+            }
+        }
+        return true;
+    }
+
     private void displayLifeFormDetails(LifeForm form) {
         viewMode = MapViewMode.LIFEFORM_DETAILS;
         parentView.invalidate();
@@ -244,6 +261,8 @@ public class MapViewEvents {
             list.add(context.getResources().getText(R.string.action));
             currentActions.add(R.string.action);
         }
+        list.add(context.getString(R.string.info));
+        currentActions.add(R.string.info);
         list.add(context.getResources().getText(R.string.cancel));
         currentActions.add(R.string.cancel);
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
@@ -255,6 +274,11 @@ public class MapViewEvents {
             public void onClick(DialogInterface dialog, int which) {
                 if (currentActions.get(which) == R.string.cancel)
                     return;
+                if (currentActions.get(which) == R.string.info) {
+                    Log.i("spaceexplorers","Info selectionné");
+                    displayLifeFormDetails(getSelectedLifeForm());
+                    return;
+                }
                 Log.i("Space","Item selected: (" +which+") " );
                 Log.i("Space","Action: " +context.getResources().getText(currentActions.get(which)));
                 viewMode = MapViewMode.ACTION_HIGLIGHT;

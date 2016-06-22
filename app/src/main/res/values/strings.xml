@@ -5,6 +5,7 @@
     <string name="move">Déplacer</string>
     <string name="open">Ouvrir</string>
     <string name="action">Attaque</string>
+    <string name="info">Info</string>
     <string name="cancel">Annuler</string>
     <string name="action_box_title">Action</string>
     <string name="end_turn">Fin de tour</string>
