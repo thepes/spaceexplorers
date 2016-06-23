@@ -137,8 +137,10 @@ public class MapView extends View {
 				LifeForm teamMember = mission.getTeamMember(x+y*3);
 				if (teamMember.getPosX() == -1) {
 					r = new RectF(delta + x*(delta+TILE_SIZE) ,5+y*(TILE_SIZE+5),delta + x*(delta+TILE_SIZE)+TILE_SIZE,5+y*(TILE_SIZE+5)+TILE_SIZE);
-					paint.setARGB(255, 250, 50, 250);
-					canvas.drawRect(r, paint);
+					//paint.setARGB(255, 250, 50, 250);
+					//canvas.drawRect(r, paint);
+					BitmapDrawable drawable = (BitmapDrawable)getContext().getDrawable(teamMember.getSpriteId());
+					canvas.drawBitmap(drawable.getBitmap(),null,r,null);
 					events.addPositioningEvent(delta + x*(delta+TILE_SIZE) ,
 							5+y*(TILE_SIZE+5),delta + x*(delta+TILE_SIZE)+TILE_SIZE,
 							5+y*(TILE_SIZE+5)+TILE_SIZE, x+y*3);

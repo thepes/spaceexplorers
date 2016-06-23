@@ -68,7 +68,6 @@ public class MapViewHelper {
 		}
 		int x = tileCoord.getX()-displayAreaStart.getX(); 
 		int y = tileCoord.getY()-displayAreaStart.getY();
-		Log.i("SpaceExplorer", "tile coord : " + x + "/" + y);
 		RectF r = new RectF((x*MapView.TILE_SIZE), (y*MapView.TILE_SIZE), MapView.TILE_SIZE+(x*MapView.TILE_SIZE), MapView.TILE_SIZE+(y*MapView.TILE_SIZE));
 		return (r);
 	}
