@@ -57,6 +57,7 @@ public class AttackMg {
                         Log.i("spaceexplorers","Find target at pos : " + lf.getCoordinates().getX()
                                 + "/" + lf.getCoordinates().getY());
                         computeDamage(attacker,lf,res);
+                        res.addDefender(lf);
                     }
                     break;
                 case EXPLOSIVE:

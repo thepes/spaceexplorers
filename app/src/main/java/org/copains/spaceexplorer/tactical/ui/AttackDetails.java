@@ -15,6 +15,9 @@ import org.copains.spaceexplorer.tactical.objects.AttackResult;
 import org.copains.spaceexplorer.tactical.views.MapView;
 import org.copains.tools.dice.DiceMg;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Sébastien Delaire <the.pes@gmail.com>
  * on 13/06/2016.
@@ -23,6 +26,7 @@ import org.copains.tools.dice.DiceMg;
 public class AttackDetails implements ModalInfo {
 
     private LifeForm attacker, defender;
+    private List<LifeForm> multipleDefenders;
     private int dice, damage;
 
     public AttackDetails(LifeForm attacker, LifeForm defender, int diceResult, int damage) {
@@ -35,6 +39,9 @@ public class AttackDetails implements ModalInfo {
     public AttackDetails(AttackResult attackResult) {
         this(attackResult.getAttacker(),attackResult.getDefender(),attackResult.getDiceResult()
                 ,attackResult.getLostLifePoints());
+        if (null != attackResult.getMultipleDefenders()) {
+            this.multipleDefenders = attackResult.getMultipleDefenders();
+        }
     }
 
     public boolean draw(Canvas canvas, Context context) {
@@ -57,10 +64,23 @@ public class AttackDetails implements ModalInfo {
         int diceY = bottom - MapView.TILE_SIZE - 20;
         Rect r = new Rect(diceX,diceY,diceX + MapView.TILE_SIZE, diceY+MapView.TILE_SIZE);
         Log.i("spaceexplorers","DiceForBitmap : " + dice);
-
+        if (null != multipleDefenders) {
+            Log.i("spaceexplorers","Cibles touchees : " + multipleDefenders.size());
+        }
         canvas.drawBitmap(DiceMg.getBitmap(context,dice),null,r,null);
 
         return true;
+    }
+
+    /**
+     * this method is to be used for attacks involving multiple targets (laser or explosive)
+     * @param lf the lifeform touched
+     */
+    public void addDefender(LifeForm lf) {
+        if (null == multipleDefenders) {
+            multipleDefenders = new ArrayList<>();
+        }
+        multipleDefenders.add(lf);
     }
 
 }

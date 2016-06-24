@@ -2,6 +2,9 @@ package org.copains.spaceexplorer.tactical.objects;
 
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by DELAIRE on 10/06/2016.
  */
@@ -16,6 +19,7 @@ public class AttackResult {
     private short lostLifePoints;
 
     private LifeForm attacker, defender;
+    private List<LifeForm> multipleDefenders;
 
     public boolean hasError() {
         return hasError;
@@ -73,4 +77,14 @@ public class AttackResult {
         this.defender = defender;
     }
 
+    public void addDefender(LifeForm lf) {
+        if (null == multipleDefenders) {
+            multipleDefenders = new ArrayList<>();
+        }
+        multipleDefenders.add(lf);
+    }
+
+    public List<LifeForm> getMultipleDefenders() {
+        return multipleDefenders;
+    }
 }
