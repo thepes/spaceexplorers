@@ -1,5 +1,8 @@
 package org.copains.spaceexplorer;
 
+import org.copains.spaceexplorer.backend.userRecordApi.UserRecordApi;
+import org.copains.spaceexplorer.profile.manager.ProfileMg;
+import org.copains.spaceexplorer.profile.objects.UserProfile;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
 import org.copains.spaceexplorer.tactical.objects.StarshipMap;
 
@@ -18,6 +21,9 @@ public class SpaceExplorer extends Activity {
         StarshipMap map = StarshipMap.getInstance(getResources().openRawResource(R.raw.first_ship));
         setContentView(R.layout.main);
         Log.i("space","map size : X=" + map.getSizeX() + " Y=" + map.getSizeY() );
+//        Mes
+        //UserRecordApi recordApi = UserRecordApi.Builder
+        UserProfile prof = ProfileMg.getPlayerProfile();
     }
     
     @Override
