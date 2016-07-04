@@ -16,4 +16,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+dependencies {
+    // Make sure that you have installed "Extras -> Google Play services" component in Android SDK Manager
+    compile 'com.google.android.gms:play-services-gcm:8.3.0'
+    compile project(path: ':backend', configuration: 'android-endpoints')
+    compile 'com.google.code.findbugs:jsr305:2.0.1'
 }
