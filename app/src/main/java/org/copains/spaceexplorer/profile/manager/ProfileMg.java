@@ -2,8 +2,16 @@ package org.copains.spaceexplorer.profile.manager;
 
 import android.util.Log;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+
+import org.copains.spaceexplorer.backend.userRecordApi.UserRecordApi;
+import org.copains.spaceexplorer.backend.userRecordApi.model.UserRecord;
 import org.copains.spaceexplorer.profile.objects.UserProfile;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
@@ -30,10 +38,31 @@ public class ProfileMg {
     private static UserProfile initProfile(Integer playerType) {
         UserProfile prof = new UserProfile();
         prof.setUserType(playerType);
-        prof.setUserName("123456789");
-        prof.setCreationDate(Calendar.getInstance().getTime());
-        prof.save();
-        return prof;
+        UserRecordApi.Builder recordApiBuilder = new UserRecordApi.Builder(AndroidHttp.newCompatibleTransport(),
+                new AndroidJsonFactory(), null)
+                // Need setRootUrl and setGoogleClientRequestInitializer only for local testing,
+                // otherwise they can be skipped
+                .setRootUrl("https://spaceexplorerscopains.appspot.com/_ah/api/")
+                /*.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                    @Override
+                    public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
+                            throws IOException {
+                        abstractGoogleClientRequest.setDisableGZipContent(true);
+                    }
+                })*/;
+        UserRecordApi recordApi = recordApiBuilder.build();
+        try {
+            UserRecord record = recordApi.create(playerType).execute();
+            prof.setUserName(record.getUserName());
+            prof.setCreationDate(Calendar.getInstance().getTime());
+            prof.setOnlineId(record.getId());
+            prof.save();
+            return prof;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // TODO: handle error case by creating a local pofile
+        return null;
     }
 
 }

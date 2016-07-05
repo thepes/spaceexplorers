@@ -9,6 +9,7 @@ import org.copains.spaceexplorer.tactical.objects.StarshipMap;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +24,11 @@ public class SpaceExplorer extends Activity {
         Log.i("space","map size : X=" + map.getSizeX() + " Y=" + map.getSizeY() );
 //        Mes
         //UserRecordApi recordApi = UserRecordApi.Builder
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
         UserProfile prof = ProfileMg.getPlayerProfile();
     }
     

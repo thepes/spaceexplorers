@@ -32,8 +32,15 @@ dependencies {
 
 appengine {
     downloadSdk = true
+    httpAddress = '0.0.0.0'
     appcfg {
+        email = 'the.pes@gmail.com'
         oauth2 = true
+
+        app {
+            id = 'spaceexplorerscopains'
+            version = 'alpha'
+        }
     }
     endpoints {
 
