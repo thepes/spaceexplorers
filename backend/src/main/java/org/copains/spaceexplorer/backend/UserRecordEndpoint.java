@@ -10,7 +10,10 @@ import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 
+import org.copains.spaceexplorer.backend.tools.NameGenerator;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -84,6 +87,29 @@ public class UserRecordEndpoint {
         logger.info("Created UserRecord with ID: " + userRecord.getId());
 
         return ofy().load().entity(userRecord).now();
+    }
+
+    @ApiMethod(
+            name = "create",
+            path = "userRecord/create",
+            httpMethod = ApiMethod.HttpMethod.POST    )
+    public UserRecord create(@Named("userType") Integer userType) {
+        String newName = "";
+        List<UserRecord> records;
+        newName = NameGenerator.generateName();
+        logger.info("NewName : " + newName);
+        records = ofy().load().type(UserRecord.class).filter("userName = ",newName).list();
+        while (records.size() != 0) {
+            newName = NameGenerator.generateName();
+            logger.info("NewName : " + newName);
+            records = ofy().load().type(UserRecord.class).filter("userName = ",newName).list();
+        }
+        UserRecord user = new UserRecord();
+        user.setCreationDate(Calendar.getInstance().getTime());
+        user.setUserType(userType);
+        user.setUserName(newName);
+        ofy().save().entity(user).now();
+        return user;
     }
 
     /**
