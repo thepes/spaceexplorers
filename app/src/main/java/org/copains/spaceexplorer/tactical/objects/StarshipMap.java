@@ -1,5 +1,7 @@
 package org.copains.spaceexplorer.tactical.objects;
 
+import org.copains.spaceexplorer.game.objects.Room;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -36,7 +38,7 @@ public class StarshipMap implements Serializable {
     
 
     private short[][] reliefs;
-    private Hashtable<String, List<Coordinates>> rooms;
+    private Hashtable<String, Room> rooms;
 
     private StarshipMap(File map) {
         try {
@@ -44,7 +46,7 @@ public class StarshipMap implements Serializable {
             FileReader reader = new FileReader(map);
             BufferedReader br = new BufferedReader(reader);
             String currentLine = null;
-            ArrayList< String > fileContent = new ArrayList < String >();
+            ArrayList< String > fileContent = new ArrayList <>();
             while ((currentLine = br.readLine()) != null) {
                 fileContent.add(currentLine);
             }
@@ -113,7 +115,7 @@ public class StarshipMap implements Serializable {
      * @param fileContent
      */
     private void initRooms(List < String > fileContent) {
-    	rooms = new Hashtable<String, List<Coordinates>>();
+    	rooms = new Hashtable<>();
     	for (int y = sizeY ; y < sizeY*2; y++) {
     		String line = fileContent.get(y + 1);
     		for (int x = 0; x < sizeX; x++) {
@@ -122,13 +124,13 @@ public class StarshipMap implements Serializable {
     				Short.parseShort(cell);
     			} catch (NumberFormatException e) {
     				// if it's not a number it's a room
-    				List<Coordinates> roomCells = rooms.get(cell);
-    				if (null == roomCells) {
-    					roomCells = new ArrayList<>();
-    					rooms.put(cell, roomCells);
+    				Room room = rooms.get(cell);
+    				if (null == room) {
+    					room = new Room();
+    					rooms.put(cell, room);
     				}
     				Coordinates coord = new Coordinates(x, y-sizeY);
-    				roomCells.add(coord);
+    				room.addCell(coord);
     			}
     		}
     	}

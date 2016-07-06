@@ -53,6 +53,7 @@ public class CurrentMission {
 								break;
 							alien.setPosX((short)x);
 							alien.setPosY((short)y);
+							alien.setVisibleOnMap(false);
 							aliens.add(alien);
 							if (alienMg.getRemainingAliens() == 0)
 								break;
@@ -239,5 +240,10 @@ public class CurrentMission {
             return false;
         }
         return targetableLifeForms.contains(attackedLf);
+    }
+
+    public void openDoor(Door d) {
+        //d.
+        d.setOpen(true);
     }
 }

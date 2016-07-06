@@ -19,6 +19,8 @@ public abstract class LifeForm {
 	
 	private short posX = -1;
 	private short posY = -1;
+
+	private boolean visibleOnMap = true;
 	
 	
 	public boolean canMove() {
@@ -177,4 +179,12 @@ public abstract class LifeForm {
             return true;
         return false;
 	}
+
+    public boolean isVisibleOnMap() {
+        return visibleOnMap;
+    }
+
+    public void setVisibleOnMap(boolean vis) {
+        visibleOnMap = vis;
+    }
 }

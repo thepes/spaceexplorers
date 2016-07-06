@@ -171,7 +171,8 @@ public class MapViewEvents {
                                 return (false);
                             }
                             Log.i("SpaceExplorer", "opening door : " + d.toString());
-                            d.setOpen(true);
+                            mission.openDoor(d);
+                            //d.setOpen(true);
                             //if (null != selectedLifeForm)
                             LifeForm form = getSelectedLifeForm();
                             short remaining = (short) (form.getMovementPoints() - 1);
