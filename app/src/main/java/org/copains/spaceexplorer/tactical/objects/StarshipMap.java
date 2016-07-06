@@ -38,6 +38,7 @@ public class StarshipMap implements Serializable {
     
 
     private short[][] reliefs;
+    private char[][] roomsMap;
     private Hashtable<String, Room> rooms;
 
     private StarshipMap(File map) {
@@ -125,8 +126,10 @@ public class StarshipMap implements Serializable {
     			} catch (NumberFormatException e) {
     				// if it's not a number it's a room
     				Room room = rooms.get(cell);
+                    roomsMap[x][y-sizeY] = line.charAt(x);
     				if (null == room) {
     					room = new Room();
+                        room.setOpen(false);
     					rooms.put(cell, room);
     				}
     				Coordinates coord = new Coordinates(x, y-sizeY);
@@ -147,6 +150,7 @@ public class StarshipMap implements Serializable {
         st2.nextToken();
         sizeY = Integer.parseInt(st2.nextToken());
         reliefs = new short[sizeX][sizeY];
+        roomsMap = new char[sizeX][sizeY];
     }
 
     public String[][] getDisplayAreaPictures(int topX, int topY, int sizeX,
@@ -263,4 +267,8 @@ public class StarshipMap implements Serializable {
 		this.humanBottomRight = humanBottomRight;
 	}
 
+    public Room getRoom(int x, int y) {
+        String roomID = ""+roomsMap[x][y];
+        return rooms.get(roomID);
+    }
 }

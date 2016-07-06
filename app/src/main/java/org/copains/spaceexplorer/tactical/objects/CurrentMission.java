@@ -11,6 +11,7 @@ import org.copains.spaceexplorer.game.lifeforms.HeavyMarine;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.game.lifeforms.Marine;
 import org.copains.spaceexplorer.game.objects.Door;
+import org.copains.spaceexplorer.game.objects.Room;
 
 import android.util.Log;
 
@@ -66,43 +67,76 @@ public class CurrentMission {
 	private void initDoors() {
 		doors = new ArrayList<>();
 		StarshipMap map = StarshipMap.getInstance();
-		for (int y = 0 ; y < map.getSizeY() ; y++)
-		for (int x = 0 ; x < map.getSizeX() ; x++) {
-			if (map.getRelief(x, y) == StarshipMap.DOOR) {
-				boolean newDoor = true;
-				Coordinates start = new Coordinates(x, y);
-				for (Door d : doors) {
-					if (start.isInside(d.getTopLeft(), d.getBottomRight())) {
-						newDoor = false;
-					}
-				}
-				// if new Door, looking for door end
-				if (newDoor) {
-					if (map.getRelief(x+1, y) == StarshipMap.DOOR) {
-						while (map.getRelief(x, y) == StarshipMap.DOOR) {
-							x++;
-						}
-						Coordinates stop = new Coordinates(x-1, y);
-						Door d = new Door(start,stop);
-						Log.i("Space", d.toString());
-						doors.add(d);
-					} else if (map.getRelief(x, y+1) == StarshipMap.DOOR) {
-						int tmpY = y;
-						while (map.getRelief(x, tmpY) == StarshipMap.DOOR) {
-							tmpY++;
-						}
-						Coordinates stop = new Coordinates(x, tmpY-1);
-						Door d = new Door(start,stop);
-						Log.i("Space", d.toString());
-						doors.add(d);
-					} else {
-						Door d = new Door(start,start);
-						Log.i("Space", d.toString());
-						doors.add(d);						
-					}
-				}
-			}
-		}
+		for (int y = 0 ; y < map.getSizeY() ; y++) {
+            for (int x = 0; x < map.getSizeX(); x++) {
+                if (map.getRelief(x, y) == StarshipMap.DOOR) {
+                    boolean newDoor = true;
+                    Coordinates start = new Coordinates(x, y);
+                    for (Door d : doors) {
+                        if (start.isInside(d.getTopLeft(), d.getBottomRight())) {
+                            newDoor = false;
+                        }
+                    }
+                    // if new Door, looking for door end
+                    if (newDoor) {
+                        if (map.getRelief(x + 1, y) == StarshipMap.DOOR) {
+                            while (map.getRelief(x, y) == StarshipMap.DOOR) {
+                                x++;
+                            }
+                            Coordinates stop = new Coordinates(x - 1, y);
+                            Door d = new Door(start, stop);
+                            Room room = map.getRoom(x - 1 , y - 1);
+                            if (null != room) {
+                                d.addAdjacentRoom(room);
+                            }
+                            room = map.getRoom(x - 1 , y + 1);
+                            if (null != room) {
+                                d.addAdjacentRoom(room);
+                            }
+                            Log.i("Space", d.toString());
+                            doors.add(d);
+                        } else if (map.getRelief(x, y + 1) == StarshipMap.DOOR) {
+                            int tmpY = y;
+                            while (map.getRelief(x, tmpY) == StarshipMap.DOOR) {
+                                tmpY++;
+                            }
+                            Coordinates stop = new Coordinates(x, tmpY - 1);
+                            Door d = new Door(start, stop);
+                            Room room = map.getRoom(x - 1 , stop.getY());
+                            if (null != room) {
+                                d.addAdjacentRoom(room);
+                            }
+                            room = map.getRoom(x + 1 ,stop.getY());
+                            if (null != room) {
+                                d.addAdjacentRoom(room);
+                            }
+                            Log.i("Space", d.toString());
+                            doors.add(d);
+                        } else {
+                            Door d = new Door(start, start);
+                            Room room = map.getRoom(start.getX()-1 , start.getY());
+                            if (null != room) {
+                                d.addAdjacentRoom(room);
+                            }
+                            room = map.getRoom(start.getX()+1 , start.getY());
+                            if (null != room) {
+                                d.addAdjacentRoom(room);
+                            }
+                            room = map.getRoom(start.getX() , start.getY()-1);
+                            if (null != room) {
+                                d.addAdjacentRoom(room);
+                            }
+                            room = map.getRoom(start.getX() , start.getY()+1);
+                            if (null != room) {
+                                d.addAdjacentRoom(room);
+                            }
+                            Log.i("Space", d.toString());
+                            doors.add(d);
+                        }
+                    }
+                }
+            }
+        }
 	}
 	
 	public Door getDoor(Coordinates c) {
@@ -129,36 +163,37 @@ public class CurrentMission {
 		ArrayList<Door> doors = new ArrayList<>();
 		Coordinates tmp = new Coordinates(coord.getX()-1,coord.getY());
 		Door d = getDoor(tmp);
-		if (canAdd(d, onlyClosed)) {
+		if (canAddDoor(d, onlyClosed)) {
 				doors.add(d);
 		}
 		tmp = new Coordinates(coord.getX()+1,coord.getY());
 		d = getDoor(tmp);
-		if (canAdd(d, onlyClosed)) {
+		if (canAddDoor(d, onlyClosed)) {
 			doors.add(d);
 		}
 		tmp = new Coordinates(coord.getX(),coord.getY()-1);
 		d = getDoor(tmp);
-		if (canAdd(d, onlyClosed)) {
+		if (canAddDoor(d, onlyClosed)) {
 			doors.add(d);
 		}
 		tmp = new Coordinates(coord.getX(),coord.getY()+1);
 		d = getDoor(tmp);
-		if (canAdd(d, onlyClosed)) {
+		if (canAddDoor(d, onlyClosed)) {
 			doors.add(d);
 		}
 		return (doors);
 	}
 	
-	private boolean canAdd(Door d, boolean onlyClosed) {
-		if (null != d)
-			if (onlyClosed){
-				if (!d.isOpen()) {
-					return (true);
-				}
-			} else {
-				return (true);
-			}
+	private boolean canAddDoor(Door d, boolean onlyClosed) {
+		if (null != d) {
+            if (onlyClosed) {
+                if (!d.isOpen()) {
+                    return (true);
+                }
+            } else {
+                return (true);
+            }
+        }
 		return (false);
 	}
 

@@ -11,6 +11,8 @@ public class Door {
 
 	private Coordinates topLeft;
 	private Coordinates bottomRight;
+
+	private List<Room> adjacentRooms;
 	
 	private boolean open = false;
 	
@@ -24,7 +26,7 @@ public class Door {
 	}
 
 	public List<Coordinates> getAllTiles() {
-		ArrayList<Coordinates> tiles = new ArrayList<Coordinates>();
+		ArrayList<Coordinates> tiles = new ArrayList<>();
 		for (int x = topLeft.getX() ; x <= bottomRight.getX() ; x++) {
 			for (int y = topLeft.getY() ; y <= bottomRight.getY() ; y++) {
 				Log.i("SpaceExplorer", "Adding tile for door : " + x + "/" + y);
@@ -84,5 +86,11 @@ public class Door {
 		sb.append(",opened=").append(open).append("}");
 		return (sb.toString());
 	}
-	
+
+	public void addAdjacentRoom(Room room) {
+		if (null == adjacentRooms){
+			adjacentRooms = new ArrayList<>();
+		}
+		adjacentRooms.add(room);
+	}
 }
