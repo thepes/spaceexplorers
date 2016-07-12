@@ -8,6 +8,7 @@ import org.copains.spaceexplorer.game.lifeforms.Alien;
 import org.copains.spaceexplorer.game.lifeforms.Human;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.game.objects.Door;
+import org.copains.spaceexplorer.network.manager.LifeFormActionMg;
 import org.copains.spaceexplorer.tactical.actions.AttackMg;
 import org.copains.spaceexplorer.tactical.events.LifeFormBlock;
 import org.copains.spaceexplorer.tactical.events.TeamPositioningBlock;
@@ -126,6 +127,9 @@ public class MapViewEvents {
                             }
                             positioningSelectedMember.setPosX((short) block.getMapPosition().getX());
                             positioningSelectedMember.setPosY((short) block.getMapPosition().getY());
+
+                            // Storing lifeform creation in local DB
+                            LifeFormActionMg.lifeFormCreated(positioningSelectedMember);
                             positioningEvents = new ArrayList<>();
                             positioningSelectedMember = null;
                             // checking if there's remaining members to place

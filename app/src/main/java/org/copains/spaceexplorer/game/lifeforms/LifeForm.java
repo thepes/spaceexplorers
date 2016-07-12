@@ -5,8 +5,12 @@ import org.copains.spaceexplorer.tactical.objects.Coordinates;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
 import org.copains.spaceexplorer.tactical.tools.PathFinder;
 
+import java.util.UUID;
+
 public abstract class LifeForm {
-	
+
+    private UUID uuid = UUID.randomUUID();
+
 	private short actionPoints;
 	private short movementPoints;
 	private short life;
@@ -186,5 +190,13 @@ public abstract class LifeForm {
 
     public void setVisibleOnMap(boolean vis) {
         visibleOnMap = vis;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 }
