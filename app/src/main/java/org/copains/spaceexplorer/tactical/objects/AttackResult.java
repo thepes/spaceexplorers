@@ -2,6 +2,7 @@ package org.copains.spaceexplorer.tactical.objects;
 
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import java.util.List;
  */
 
 public class AttackResult {
+
+    private static final long serialVersionUID = 1L;
 
     private boolean hasError;
     private String errorMessage;
@@ -87,4 +90,6 @@ public class AttackResult {
     public List<LifeForm> getMultipleDefenders() {
         return multipleDefenders;
     }
+
+
 }

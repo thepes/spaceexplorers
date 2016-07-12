@@ -45,6 +45,7 @@ public class AttackMg {
         WeaponMg weaponMg = new WeaponMg();
         if (weaponMg.computeRangedWeaponTouchSuccess(attacker)) {
             res.setAttacker(attacker);
+            res.setAttackIsSuccess(true);
             switch (attacker.getRangeWeapon()) {
 
                 case NONE:

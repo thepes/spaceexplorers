@@ -181,6 +181,8 @@ public class MapViewEvents {
                             LifeForm form = getSelectedLifeForm();
                             short remaining = (short) (form.getMovementPoints() - 1);
                             form.setMovementPoints(remaining);
+                            // TODO: do this only when in multiplayer
+                            LifeFormActionMg.recordOpenDoor(form,d);
                             viewMode = MapViewMode.STANDARD;
                             visibleMapEvents = new ArrayList<>();
                             selectedLifeForm = null;
@@ -194,6 +196,8 @@ public class MapViewEvents {
                             selectedLifeForm.setPosX((short) block.getMapPosition().getX());
                             selectedLifeForm.setPosY((short) block.getMapPosition().getY());
                             selectedLifeForm.setMovementPoints((short) 0);
+                            // TODO: do this only when in multiplayer
+                            LifeFormActionMg.recordMovement(selectedLifeForm);
                             viewMode = MapViewMode.STANDARD;
                             visibleMapEvents = new ArrayList<>();
                             selectedLifeForm = null;
@@ -209,6 +213,8 @@ public class MapViewEvents {
                             AttackResult attackResult = AttackMg.shoot(selectedLifeForm,coord);
                             if (!attackResult.hasError()) {
                                 AttackDetails details = new AttackDetails(attackResult);
+                                // TODO: do this only when in multiplayer
+                                LifeFormActionMg.recordAttackResult(selectedLifeForm,attackResult);
                                 modalInfo = details;
                             } else {
                                 ModalMessage msg = new ModalMessage((attackResult.getErrorMessage()));

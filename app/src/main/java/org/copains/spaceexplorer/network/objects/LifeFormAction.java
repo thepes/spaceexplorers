@@ -13,6 +13,7 @@ public class LifeFormAction extends SugarRecord {
     public static final Integer ACTION_OPEN = 2;
     public static final Integer ACTION_MOVE = 3;
     public static final Integer ACTION_SHOOT = 4;
+    public static final Integer ACTION_SHOOT_MULTI = 5;
 
     private Long id;
     private Integer actionType;
