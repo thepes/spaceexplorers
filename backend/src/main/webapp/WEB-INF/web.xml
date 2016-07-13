@@ -15,7 +15,8 @@
             <param-name>services</param-name>
             <param-value>org.copains.spaceexplorer.backend.RegistrationEndpoint,
                 org.copains.spaceexplorer.backend.MessagingEndpoint,
-                org.copains.spaceexplorer.backend.UserRecordEndpoint</param-value>
+                org.copains.spaceexplorer.backend.UserRecordEndpoint,
+                org.copains.spaceexplorer.backend.game.endpoints.GameEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
