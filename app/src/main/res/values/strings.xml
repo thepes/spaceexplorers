@@ -9,4 +9,9 @@
     <string name="cancel">Annuler</string>
     <string name="action_box_title">Action</string>
     <string name="end_turn">Fin de tour</string>
+
+    <string name="title_activity_startup">Space Explorers Menu</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="nouvelle_partie">Nouvelle Partie</string>
 </resources>

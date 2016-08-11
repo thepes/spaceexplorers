@@ -7,6 +7,7 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
+import org.copains.spaceexplorer.SpaceExplorerApplication;
 import org.copains.spaceexplorer.backend.userRecordApi.UserRecordApi;
 import org.copains.spaceexplorer.backend.userRecordApi.model.UserRecord;
 import org.copains.spaceexplorer.profile.objects.UserProfile;
@@ -42,7 +43,7 @@ public class ProfileMg {
                 new AndroidJsonFactory(), null)
                 // Need setRootUrl and setGoogleClientRequestInitializer only for local testing,
                 // otherwise they can be skipped
-                .setRootUrl("https://spaceexplorerscopains.appspot.com/_ah/api/")
+                .setRootUrl(SpaceExplorerApplication.BASE_WS_URL)
                 /*.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                     @Override
                     public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
