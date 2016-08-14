@@ -44,13 +44,13 @@ public class ProfileMg {
                 // Need setRootUrl and setGoogleClientRequestInitializer only for local testing,
                 // otherwise they can be skipped
                 .setRootUrl(SpaceExplorerApplication.BASE_WS_URL)
-                /*.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                     @Override
                     public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
                             throws IOException {
                         abstractGoogleClientRequest.setDisableGZipContent(true);
                     }
-                })*/;
+                });
         UserRecordApi recordApi = recordApiBuilder.build();
         try {
             UserRecord record = recordApi.create(playerType).execute();

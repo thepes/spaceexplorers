@@ -10,6 +10,8 @@ import org.copains.spaceexplorer.game.objects.Door;
 import org.copains.spaceexplorer.network.objects.LifeFormAction;
 import org.copains.spaceexplorer.tactical.objects.AttackResult;
 
+import java.util.List;
+
 /**
  * Created by Sébastien Delaire <the.pes@gmail.com>
  * on 11/07/2016.
@@ -63,6 +65,11 @@ public class LifeFormActionMg {
         action.setActorUuid(actor.getUuid().toString());
         save(action);
         return true;
+    }
+
+    public static List<LifeFormAction> list() {
+        List<LifeFormAction> actions = LifeFormAction.listAll(LifeFormAction.class,"id ASC");
+        return actions;
     }
 
 }

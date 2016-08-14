@@ -19,7 +19,7 @@ public class SpaceExplorer extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StarshipMap map = StarshipMap.getInstance(getResources().openRawResource(R.raw.first_ship));
+        StarshipMap map = StarshipMap.getInstance();
         setContentView(R.layout.main);
         Log.i("space","map size : X=" + map.getSizeX() + " Y=" + map.getSizeY() );
 //        Mes

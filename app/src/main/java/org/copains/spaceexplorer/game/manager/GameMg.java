@@ -2,6 +2,8 @@ package org.copains.spaceexplorer.game.manager;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
 import org.copains.spaceexplorer.SpaceExplorerApplication;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.GameApi;
@@ -21,7 +23,14 @@ public class GameMg {
 
     private static GameApi getGameApi() {
         GameApi.Builder apiBuilder = new GameApi.Builder(AndroidHttp.newCompatibleTransport(),
-                new AndroidJsonFactory(), null).setRootUrl(SpaceExplorerApplication.BASE_WS_URL);
+                new AndroidJsonFactory(), null).setRootUrl(SpaceExplorerApplication.BASE_WS_URL)
+                .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                    @Override
+                    public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
+                            throws IOException {
+                        abstractGoogleClientRequest.setDisableGZipContent(true);
+                    }
+                });
         return apiBuilder.build();
     }
 

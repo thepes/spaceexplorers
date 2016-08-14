@@ -12,6 +12,8 @@ import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.game.lifeforms.Marine;
 import org.copains.spaceexplorer.game.objects.Door;
 import org.copains.spaceexplorer.game.objects.Room;
+import org.copains.spaceexplorer.network.manager.LifeFormActionMg;
+import org.copains.spaceexplorer.network.objects.LifeFormAction;
 
 import android.util.Log;
 
@@ -25,7 +27,8 @@ public class CurrentMission {
     private List<LifeForm> graveyard;
 	private List<LifeForm> targetableLifeForms;
 	private List<Door> doors;
-	
+	private Long gameId;
+
 	private CurrentMission() {
 		for (int i = 0 ; i < 3 ; i++) {
 			team[i] = new Marine();
@@ -240,6 +243,13 @@ public class CurrentMission {
 		for (LifeForm lf : team) {
 			lf.endTurn();
 		}
+        // sending actions to server
+        List<LifeFormAction> actions = LifeFormActionMg.list();
+        for (LifeFormAction action : actions) {
+            Log.i("spaceexplorers","Action id : " + action.getId());
+            // TODO: send action to server / delete action
+            action.delete();
+        }
 		return (true);
 	}
 
@@ -281,4 +291,8 @@ public class CurrentMission {
         //d.
         d.setOpen(true);
     }
+
+	public void setGameId(Long gameId) {
+		this.gameId = gameId;
+	}
 }

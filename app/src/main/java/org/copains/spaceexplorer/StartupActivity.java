@@ -11,9 +11,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
 import org.copains.spaceexplorer.game.manager.GameMg;
 import org.copains.spaceexplorer.profile.manager.ProfileMg;
 import org.copains.spaceexplorer.profile.objects.UserProfile;
+import org.copains.spaceexplorer.tactical.objects.CurrentMission;
+import org.copains.spaceexplorer.tactical.objects.StarshipMap;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -177,7 +180,13 @@ public class StartupActivity extends Activity {
     public boolean onNewGame(View v) {
         Log.i("spaceexplorers","Click");
         UserProfile prof = ProfileMg.getPlayerProfile();
-        GameMg.createGame(prof);
+        Game game = GameMg.createGame(prof);
+
+        // Initialize map and Current Mission
+        // TODO : save the map on server (or mapID)
+        StarshipMap map = StarshipMap.getInstance(getResources().openRawResource(R.raw.first_ship));
+        CurrentMission mission = CurrentMission.getInstance();
+        mission.setGameId(game.getId());
         Intent intent = new Intent(this,SpaceExplorer.class);
         startActivity(intent);
         return true;
