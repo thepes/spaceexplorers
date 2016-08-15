@@ -28,6 +28,9 @@ public class LifeFormActionMg {
         LifeFormAction action = new LifeFormAction();
         action.setActionType(LifeFormAction.ACTION_CREATION);
         action.setActorUuid(lf.getUuid().toString());
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        action.setActionResult(gson.toJson(lf));
         save(action);
         Log.i("spaceeexplorer","Creation Lifeform UUID : " + lf.getUuid().toString() + " / Action ID : " + action.getId());
         return true;
@@ -70,6 +73,10 @@ public class LifeFormActionMg {
     public static List<LifeFormAction> list() {
         List<LifeFormAction> actions = LifeFormAction.listAll(LifeFormAction.class,"id ASC");
         return actions;
+    }
+
+    public static void sendOnServer(LifeFormAction action, Long playerId, Long gameId) {
+
     }
 
 }

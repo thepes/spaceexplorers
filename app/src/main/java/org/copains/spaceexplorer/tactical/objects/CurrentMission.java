@@ -1,10 +1,15 @@
 package org.copains.spaceexplorer.tactical.objects;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
+import org.copains.spaceexplorer.SpaceExplorerApplication;
 import org.copains.spaceexplorer.ai.manager.AlienMg;
+import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.GameTurnApi;
+import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.model.GameTurn;
 import org.copains.spaceexplorer.game.WeaponType;
 import org.copains.spaceexplorer.game.lifeforms.Alien;
 import org.copains.spaceexplorer.game.lifeforms.HeavyMarine;
@@ -14,8 +19,15 @@ import org.copains.spaceexplorer.game.objects.Door;
 import org.copains.spaceexplorer.game.objects.Room;
 import org.copains.spaceexplorer.network.manager.LifeFormActionMg;
 import org.copains.spaceexplorer.network.objects.LifeFormAction;
+import org.copains.spaceexplorer.profile.manager.ProfileMg;
 
 import android.util.Log;
+
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+import com.google.api.client.util.DateTime;
 
 public class CurrentMission {
 
@@ -248,7 +260,28 @@ public class CurrentMission {
         for (LifeFormAction action : actions) {
             Log.i("spaceexplorers","Action id : " + action.getId());
             // TODO: send action to server / delete action
-            action.delete();
+			GameTurnApi.Builder apiBuilder = new GameTurnApi.Builder(AndroidHttp.newCompatibleTransport(),
+					new AndroidJsonFactory(), null).setRootUrl(SpaceExplorerApplication.BASE_WS_URL)
+					.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+						@Override
+						public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
+								throws IOException {
+							abstractGoogleClientRequest.setDisableGZipContent(true);
+						}
+					});
+			GameTurnApi api = apiBuilder.build();
+            GameTurn turn = action.toGameTurn();
+            DateTime dt = new DateTime(Calendar.getInstance().getTime());
+            turn.setCreationDate(dt);
+            turn.setGameId(gameId);
+            turn.setPlayerId(ProfileMg.getPlayerProfile().getOnlineId());
+            try {
+                api.insert(turn).execute();
+                action.delete();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 		return (true);
 	}

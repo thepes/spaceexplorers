@@ -2,6 +2,8 @@ package org.copains.spaceexplorer.network.objects;
 
 import com.orm.SugarRecord;
 
+import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.model.GameTurn;
+
 /**
  * Created by Sébastien Delaire <the.pes@gmail.com>
  * on 11/07/2016.
@@ -61,5 +63,15 @@ public class LifeFormAction extends SugarRecord {
 
     public void setActionResult(String actionResult) {
         this.actionResult = actionResult;
+    }
+
+    public GameTurn toGameTurn() {
+        GameTurn turn = new GameTurn();
+        turn.setActionData(actionResult);
+        turn.setActionType(actionType);
+        turn.setActorUuid(actorUuid);
+        turn.setLocalId(id);
+        turn.setTargetId(targetUuid);
+        return turn;
     }
 }
