@@ -1,5 +1,7 @@
 package org.copains.spaceexplorer.game.manager;
 
+import android.util.Log;
+
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
@@ -31,6 +33,7 @@ public class GameMg {
                         abstractGoogleClientRequest.setDisableGZipContent(true);
                     }
                 });
+        apiBuilder.setApplicationName("spaceexplorers");
         return apiBuilder.build();
     }
 
@@ -40,12 +43,15 @@ public class GameMg {
         List<Long> playerIds = new ArrayList<>();
         playerIds.add(prof.getOnlineId());
         game.setPlayersIds(playerIds);
+        Game result;
         try {
-            api.insert(game).execute();
+            result = api.insert(game).execute();
+            Log.i("spaceexplorers",""+result.getId());
+            return result;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return game;
+        return null;
     }
 
 }

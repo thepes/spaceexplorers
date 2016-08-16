@@ -66,6 +66,9 @@ public class LifeFormActionMg {
         LifeFormAction action = new LifeFormAction();
         action.setActionType(LifeFormAction.ACTION_MOVE);
         action.setActorUuid(actor.getUuid().toString());
+        GsonBuilder gBuilder = new GsonBuilder();
+        Gson gson = gBuilder.create();
+        action.setActionResult(gson.toJson(actor));
         save(action);
         return true;
     }

@@ -269,6 +269,7 @@ public class CurrentMission {
 							abstractGoogleClientRequest.setDisableGZipContent(true);
 						}
 					});
+			apiBuilder.setApplicationName("spaceexplorers");
 			GameTurnApi api = apiBuilder.build();
             GameTurn turn = action.toGameTurn();
             DateTime dt = new DateTime(Calendar.getInstance().getTime());

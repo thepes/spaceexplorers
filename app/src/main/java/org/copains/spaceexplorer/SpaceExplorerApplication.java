@@ -12,8 +12,8 @@ import com.orm.SugarContext;
 public class SpaceExplorerApplication extends Application {
 
     //public static final String BASE_WS_URL = "http://192.168.0.120:8080/_ah/api/";
-    public static final String BASE_WS_URL = "http://10.0.2.2:8080/_ah/api/";
-    // "https://spaceexplorerscopains.appspot.com/_ah/api/"
+    //public static final String BASE_WS_URL = "http://10.0.2.2:8080/_ah/api/";
+    public static final String BASE_WS_URL = "https://spaceexplorerscopains.appspot.com/_ah/api/";
 
     @Override
     public void onCreate() {

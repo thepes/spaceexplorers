@@ -15,6 +15,7 @@ public class GameTurn {
 
     @Id
     private Long id;
+    @Index
     private Long localId;
     @Index
     private Long gameId;

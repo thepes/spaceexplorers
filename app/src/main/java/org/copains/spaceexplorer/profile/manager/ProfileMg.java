@@ -23,11 +23,16 @@ import java.util.List;
 
 public class ProfileMg {
 
+    private static UserProfile profile = null;
+
     public static UserProfile getPlayerProfile() {
         UserProfile ret;
+        if (null != profile)
+            return profile;
         List<UserProfile> profiles = UserProfile.find(UserProfile.class, "user_type = ?",""+UserProfile.TYPE_PLAYER);
         if ((null == profiles) || (profiles.size() == 0)) {
-            ret = initProfile(UserProfile.TYPE_PLAYER);
+            profile = initProfile(UserProfile.TYPE_PLAYER);
+            ret = profile;
             Log.i("spaceexplorers", "Profile Not found, creating it");
         } else {
             ret = profiles.get(0);
@@ -51,6 +56,7 @@ public class ProfileMg {
                         abstractGoogleClientRequest.setDisableGZipContent(true);
                     }
                 });
+        recordApiBuilder.setApplicationName("spaceexplorers");
         UserRecordApi recordApi = recordApiBuilder.build();
         try {
             UserRecord record = recordApi.create(playerType).execute();
