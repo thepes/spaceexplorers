@@ -15,9 +15,16 @@ import java.util.List;
 @Entity
 public class Game {
 
+    public static final Integer STATUS_INIT = 1;
+    public static final Integer STATUS_PLAYER_TURN = 2;
+    public static final Integer STATUS_MASTER_TURN = 3;
+    public static final Integer STATUS_FINISHED = 10;
+
     @Id
     private Long id;
+    @Index
     private List<Long> playersIds;
+    @Index
     private Long masterId;
 
     @Index

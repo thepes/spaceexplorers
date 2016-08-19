@@ -151,6 +151,24 @@ public class GameEndpoint {
         return CollectionResponse.<Game>builder().setItems(gameList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
+    @ApiMethod(
+            name = "getAllForPlayer",
+            path = "game/listForPlayer/{id}",
+            httpMethod = ApiMethod.HttpMethod.GET)
+    public CollectionResponse<Game> getAllForPlayer(@Named("id") Long id) {
+        //limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
+        //com.google.appengine.api.datastore.Query.Filter
+        Query<Game> query = ofy().load().type(Game.class).filter(new com.google.appengine.api.datastore.Query.FilterPredicate(
+                "playersIds", com.google.appengine.api.datastore.Query.FilterOperator.EQUAL, id));
+
+        QueryResultIterator<Game> queryIterator = query.iterator();
+        List<Game> gameList = new ArrayList<Game>();
+        while (queryIterator.hasNext()) {
+            gameList.add(queryIterator.next());
+        }
+        return CollectionResponse.<Game>builder().setItems(gameList).build();
+    }
+
     private void checkExists(Long id) throws NotFoundException {
         try {
             ofy().load().type(Game.class).id(id).safe();
