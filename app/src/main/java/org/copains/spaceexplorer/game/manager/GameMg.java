@@ -10,6 +10,7 @@ import com.google.api.client.util.DateTime;
 
 import org.copains.spaceexplorer.SpaceExplorerApplication;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.GameApi;
+import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.CollectionResponseGame;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
 import org.copains.spaceexplorer.profile.objects.UserProfile;
 
@@ -24,6 +25,11 @@ import java.util.List;
  */
 
 public class GameMg {
+
+    public static final Integer STATUS_INIT = 1;
+    public static final Integer STATUS_PLAYER_TURN = 2;
+    public static final Integer STATUS_MASTER_TURN = 3;
+    public static final Integer STATUS_FINISHED = 10;
 
     private static GameApi getGameApi() {
         GameApi.Builder apiBuilder = new GameApi.Builder(AndroidHttp.newCompatibleTransport(),
@@ -52,6 +58,17 @@ public class GameMg {
             result = api.insert(game).execute();
             Log.i("spaceexplorers",""+result.getId());
             return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static List<Game> getPlayerGames(UserProfile profile) {
+        GameApi api = getGameApi();
+        try {
+            CollectionResponseGame games = api.getAllForPlayer(profile.getOnlineId()).execute();
+            return games.getItems();
         } catch (IOException e) {
             e.printStackTrace();
         }

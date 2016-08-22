@@ -10,6 +10,7 @@ import android.os.StrictMode;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
 import org.copains.spaceexplorer.game.manager.GameMg;
@@ -17,6 +18,8 @@ import org.copains.spaceexplorer.profile.manager.ProfileMg;
 import org.copains.spaceexplorer.profile.objects.UserProfile;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
 import org.copains.spaceexplorer.tactical.objects.StarshipMap;
+
+import java.util.List;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -51,12 +54,12 @@ public class StartupActivity extends Activity {
             // Note that some of these constants are new as of API 16 (Jelly Bean)
             // and API 19 (KitKat). It is safe to use them, as they are inlined
             // at compile-time and do nothing on earlier devices.
-            mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+            /*mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                     | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);*/
         }
     };
     private View mControlsView;
@@ -107,16 +110,16 @@ public class StartupActivity extends Activity {
 
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
-        mContentView = findViewById(R.id.fullscreen_content);
+        //mContentView = findViewById(R.id.fullscreen_content);
 
 
         // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
+        /*mContentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toggle();
             }
-        });
+        });*/
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
@@ -132,6 +135,24 @@ public class StartupActivity extends Activity {
         // created, to briefly hint to the user that UI controls
         // are available.
         delayedHide(100);
+        UserProfile prof = ProfileMg.getPlayerProfile();
+        List<Game> playerGames = GameMg.getPlayerGames(prof);
+        if (null != playerGames) {
+            int pending = 0;
+            for (Game game : playerGames) {
+                if (game.getStatus() == GameMg.STATUS_PLAYER_TURN) {
+                    if (prof.getOnlineId() == game.getNextPlayer()) {
+                        pending ++;
+                    }
+                }
+            }
+            Button continueBtn = (Button)findViewById(R.id.continue_btn);
+            continueBtn.setText(getResources().getText(R.string.continue_btn_lbl) + " ("+
+                    pending +"/" + playerGames.size() + ")");
+            if (pending > 0) {
+                continueBtn.setEnabled(true);
+            }
+        }
     }
 
     private void toggle() {
@@ -159,8 +180,8 @@ public class StartupActivity extends Activity {
     @SuppressLint("InlinedApi")
     private void show() {
         // Show the system bar
-        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        /*mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);*/
         mVisible = true;
 
         // Schedule a runnable to display UI elements after a delay

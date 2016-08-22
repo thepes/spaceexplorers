@@ -14,4 +14,5 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="nouvelle_partie">Nouvelle Partie</string>
+    <string name="continue_btn_lbl">Continuer</string>
 </resources>

@@ -8,24 +8,29 @@
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <Button
-        android:text="@string/nouvelle_partie"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/newgameBtn"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:onClick="onNewGame" />
-
-    <TextView
-        android:id="@+id/fullscreen_content"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:textColor="#33b5e5"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:gravity="center_vertical">
+
+        <Button
+            android:text="@string/nouvelle_partie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newgameBtn"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:onClick="onNewGame" />
+
+        <Button
+            android:text="Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/continue_btn"
+            tools:text="@string/continue_btn_lbl"
+            android:enabled="false" />
+    </LinearLayout>
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->

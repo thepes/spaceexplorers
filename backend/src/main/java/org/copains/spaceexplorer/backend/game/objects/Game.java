@@ -15,11 +15,6 @@ import java.util.List;
 @Entity
 public class Game {
 
-    public static final Integer STATUS_INIT = 1;
-    public static final Integer STATUS_PLAYER_TURN = 2;
-    public static final Integer STATUS_MASTER_TURN = 3;
-    public static final Integer STATUS_FINISHED = 10;
-
     @Id
     private Long id;
     @Index
@@ -29,6 +24,7 @@ public class Game {
 
     @Index
     private Integer status;
+    private Long nextPlayer;
     private Date creationDate;
 
     public Long getId() {
@@ -69,5 +65,13 @@ public class Game {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Long getNextPlayer() {
+        return nextPlayer;
+    }
+
+    public void setNextPlayer(Long nextPlayer) {
+        this.nextPlayer = nextPlayer;
     }
 }
