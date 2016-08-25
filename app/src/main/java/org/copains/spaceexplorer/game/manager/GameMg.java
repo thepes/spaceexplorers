@@ -45,7 +45,7 @@ public class GameMg {
         return apiBuilder.build();
     }
 
-    public static Game createGame(UserProfile prof) {
+    public static Game createGame(UserProfile prof, String localMapName) {
         GameApi api = getGameApi();
         Game game = new Game();
         List<Long> playerIds = new ArrayList<>();
@@ -53,6 +53,7 @@ public class GameMg {
         game.setPlayersIds(playerIds);
         DateTime dt = new DateTime(Calendar.getInstance().getTime());
         game.setCreationDate(dt);
+        game.setLocalMapName(localMapName);
         Game result;
         try {
             result = api.insert(game).execute();

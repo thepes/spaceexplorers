@@ -201,11 +201,15 @@ public class StartupActivity extends Activity {
     public boolean onNewGame(View v) {
         Log.i("spaceexplorers","Click");
         UserProfile prof = ProfileMg.getPlayerProfile();
-        Game game = GameMg.createGame(prof);
+
 
         // Initialize map and Current Mission
         // TODO : save the map on server (or mapID)
         StarshipMap map = StarshipMap.getInstance(getResources().openRawResource(R.raw.first_ship));
+        map.setName(getResources().getResourceName(R.raw.first_ship));
+        //getResources().
+        Game game = GameMg.createGame(prof,map.getName());
+        //game.setLocalMapName(map.getName());
         CurrentMission mission = CurrentMission.getInstance();
         mission.setGameId(game.getId());
         Intent intent = new Intent(this,SpaceExplorer.class);

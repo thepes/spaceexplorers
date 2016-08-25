@@ -24,8 +24,12 @@ public class Game {
 
     @Index
     private Integer status;
+    @Index
     private Long nextPlayer;
     private Date creationDate;
+
+    private String localMapName;
+    private Long onlineMapId;
 
     public Long getId() {
         return id;
@@ -73,5 +77,21 @@ public class Game {
 
     public void setNextPlayer(Long nextPlayer) {
         this.nextPlayer = nextPlayer;
+    }
+
+    public String getLocalMapName() {
+        return localMapName;
+    }
+
+    public void setLocalMapName(String localMapName) {
+        this.localMapName = localMapName;
+    }
+
+    public Long getOnlineMapId() {
+        return onlineMapId;
+    }
+
+    public void setOnlineMapId(Long onlineMapId) {
+        this.onlineMapId = onlineMapId;
     }
 }
