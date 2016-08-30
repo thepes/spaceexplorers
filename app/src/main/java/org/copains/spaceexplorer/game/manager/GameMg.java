@@ -12,6 +12,11 @@ import org.copains.spaceexplorer.SpaceExplorerApplication;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.GameApi;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.CollectionResponseGame;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
+import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.GameTurnApi;
+import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.model.GameTurn;
+import org.copains.spaceexplorer.network.manager.LifeFormActionMg;
+import org.copains.spaceexplorer.network.objects.LifeFormAction;
+import org.copains.spaceexplorer.profile.manager.ProfileMg;
 import org.copains.spaceexplorer.profile.objects.UserProfile;
 
 import java.io.IOException;
@@ -74,6 +79,40 @@ public class GameMg {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static final boolean endGameTurn(Long gameId) {
+        // sending actions to server
+        List<LifeFormAction> actions = LifeFormActionMg.list();
+        for (LifeFormAction action : actions) {
+            Log.i("spaceexplorers","Action id : " + action.getId());
+            // TODO: send action to server / delete action
+            GameTurnApi.Builder apiBuilder = new GameTurnApi.Builder(AndroidHttp.newCompatibleTransport(),
+                    new AndroidJsonFactory(), null).setRootUrl(SpaceExplorerApplication.BASE_WS_URL)
+                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                        @Override
+                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
+                                throws IOException {
+                            abstractGoogleClientRequest.setDisableGZipContent(true);
+                        }
+                    });
+            apiBuilder.setApplicationName("spaceexplorers");
+            GameTurnApi api = apiBuilder.build();
+            GameTurn turn = action.toGameTurn();
+            DateTime dt = new DateTime(Calendar.getInstance().getTime());
+            turn.setCreationDate(dt);
+            turn.setGameId(gameId);
+            turn.setPlayerId(ProfileMg.getPlayerProfile().getOnlineId());
+            try {
+                api.insert(turn).execute();
+                action.delete();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        //api.
+        return true;
     }
 
 }

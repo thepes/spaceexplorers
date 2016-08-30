@@ -43,6 +43,10 @@ public class GameEndpoint {
     private static final Logger logger = Logger.getLogger(GameEndpoint.class.getName());
 
     private static final int DEFAULT_LIST_LIMIT = 20;
+    public static final int STATUS_INIT = 1;
+    public static final int STATUS_PLAYER_TURN = 2;
+    public static final int STATUS_MASTER_TURN = 3;
+    public static final int STATUS_FINISHED = 10;
 
     static {
         // Typically you would register this inside an OfyServive wrapper. See: https://code.google.com/p/objectify-appengine/wiki/BestPractices
@@ -167,6 +171,74 @@ public class GameEndpoint {
             gameList.add(queryIterator.next());
         }
         return CollectionResponse.<Game>builder().setItems(gameList).build();
+    }
+
+    /**
+     * This method ends a player turn:
+     * - if there's more than one player in the game, switch to the next player on the list,
+     * or the master if there's no more player.
+     * - if we are ending a master turn, switch to the first player
+     * - if game is in INIT status (MASTER has initialized the game, roll on each players for the
+     * INIT (troops placement). After the INIT of each player, the first player starts his turn.
+     *
+     * game is finished when all the players lost their troops or all the master lifeforms are dead
+     *
+     * @param id the game id
+     * @param playerId the current player id (player ending his turn
+     * @return the modified game
+     * @throws NotFoundException
+     */
+    @ApiMethod(
+            name = "endPlayerTurn",
+            path = "game/endPlayerTurn/{id}",
+            httpMethod = ApiMethod.HttpMethod.PUT)
+    public Game endPlayerTurn(@Named("id") Long id, @Named("playerId") Long playerId) throws NotFoundException {
+        Game game = ofy().load().type(Game.class).id(id).now();
+        if (game == null) {
+            throw new NotFoundException("Could not find Game with ID: " + id);
+        }
+        List<Long> players = game.getPlayersIds();
+        switch (game.getStatus()) {
+            case STATUS_INIT:
+                if (players.size() == 1) {
+                    game.setStatus(STATUS_PLAYER_TURN);
+                    game.setNextPlayer(playerId);
+                } else {
+                    int playerPos = players.indexOf(playerId);
+                    logger.info("player index in list : " + playerPos);
+                    if (playerPos < (players.size()-1)) {
+                        game.setStatus(STATUS_INIT);
+                        game.setNextPlayer(players.get(playerPos+1));
+                    } else {
+                        game.setStatus(STATUS_PLAYER_TURN);
+                        game.setNextPlayer(players.get(0));
+                    }
+                }
+                break;
+            case STATUS_PLAYER_TURN:
+                if (players.size() == 1) {
+                    game.setStatus(STATUS_MASTER_TURN);
+                    game.setNextPlayer(game.getMasterId());
+                } else {
+                    int playerPos = players.indexOf(playerId);
+                    logger.info("player index in list : " + playerPos);
+                    if (playerPos < (players.size() - 1)) {
+                        game.setStatus(STATUS_PLAYER_TURN);
+                        game.setNextPlayer(players.get(playerPos + 1));
+                    } else {
+                        game.setStatus(STATUS_MASTER_TURN);
+                        game.setNextPlayer(game.getMasterId());
+                    }
+                }
+                break;
+            case STATUS_MASTER_TURN:
+                game.setStatus(STATUS_PLAYER_TURN);
+                game.setNextPlayer(players.get(0));
+                break;
+
+        }
+        ofy().save().entity(game).now();
+        return game;
     }
 
     private void checkExists(Long id) throws NotFoundException {

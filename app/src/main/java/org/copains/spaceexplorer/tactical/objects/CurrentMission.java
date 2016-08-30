@@ -15,6 +15,7 @@ import org.copains.spaceexplorer.game.lifeforms.Alien;
 import org.copains.spaceexplorer.game.lifeforms.HeavyMarine;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.game.lifeforms.Marine;
+import org.copains.spaceexplorer.game.manager.GameMg;
 import org.copains.spaceexplorer.game.objects.Door;
 import org.copains.spaceexplorer.game.objects.Room;
 import org.copains.spaceexplorer.network.manager.LifeFormActionMg;
@@ -255,36 +256,8 @@ public class CurrentMission {
 		for (LifeForm lf : team) {
 			lf.endTurn();
 		}
-        // sending actions to server
-        List<LifeFormAction> actions = LifeFormActionMg.list();
-        for (LifeFormAction action : actions) {
-            Log.i("spaceexplorers","Action id : " + action.getId());
-            // TODO: send action to server / delete action
-			GameTurnApi.Builder apiBuilder = new GameTurnApi.Builder(AndroidHttp.newCompatibleTransport(),
-					new AndroidJsonFactory(), null).setRootUrl(SpaceExplorerApplication.BASE_WS_URL)
-					.setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-						@Override
-						public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
-								throws IOException {
-							abstractGoogleClientRequest.setDisableGZipContent(true);
-						}
-					});
-			apiBuilder.setApplicationName("spaceexplorers");
-			GameTurnApi api = apiBuilder.build();
-            GameTurn turn = action.toGameTurn();
-            DateTime dt = new DateTime(Calendar.getInstance().getTime());
-            turn.setCreationDate(dt);
-            turn.setGameId(gameId);
-            turn.setPlayerId(ProfileMg.getPlayerProfile().getOnlineId());
-            try {
-                api.insert(turn).execute();
-                action.delete();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-        }
-		return (true);
+		return (GameMg.endGameTurn(gameId));
 	}
 
     /**
