@@ -30,6 +30,13 @@
             android:id="@+id/continue_btn"
             tools:text="@string/continue_btn_lbl"
             android:enabled="false" />
+
+        <Button
+            android:text="@string/master_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_master"
+            android:onClick="onMaster" />
     </LinearLayout>
 
     <!-- This FrameLayout insets its children based on system windows using

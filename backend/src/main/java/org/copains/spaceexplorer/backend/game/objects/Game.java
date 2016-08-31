@@ -30,6 +30,11 @@ public class Game {
 
     private String localMapName;
     private Long onlineMapId;
+    private Short maxPlayers;
+    @Index
+    private Short freeSlots;
+    // limit duration for each player turn (in hours)
+    private Integer turnLimitByPlayer;
 
     public Long getId() {
         return id;
@@ -93,5 +98,29 @@ public class Game {
 
     public void setOnlineMapId(Long onlineMapId) {
         this.onlineMapId = onlineMapId;
+    }
+
+    public Short getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public void setMaxPlayers(Short maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public Short getFreeSlots() {
+        return freeSlots;
+    }
+
+    public void setFreeSlots(Short freeSlots) {
+        this.freeSlots = freeSlots;
+    }
+
+    public Integer getTurnLimitByPlayer() {
+        return turnLimitByPlayer;
+    }
+
+    public void setTurnLimitByPlayer(Integer turnLimitByPlayer) {
+        this.turnLimitByPlayer = turnLimitByPlayer;
     }
 }

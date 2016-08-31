@@ -14,6 +14,7 @@ import android.widget.Button;
 
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
 import org.copains.spaceexplorer.game.manager.GameMg;
+import org.copains.spaceexplorer.gamemaster.activities.CreateGameActivity;
 import org.copains.spaceexplorer.profile.manager.ProfileMg;
 import org.copains.spaceexplorer.profile.objects.UserProfile;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
@@ -213,6 +214,14 @@ public class StartupActivity extends Activity {
         CurrentMission mission = CurrentMission.getInstance();
         mission.setGameId(game.getId());
         Intent intent = new Intent(this,SpaceExplorer.class);
+        startActivity(intent);
+        return true;
+    }
+
+    public boolean onMaster(View v) {
+        Log.i("spaceexplorers","Click Master");
+
+        Intent intent = new Intent(this,CreateGameActivity.class);
         startActivity(intent);
         return true;
     }

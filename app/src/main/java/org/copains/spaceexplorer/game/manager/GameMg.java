@@ -31,10 +31,11 @@ import java.util.List;
 
 public class GameMg {
 
-    public static final Integer STATUS_INIT = 1;
-    public static final Integer STATUS_PLAYER_TURN = 2;
-    public static final Integer STATUS_MASTER_TURN = 3;
-    public static final Integer STATUS_FINISHED = 10;
+    public static final int STATUS_AWAITING_PLAYERS = 0;
+    public static final int STATUS_INIT = 1;
+    public static final int STATUS_PLAYER_TURN = 2;
+    public static final int STATUS_MASTER_TURN = 3;
+    public static final int STATUS_FINISHED = 10;
 
     private static GameApi getGameApi() {
         GameApi.Builder apiBuilder = new GameApi.Builder(AndroidHttp.newCompatibleTransport(),

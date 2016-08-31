@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="map_list">
+        <item>Premier Vaisseau</item>
+        <item>Deuxième Vaisseau</item>
+    </string-array>
+    <string-array name="turn_duration">
+        <item>6 heures</item>
+        <item>12 heures</item>
+        <item>1 jour</item>
+        <item>2 jours</item>
+        <item>1 semaine</item>
+    </string-array>
+</resources>

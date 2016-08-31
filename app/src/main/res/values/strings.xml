@@ -15,4 +15,10 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="nouvelle_partie">Nouvelle Partie</string>
     <string name="continue_btn_lbl">Continuer</string>
+
+    <string name="title_activity_create_game">Création de partie</string>
+    <string name="playercount_lbl">Nombre de joueurs</string>
+    <string name="master_btn">M</string>
+    <string name="choose_map_lbl">Carte</string>
+    <string name="turn_duration_lbl">Durée Max d\'un tour</string>
 </resources>

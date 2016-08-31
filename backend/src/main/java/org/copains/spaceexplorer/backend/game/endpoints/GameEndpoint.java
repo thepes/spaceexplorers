@@ -43,6 +43,7 @@ public class GameEndpoint {
     private static final Logger logger = Logger.getLogger(GameEndpoint.class.getName());
 
     private static final int DEFAULT_LIST_LIMIT = 20;
+    public static final int STATUS_AWAITING_PLAYERS = 0;
     public static final int STATUS_INIT = 1;
     public static final int STATUS_PLAYER_TURN = 2;
     public static final int STATUS_MASTER_TURN = 3;
