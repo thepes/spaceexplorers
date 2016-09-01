@@ -8,9 +8,13 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import org.copains.spaceexplorer.R;
+import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
+import org.copains.spaceexplorer.game.manager.GameMg;
+import org.copains.spaceexplorer.profile.manager.ProfileMg;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -121,6 +125,52 @@ public class CreateGameActivity extends Activity {
         Spinner spinner = (Spinner)findViewById(R.id.map_select_fld);
         String map = spinner.getSelectedItem().toString();
         Log.i("spaceexplorers","Selected map : " + map);
+        spinner = (Spinner)findViewById(R.id.turn_duration_fld);
+        int position = spinner.getSelectedItemPosition();
+        Log.i("spaceexplores","Select duration position : " + position);
+        int turnDuration = 6;
+        switch (position) {
+            case 0:
+            default:
+                turnDuration = 6;
+                break;
+            case 1:
+                turnDuration = 12;
+                break;
+            case 2:
+                turnDuration = 24;
+                break;
+            case 3:
+                turnDuration = 48;
+                break;
+            case 4:
+                turnDuration = 168;
+                break;
+        }
+        RadioGroup group = (RadioGroup)findViewById(R.id.nb_players_radiogrp_fld);
+        int playerCount = 1;
+        switch (group.getCheckedRadioButtonId()) {
+            case R.id.radioplayer_1:
+            default:
+                playerCount = 1;
+                break;
+            case R.id.radioplayer_2:
+                playerCount = 2;
+                break;
+            case R.id.radioplayer_3:
+                playerCount = 3;
+                break;
+            case R.id.radioplayer_4:
+                playerCount = 4;
+                break;
+        }
+        Game game = new Game();
+        game.setLocalMapName(getResources().getResourceName(R.raw.first_ship));
+        game.setMasterId(ProfileMg.getPlayerProfile().getOnlineId());
+        game.setMaxPlayers(playerCount);
+        game.setFreeSlots(playerCount);
+        game.setTurnLimitByPlayer(turnDuration);
+        game = GameMg.createGame(game);
         return true;
     }
 }

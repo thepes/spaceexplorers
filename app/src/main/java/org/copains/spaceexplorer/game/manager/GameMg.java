@@ -116,4 +116,18 @@ public class GameMg {
         return true;
     }
 
+    public static Game createGame(Game game) {
+        GameApi api = getGameApi();
+        game.setStatus(STATUS_AWAITING_PLAYERS);
+        DateTime dt = new DateTime(Calendar.getInstance().getTime());
+        game.setCreationDate(dt);
+        Game ret = null;
+        try {
+            ret = api.insert(game).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return ret;
+    }
 }
