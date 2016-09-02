@@ -26,6 +26,7 @@ public class Game {
     private Integer status;
     @Index
     private Long nextPlayer;
+    @Index
     private Date creationDate;
 
     private String localMapName;

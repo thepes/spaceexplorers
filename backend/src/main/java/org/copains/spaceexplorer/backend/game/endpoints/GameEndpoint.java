@@ -156,6 +156,37 @@ public class GameEndpoint {
         return CollectionResponse.<Game>builder().setItems(gameList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
+    /**
+     * List all entities.
+     *
+     * @param cursor used for pagination to determine which page to return
+     * @param limit  the maximum number of entries to return
+     * @return a response that encapsulates the result list and the next page token/cursor
+     */
+    @ApiMethod(
+            name = "listAWaiting",
+            path = "game/listAwaitingPlayers",
+            httpMethod = ApiMethod.HttpMethod.GET)
+    public CollectionResponse<Game> listAwaitingPlayers(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+        limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
+        com.google.appengine.api.datastore.Query.FilterPredicate freeSlotsFilter = new com.google.appengine.api.datastore.Query.FilterPredicate(
+                "freeSlots", com.google.appengine.api.datastore.Query.FilterOperator.GREATER_THAN, 0);
+        Query<Game> query = ofy().load().type(Game.class)
+                .order("freeSlots")
+                .order("creationDate")
+                .filter(freeSlotsFilter)
+                .limit(limit);
+        if (cursor != null) {
+            query = query.startAt(Cursor.fromWebSafeString(cursor));
+        }
+        QueryResultIterator<Game> queryIterator = query.iterator();
+        List<Game> gameList = new ArrayList<Game>(limit);
+        while (queryIterator.hasNext()) {
+            gameList.add(queryIterator.next());
+        }
+        return CollectionResponse.<Game>builder().setItems(gameList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
+    }
+
     @ApiMethod(
             name = "getAllForPlayer",
             path = "game/listForPlayer/{id}",
