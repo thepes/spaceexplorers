@@ -63,7 +63,8 @@
             android:name=".gamemaster.activities.CreateGameActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_create_game"
-            android:theme="@style/FullscreenTheme"></activity>
+            android:theme="@style/FullscreenTheme" />
+        <activity android:name=".NewGameSelectorActivity"></activity>
     </application>
 
 </manifest>

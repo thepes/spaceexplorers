@@ -164,7 +164,7 @@ public class GameEndpoint {
      * @return a response that encapsulates the result list and the next page token/cursor
      */
     @ApiMethod(
-            name = "listAWaiting",
+            name = "listAwaitingPlayers",
             path = "game/listAwaitingPlayers",
             httpMethod = ApiMethod.HttpMethod.GET)
     public CollectionResponse<Game> listAwaitingPlayers(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {

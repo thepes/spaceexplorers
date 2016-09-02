@@ -225,4 +225,12 @@ public class StartupActivity extends Activity {
         startActivity(intent);
         return true;
     }
+
+    public boolean onStartNetworkGame(View v) {
+        Log.i("spaceexplorers","Click Master");
+
+        Intent intent = new Intent(this,NewGameSelectorActivity.class);
+        startActivity(intent);
+        return true;
+    }
 }

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_new_game_selector"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0099cc"
+    tools:context="org.copains.spaceexplorer.NewGameSelectorActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="1dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_weight="0"
+            tools:layout_width="match_parent">
+
+            <TextView
+                android:text="@string/playercount_lbl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView3"
+                android:layout_weight="1" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:text="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/new_game_radio_1"
+                    android:layout_weight="1"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:text="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/new_game_radio_2"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:text="3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/new_game_radio_3"
+                    android:layout_weight="1" />
+
+                <RadioButton
+                    android:text="4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/new_game_radio_4"
+                    android:layout_weight="1" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/pending_games_listview"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button3"
+            android:layout_weight="0" />
+
+    </LinearLayout>
+
+</RelativeLayout>

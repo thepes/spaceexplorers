@@ -130,4 +130,15 @@ public class GameMg {
         }
         return ret;
     }
+
+    public static List<Game> getPendingGames(int i) {
+        GameApi api = getGameApi();
+        try {
+            CollectionResponseGame games = api.listAwaitingPlayers().execute();
+            return games.getItems();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

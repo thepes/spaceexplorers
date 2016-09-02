@@ -37,6 +37,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/button_master"
             android:onClick="onMaster" />
+
+        <Button
+            android:text="Reseau"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_start_network_game"
+            android:onClick="onStartNetworkGame" />
     </LinearLayout>
 
     <!-- This FrameLayout insets its children based on system windows using

@@ -171,6 +171,8 @@ public class CreateGameActivity extends Activity {
         game.setFreeSlots(playerCount);
         game.setTurnLimitByPlayer(turnDuration);
         game = GameMg.createGame(game);
+        // for now we will place master units randomly
+        // TODO: redirect the master to the unit placement activity (not yet created)
         return true;
     }
 }
