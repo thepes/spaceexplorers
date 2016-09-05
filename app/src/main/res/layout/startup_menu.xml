@@ -24,11 +24,10 @@
             android:onClick="onNewGame" />
 
         <Button
-            android:text="Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/continue_btn"
-            tools:text="@string/continue_btn_lbl"
+            android:text="@string/continue_btn_lbl"
             android:enabled="false" />
 
         <Button
