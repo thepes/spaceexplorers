@@ -151,6 +151,29 @@ public class GameTurnEndpoint {
         return CollectionResponse.<GameTurn>builder().setItems(gameTurnList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
+    /**
+     * List all entities.
+     *
+     * @param gameId the gameId
+     * @return a response that encapsulates the result list and the next page token/cursor
+     */
+    @ApiMethod(
+            name = "listForGame",
+            path = "gameTurn/listForGame",
+            httpMethod = ApiMethod.HttpMethod.GET)
+    public CollectionResponse<GameTurn> listForGame(@Nullable @Named("gameId") Long gameId) {
+
+        Query<GameTurn> query = ofy().load().type(GameTurn.class).filter("gameId =",gameId)
+                .order("localId");
+
+        QueryResultIterator<GameTurn> queryIterator = query.iterator();
+        List<GameTurn> gameTurnList = new ArrayList<GameTurn>();
+        while (queryIterator.hasNext()) {
+            gameTurnList.add(queryIterator.next());
+        }
+        return CollectionResponse.<GameTurn>builder().setItems(gameTurnList).build();
+    }
+
     private void checkExists(Long id) throws NotFoundException {
         try {
             ofy().load().type(GameTurn.class).id(id).safe();

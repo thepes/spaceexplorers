@@ -8,6 +8,7 @@ import java.util.Random;
 
 import org.copains.spaceexplorer.SpaceExplorerApplication;
 import org.copains.spaceexplorer.ai.manager.AlienMg;
+import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
 import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.GameTurnApi;
 import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.model.GameTurn;
 import org.copains.spaceexplorer.game.WeaponType;
@@ -72,6 +73,7 @@ public class CurrentMission {
 							alien.setPosY((short)y);
 							alien.setVisibleOnMap(false);
 							aliens.add(alien);
+							LifeFormActionMg.lifeFormCreated(alien);
 							if (alienMg.getRemainingAliens() == 0)
 								break;
 						}
@@ -79,6 +81,10 @@ public class CurrentMission {
 				}
 		}
 	}
+
+    private void loadGame(Game game) {
+        List<GameTurn> turns = GameMg.getTurns(game);
+    }
 
 	private void initDoors() {
 		doors = new ArrayList<>();

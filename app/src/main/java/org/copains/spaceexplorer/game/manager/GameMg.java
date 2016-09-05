@@ -51,6 +51,20 @@ public class GameMg {
         return apiBuilder.build();
     }
 
+    private static  GameTurnApi getGameTurnApi() {
+        GameTurnApi.Builder apiBuilder = new GameTurnApi.Builder(AndroidHttp.newCompatibleTransport(),
+                new AndroidJsonFactory(), null).setRootUrl(SpaceExplorerApplication.BASE_WS_URL)
+                .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                    @Override
+                    public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
+                            throws IOException {
+                        abstractGoogleClientRequest.setDisableGZipContent(true);
+                    }
+                });
+        apiBuilder.setApplicationName("spaceexplorers");
+        return apiBuilder.build();
+    }
+
     public static Game createGame(UserProfile prof, String localMapName) {
         GameApi api = getGameApi();
         Game game = new Game();
@@ -88,17 +102,7 @@ public class GameMg {
         for (LifeFormAction action : actions) {
             Log.i("spaceexplorers","Action id : " + action.getId());
             // TODO: send action to server / delete action
-            GameTurnApi.Builder apiBuilder = new GameTurnApi.Builder(AndroidHttp.newCompatibleTransport(),
-                    new AndroidJsonFactory(), null).setRootUrl(SpaceExplorerApplication.BASE_WS_URL)
-                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                        @Override
-                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
-                                throws IOException {
-                            abstractGoogleClientRequest.setDisableGZipContent(true);
-                        }
-                    });
-            apiBuilder.setApplicationName("spaceexplorers");
-            GameTurnApi api = apiBuilder.build();
+            GameTurnApi api = getGameTurnApi();
             GameTurn turn = action.toGameTurn();
             DateTime dt = new DateTime(Calendar.getInstance().getTime());
             turn.setCreationDate(dt);
@@ -139,6 +143,12 @@ public class GameMg {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    public static List<GameTurn> getTurns(Game game) {
+        GameTurnApi api = getGameTurnApi();
+        //List<GameTurn> turns = api.
         return null;
     }
 }
