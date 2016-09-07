@@ -16,6 +16,10 @@ public class AlienClone extends LifeForm implements Alien {
 		setName("Clone");
 	}
 
+	public AlienClone(LifeForm lf) {
+		super(lf);
+	}
+
 	@Override
 	public int getSpriteId() {
 		return R.drawable.alien;

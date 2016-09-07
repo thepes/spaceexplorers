@@ -25,7 +25,25 @@ public abstract class LifeForm {
 	private short posY = -1;
 
 	private boolean visibleOnMap = true;
-	
+
+    public LifeForm() {
+
+    }
+
+	public LifeForm(LifeForm lf) {
+        this.uuid = lf.getUuid();
+        this.actionPoints = lf.getActionPoints();
+        this.movementPoints = lf.getMovementPoints();
+        this.life = lf.getLife();
+        this.maxLife = lf.getMaxLife();
+        this.rangeWeapon = lf.getRangeWeapon();
+        this.meleeWeaponDamage = lf.getMeleeWeaponDamage();
+        this.armor = lf.getArmor();
+        this.name = lf.getName();
+        this.posX = lf.getPosX();
+        this.posY = lf.getPosY();
+        this.visibleOnMap = lf.isVisibleOnMap();
+    }
 	
 	public boolean canMove() {
 		if (movementPoints == 0) {

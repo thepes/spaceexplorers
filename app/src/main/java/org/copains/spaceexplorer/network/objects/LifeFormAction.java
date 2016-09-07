@@ -11,11 +11,11 @@ import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.model.GameTu
 
 public class LifeFormAction extends SugarRecord {
 
-    public static final Integer ACTION_CREATION = 1;
-    public static final Integer ACTION_OPEN = 2;
-    public static final Integer ACTION_MOVE = 3;
-    public static final Integer ACTION_SHOOT = 4;
-    public static final Integer ACTION_SHOOT_MULTI = 5;
+    public static final int ACTION_CREATION = 1;
+    public static final int ACTION_OPEN = 2;
+    public static final int ACTION_MOVE = 3;
+    public static final int ACTION_SHOOT = 4;
+    public static final int ACTION_SHOOT_MULTI = 5;
 
     private Long id;
     private Integer actionType;

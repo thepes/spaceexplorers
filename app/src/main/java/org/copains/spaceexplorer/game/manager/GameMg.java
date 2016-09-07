@@ -13,6 +13,7 @@ import org.copains.spaceexplorer.backend.game.endpoints.gameApi.GameApi;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.CollectionResponseGame;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
 import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.GameTurnApi;
+import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.model.CollectionResponseGameTurn;
 import org.copains.spaceexplorer.backend.game.endpoints.gameTurnApi.model.GameTurn;
 import org.copains.spaceexplorer.network.manager.LifeFormActionMg;
 import org.copains.spaceexplorer.network.objects.LifeFormAction;
@@ -148,7 +149,12 @@ public class GameMg {
 
     public static List<GameTurn> getTurns(Game game) {
         GameTurnApi api = getGameTurnApi();
-        //List<GameTurn> turns = api.
+        try {
+           CollectionResponseGameTurn turns = api.listForGame().setGameId(game.getId()).execute();
+           return turns.getItems();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

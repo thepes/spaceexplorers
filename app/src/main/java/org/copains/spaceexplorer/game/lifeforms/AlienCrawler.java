@@ -22,6 +22,10 @@ public class AlienCrawler extends LifeForm implements Alien {
 		setName("Crawler");
 	}
 
+	public AlienCrawler(LifeForm lf) {
+		super(lf);
+	}
+
 	@Override
 	public void endTurn() {
 		setActionPoints((short) 2);

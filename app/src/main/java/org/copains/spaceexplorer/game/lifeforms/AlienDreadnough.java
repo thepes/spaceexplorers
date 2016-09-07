@@ -16,6 +16,10 @@ public class AlienDreadnough extends LifeForm implements Alien {
 		setName("Dreadnough");
 	}
 
+	public AlienDreadnough(LifeForm lf) {
+		super(lf);
+	}
+
 	@Override
 	public void endTurn() {
 		setActionPoints((short) 3);

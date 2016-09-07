@@ -78,6 +78,10 @@ public class LifeFormActionMg {
         return actions;
     }
 
+    public static void deleteAll() {
+        LifeFormAction.deleteAll(LifeFormAction.class);
+    }
+
     public static void sendOnServer(LifeFormAction action, Long playerId, Long gameId) {
 
     }

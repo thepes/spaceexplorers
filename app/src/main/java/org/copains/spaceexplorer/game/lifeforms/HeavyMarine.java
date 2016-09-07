@@ -16,6 +16,10 @@ public class HeavyMarine extends LifeForm implements Human {
 		setName("Marine blindé");
 	}
 
+	public HeavyMarine(LifeForm lf) {
+		super(lf);
+	}
+
 	@Override
 	public void endTurn() {
 		setActionPoints((short)1);

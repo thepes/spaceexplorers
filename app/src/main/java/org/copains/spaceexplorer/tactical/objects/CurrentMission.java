@@ -17,6 +17,7 @@ import org.copains.spaceexplorer.game.lifeforms.HeavyMarine;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.game.lifeforms.Marine;
 import org.copains.spaceexplorer.game.manager.GameMg;
+import org.copains.spaceexplorer.game.manager.LifeFormMg;
 import org.copains.spaceexplorer.game.objects.Door;
 import org.copains.spaceexplorer.game.objects.Room;
 import org.copains.spaceexplorer.network.manager.LifeFormActionMg;
@@ -83,7 +84,27 @@ public class CurrentMission {
 	}
 
     private void loadGame(Game game) {
+        // Cleaning old records
+        LifeFormActionMg.deleteAll();
+        aliens = new ArrayList<>();
+        team = new LifeForm[6];
+        short  currentTeamMember = 0;
+
         List<GameTurn> turns = GameMg.getTurns(game);
+        for (GameTurn turn : turns) {
+            switch (turn.getActionType()) {
+                case LifeFormAction.ACTION_CREATION:
+                    LifeForm lf = LifeFormMg.getFromTurnData(turn.getActionData());
+                    if (lf instanceof Alien) {
+                        aliens.add(lf);
+                    } else {
+                        team[currentTeamMember] = lf;
+                        currentTeamMember ++;
+                    }
+                    break;
+            }
+        }
+
     }
 
 	private void initDoors() {

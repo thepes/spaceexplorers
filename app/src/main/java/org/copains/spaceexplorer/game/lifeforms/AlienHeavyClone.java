@@ -16,6 +16,10 @@ public class AlienHeavyClone extends LifeForm implements Alien {
 		setName("Clone Blindé");
 	}
 
+	public AlienHeavyClone(LifeForm lf) {
+		super (lf);
+	}
+
 	@Override
 	public void endTurn() {
 		setActionPoints((short) 1);
