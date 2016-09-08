@@ -31,6 +31,7 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.google.api.client.util.DateTime;
+import com.google.gson.Gson;
 
 public class CurrentMission {
 
@@ -100,6 +101,13 @@ public class CurrentMission {
                     } else {
                         team[currentTeamMember] = lf;
                         currentTeamMember ++;
+                    }
+                    break;
+                case LifeFormAction.ACTION_OPEN:
+                    Door d = new Gson().fromJson(turn.getActionData(),Door.class);
+                    Door target = getDoor(d.getTopLeft());
+                    if (null != target) {
+                        target.setOpen(d.isOpen());
                     }
                     break;
             }

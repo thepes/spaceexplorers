@@ -22,7 +22,6 @@ import org.copains.spaceexplorer.game.lifeforms.Marine;
 public class LifeFormMg {
 
     public static final LifeForm getFromTurnData(String actionData) {
-        GsonBuilder builder = new GsonBuilder();
         LifeForm lf = new Gson().fromJson(actionData,LifeForm.class);
         Log.i("spaceexplorers","lf type : " + lf.getName());
         switch (lf.getName()) {
