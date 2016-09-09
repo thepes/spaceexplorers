@@ -157,4 +157,22 @@ public class GameMg {
         }
         return null;
     }
+
+    public static Game addPlayer(Game g, Long onlineId) {
+        List<Long> playerIds = new ArrayList<>();
+        playerIds.add(onlineId);
+        g.setPlayersIds(playerIds);
+        int remaining = g.getFreeSlots();
+        g.setFreeSlots(remaining-1);
+        if (remaining-1 == 0) {
+            g.setStatus(STATUS_INIT);
+        }
+        GameApi api = getGameApi();
+        try {
+            api.update(g.getId(),g).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return g;
+    }
 }

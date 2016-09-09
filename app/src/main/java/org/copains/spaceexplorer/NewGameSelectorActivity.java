@@ -1,6 +1,7 @@
 package org.copains.spaceexplorer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,10 @@ import android.widget.ListView;
 
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
 import org.copains.spaceexplorer.game.manager.GameMg;
+import org.copains.spaceexplorer.profile.manager.ProfileMg;
+import org.copains.spaceexplorer.profile.objects.UserProfile;
+import org.copains.spaceexplorer.tactical.objects.CurrentMission;
+import org.copains.spaceexplorer.tactical.objects.StarshipMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +23,7 @@ import java.util.List;
 public class NewGameSelectorActivity extends Activity {
 
     private List<Game> pendingGames;
-    private int selectedGame;
+    private int selectedGame = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +54,19 @@ public class NewGameSelectorActivity extends Activity {
                 selectedGame = i;
             }
         });
+    }
+
+    public void gameSelected(View v) {
+        Game g = pendingGames.get(selectedGame);
+        Log.i("spaceexplorers","validating game inscription : " + g.getId());
+        g = GameMg.addPlayer(g, ProfileMg.getPlayerProfile().getOnlineId());
+        if (g.getFreeSlots() == 0) {
+            // Starting game
+            StarshipMap map = StarshipMap.getInstance(getResources().openRawResource(R.raw.first_ship));
+            CurrentMission mission = CurrentMission.getInstance(g);
+            Intent intent = new Intent(this,SpaceExplorer.class);
+            startActivity(intent);
+        }
     }
 
 }

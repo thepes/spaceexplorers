@@ -141,6 +141,7 @@ public class StartupActivity extends Activity {
         if (null != playerGames) {
             int pending = 0;
             for (Game game : playerGames) {
+                if (null != game.getStatus())
                 if (game.getStatus() == GameMg.STATUS_PLAYER_TURN) {
                     if (prof.getOnlineId() == game.getNextPlayer()) {
                         pending ++;

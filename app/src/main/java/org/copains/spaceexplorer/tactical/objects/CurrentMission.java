@@ -3,8 +3,10 @@ package org.copains.spaceexplorer.tactical.objects;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import org.copains.spaceexplorer.SpaceExplorerApplication;
 import org.copains.spaceexplorer.ai.manager.AlienMg;
@@ -42,22 +44,35 @@ public class CurrentMission {
 	private List<LifeForm> aliens;
     private List<LifeForm> graveyard;
 	private List<LifeForm> targetableLifeForms;
+    private Hashtable<UUID, LifeForm> lifeFormsByUUID;
 	private List<Door> doors;
 	private Long gameId;
 
 	private CurrentMission() {
+        lifeFormsByUUID = new Hashtable<>();
 		for (int i = 0 ; i < 3 ; i++) {
 			team[i] = new Marine();
+            lifeFormsByUUID.put(team[i].getUuid(),team[i]);
 		}
 		team[3] = new HeavyMarine(WeaponType.EXPLOSIVE);
+        lifeFormsByUUID.put(team[3].getUuid(),team[3]);
 		team[4] = new HeavyMarine(WeaponType.LASER);
+        lifeFormsByUUID.put(team[4].getUuid(),team[4]);
 		team[5] = new HeavyMarine(WeaponType.HEAVY_RIFLE);
+        lifeFormsByUUID.put(team[5].getUuid(),team[5]);
 		initDoors();
 		initAliens();
         graveyard = new ArrayList<>();
 	}
-	
-	private void initAliens() {
+
+    public CurrentMission(Game g) {
+        lifeFormsByUUID = new Hashtable<>();
+
+        graveyard = new ArrayList<>();
+        loadGame(g);
+    }
+
+    private void initAliens() {
 		Random rnd = new Random();
 		aliens = new ArrayList<>();
 		StarshipMap map = StarshipMap.getInstance();
@@ -74,6 +89,7 @@ public class CurrentMission {
 							alien.setPosX((short)x);
 							alien.setPosY((short)y);
 							alien.setVisibleOnMap(false);
+                            lifeFormsByUUID.put(alien.getUuid(),alien);
 							aliens.add(alien);
 							LifeFormActionMg.lifeFormCreated(alien);
 							if (alienMg.getRemainingAliens() == 0)
@@ -86,13 +102,31 @@ public class CurrentMission {
 
     private void loadGame(Game game) {
         // Cleaning old records
+        gameId = game.getId();
         LifeFormActionMg.deleteAll();
         aliens = new ArrayList<>();
         team = new LifeForm[6];
         short  currentTeamMember = 0;
 
         List<GameTurn> turns = GameMg.getTurns(game);
+        if (null == turns) {
+            for (int i = 0 ; i < 3 ; i++) {
+                team[i] = new Marine();
+                lifeFormsByUUID.put(team[i].getUuid(),team[i]);
+            }
+            team[3] = new HeavyMarine(WeaponType.EXPLOSIVE);
+            lifeFormsByUUID.put(team[3].getUuid(),team[3]);
+            team[4] = new HeavyMarine(WeaponType.LASER);
+            lifeFormsByUUID.put(team[4].getUuid(),team[4]);
+            team[5] = new HeavyMarine(WeaponType.HEAVY_RIFLE);
+            lifeFormsByUUID.put(team[5].getUuid(),team[5]);
+            initDoors();
+            initAliens();
+            return;
+        }
+
         for (GameTurn turn : turns) {
+            teamInPosition = true;
             switch (turn.getActionType()) {
                 case LifeFormAction.ACTION_CREATION:
                     LifeForm lf = LifeFormMg.getFromTurnData(turn.getActionData());
@@ -102,12 +136,37 @@ public class CurrentMission {
                         team[currentTeamMember] = lf;
                         currentTeamMember ++;
                     }
+                    lifeFormsByUUID.put(lf.getUuid(),lf);
                     break;
                 case LifeFormAction.ACTION_OPEN:
                     Door d = new Gson().fromJson(turn.getActionData(),Door.class);
                     Door target = getDoor(d.getTopLeft());
                     if (null != target) {
                         target.setOpen(d.isOpen());
+                    }
+                    break;
+                case LifeFormAction.ACTION_MOVE:
+                    LifeForm lf2 = LifeFormMg.getFromTurnData(turn.getActionData());
+                    LifeForm targetLf = lifeFormsByUUID.get(lf2.getUuid());
+                    if (null != targetLf) {
+                        targetLf.setPosX(lf2.getPosX());
+                        targetLf.setPosY(lf2.getPosY());
+                    }
+                    break;
+                case LifeFormAction.ACTION_SHOOT:
+                case LifeFormAction.ACTION_SHOOT_MULTI:
+                    AttackResult attackResult = new Gson().fromJson(turn.getActionData(),AttackResult.class);
+                    if (null != attackResult) {
+                        if (attackResult.isAttackIsSuccess()) {
+                            if (null != attackResult.getDefender()) {
+                                LifeForm defender = attackResult.getDefender();
+                                lifeFormsByUUID.get(defender.getUuid()).setLife(defender.getLife());
+                            }
+                            if (null != attackResult.getMultipleDefenders()) {
+                                for (LifeForm defender : attackResult.getMultipleDefenders())
+                                    lifeFormsByUUID.get(defender.getUuid()).setLife(defender.getLife());
+                            }
+                        }
                     }
                     break;
             }
@@ -254,6 +313,11 @@ public class CurrentMission {
 		}
 		return (instance);
 	}
+
+    public static CurrentMission getInstance(Game g) {
+        instance = new CurrentMission(g);
+        return instance;
+    }
 	
 	public LifeForm getTeamMember(int i) {
 		return (team[i]);
@@ -337,4 +401,6 @@ public class CurrentMission {
 	public void setGameId(Long gameId) {
 		this.gameId = gameId;
 	}
+
+
 }
