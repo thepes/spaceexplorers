@@ -115,7 +115,12 @@ public class GameMg {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
+        }
+        GameApi gameApi = getGameApi();
+        try {
+            gameApi.endPlayerTurn(gameId,ProfileMg.getPlayerProfile().getOnlineId()).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         //api.
         return true;

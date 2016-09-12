@@ -135,23 +135,41 @@ public class StartupActivity extends Activity {
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
-        delayedHide(100);
+
+        delayedHide(0);
         UserProfile prof = ProfileMg.getPlayerProfile();
         List<Game> playerGames = GameMg.getPlayerGames(prof);
+        int masterGames = 0;
+        int masterPending = 0;
         if (null != playerGames) {
             int pending = 0;
             for (Game game : playerGames) {
-                if (null != game.getStatus())
-                if (game.getStatus() == GameMg.STATUS_PLAYER_TURN) {
-                    if (prof.getOnlineId() == game.getNextPlayer()) {
-                        pending ++;
+                if (null != game.getStatus()) {
+                    if (game.getStatus() == GameMg.STATUS_PLAYER_TURN) {
+                        if (prof.getOnlineId().equals(game.getNextPlayer())) {
+                            pending++;
+                        }
+                    }
+                    if (game.getStatus() == GameMg.STATUS_MASTER_TURN) {
+                        if (prof.getOnlineId().equals(game.getMasterId())) {
+                            masterPending++;
+                        }
                     }
                 }
+                if (null != game.getMasterId())
+                    if (game.getMasterId().equals(prof.getOnlineId()))
+                        masterGames ++;
             }
             Button continueBtn = (Button)findViewById(R.id.continue_btn);
             continueBtn.setText(getResources().getText(R.string.continue_btn_lbl) + " ("+
                     pending +"/" + playerGames.size() + ")");
             if (pending > 0) {
+                continueBtn.setEnabled(true);
+            }
+            continueBtn = (Button)findViewById(R.id.continue_master_btn);
+            continueBtn.setText(getResources().getText(R.string.continue_master_lbl) + " ("+
+                    masterPending +"/" + masterGames + ")");
+            if (masterPending > 0) {
                 continueBtn.setEnabled(true);
             }
         }

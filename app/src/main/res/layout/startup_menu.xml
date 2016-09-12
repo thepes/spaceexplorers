@@ -31,6 +31,13 @@
             android:enabled="false" />
 
         <Button
+            android:text="@string/continue_master_lbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/continue_master_btn"
+            android:enabled="false" />
+
+        <Button
             android:text="@string/master_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

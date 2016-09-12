@@ -403,4 +403,7 @@ public class CurrentMission {
 	}
 
 
+    public Long getGameId() {
+        return gameId;
+    }
 }

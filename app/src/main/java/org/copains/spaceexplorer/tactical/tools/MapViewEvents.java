@@ -7,6 +7,7 @@ import org.copains.spaceexplorer.R;
 import org.copains.spaceexplorer.game.lifeforms.Alien;
 import org.copains.spaceexplorer.game.lifeforms.Human;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
+import org.copains.spaceexplorer.game.manager.GameMg;
 import org.copains.spaceexplorer.game.objects.Door;
 import org.copains.spaceexplorer.network.manager.LifeFormActionMg;
 import org.copains.spaceexplorer.tactical.actions.AttackMg;
@@ -142,6 +143,7 @@ public class MapViewEvents {
                             }
                             if (remaining == 0) {
                                 mission.setTeamInPosition(true);
+                                GameMg.endGameTurn(mission.getGameId());
                                 viewMode = MapViewMode.STANDARD;
                             }
                             return (true);
