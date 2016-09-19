@@ -37,7 +37,10 @@ import com.google.gson.Gson;
 
 public class CurrentMission {
 
-	private static CurrentMission instance = null;
+    public static final int MISSION_MODE_MASTER = 1;
+    public static final int MISSION_MODE_PLAYER = 2;
+
+    private static CurrentMission instance = null;
 	
 	private boolean teamInPosition = false;
 	private LifeForm team[] = new LifeForm[6];
@@ -47,6 +50,8 @@ public class CurrentMission {
     private Hashtable<UUID, LifeForm> lifeFormsByUUID;
 	private List<Door> doors;
 	private Long gameId;
+
+    private int missionMode = MISSION_MODE_PLAYER;
 
 	private CurrentMission() {
         lifeFormsByUUID = new Hashtable<>();

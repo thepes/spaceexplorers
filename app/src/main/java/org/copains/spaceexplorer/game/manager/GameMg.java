@@ -97,6 +97,22 @@ public class GameMg {
         return null;
     }
 
+    /**
+     * returns all game for a given gameMaster
+     * @param profile the user profile
+     * @return a List of Game
+     */
+    public static List<Game> getMasterGames(UserProfile profile) {
+        GameApi api = getGameApi();
+        try {
+            CollectionResponseGame games = api.getAllForMaster(profile.getOnlineId()).execute();
+            return games.getItems();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static final boolean endGameTurn(Long gameId) {
         // sending actions to server
         List<LifeFormAction> actions = LifeFormActionMg.list();

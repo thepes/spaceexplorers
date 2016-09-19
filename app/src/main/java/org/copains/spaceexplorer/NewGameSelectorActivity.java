@@ -34,6 +34,7 @@ public class NewGameSelectorActivity extends Activity {
         // TODO: implement multi player and player count selection
         pendingGames = GameMg.getPendingGames(1);
         List<String> games = new ArrayList<>();
+        if (null != pendingGames)
         for (Game g : pendingGames) {
             games.add("" + g.getId() + " (" + g.getFreeSlots() + "/" + g.getMaxPlayers() + ")");
         }

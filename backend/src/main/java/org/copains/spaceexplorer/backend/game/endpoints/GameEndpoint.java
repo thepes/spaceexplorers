@@ -205,6 +205,24 @@ public class GameEndpoint {
         return CollectionResponse.<Game>builder().setItems(gameList).build();
     }
 
+    @ApiMethod(
+            name = "getAllForMaster",
+            path = "game/listForMaster/{id}",
+            httpMethod = ApiMethod.HttpMethod.GET)
+    public CollectionResponse<Game> getAllForMaster(@Named("id") Long id) {
+        //limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
+        //com.google.appengine.api.datastore.Query.Filter
+        Query<Game> query = ofy().load().type(Game.class).filter(new com.google.appengine.api.datastore.Query.FilterPredicate(
+                "masterId", com.google.appengine.api.datastore.Query.FilterOperator.EQUAL, id));
+
+        QueryResultIterator<Game> queryIterator = query.iterator();
+        List<Game> gameList = new ArrayList<Game>();
+        while (queryIterator.hasNext()) {
+            gameList.add(queryIterator.next());
+        }
+        return CollectionResponse.<Game>builder().setItems(gameList).build();
+    }
+
     /**
      * This method ends a player turn:
      * - if there's more than one player in the game, switch to the next player on the list,

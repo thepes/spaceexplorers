@@ -139,7 +139,8 @@ public class StartupActivity extends Activity {
         delayedHide(0);
         UserProfile prof = ProfileMg.getPlayerProfile();
         List<Game> playerGames = GameMg.getPlayerGames(prof);
-        int masterGames = 0;
+        List<Game> masterGames = GameMg.getMasterGames(prof);
+        int masterGamesCount = 0;
         int masterPending = 0;
         if (null != playerGames) {
             int pending = 0;
@@ -158,7 +159,21 @@ public class StartupActivity extends Activity {
                 }
                 if (null != game.getMasterId())
                     if (game.getMasterId().equals(prof.getOnlineId()))
-                        masterGames ++;
+                        masterGamesCount ++;
+            }
+            if (null != masterGames) {
+                for (Game game : masterGames) {
+                    if (null != game.getStatus()) {
+                        if (game.getStatus() == GameMg.STATUS_MASTER_TURN) {
+                            if (prof.getOnlineId().equals(game.getMasterId())) {
+                                masterPending++;
+                            }
+                        }
+                    }
+                    if (null != game.getMasterId())
+                        if (game.getMasterId().equals(prof.getOnlineId()))
+                            masterGamesCount++;
+                }
             }
             Button continueBtn = (Button)findViewById(R.id.continue_btn);
             continueBtn.setText(getResources().getText(R.string.continue_btn_lbl) + " ("+
