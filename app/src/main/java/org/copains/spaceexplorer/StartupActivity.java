@@ -76,7 +76,7 @@ public class StartupActivity extends Activity {
         }
     };
     private boolean mVisible;
-    private final Runnable mHideRunnable = new Runnable() {
+   private final Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
             hide();
@@ -151,15 +151,7 @@ public class StartupActivity extends Activity {
                             pending++;
                         }
                     }
-                    if (game.getStatus() == GameMg.STATUS_MASTER_TURN) {
-                        if (prof.getOnlineId().equals(game.getMasterId())) {
-                            masterPending++;
-                        }
-                    }
                 }
-                if (null != game.getMasterId())
-                    if (game.getMasterId().equals(prof.getOnlineId()))
-                        masterGamesCount ++;
             }
             if (null != masterGames) {
                 for (Game game : masterGames) {
@@ -183,22 +175,22 @@ public class StartupActivity extends Activity {
             }
             continueBtn = (Button)findViewById(R.id.continue_master_btn);
             continueBtn.setText(getResources().getText(R.string.continue_master_lbl) + " ("+
-                    masterPending +"/" + masterGames + ")");
+                    masterPending +"/" + masterGames.size() + ")");
             if (masterPending > 0) {
                 continueBtn.setEnabled(true);
             }
         }
     }
 
-    private void toggle() {
+    /*private void toggle() {
         if (mVisible) {
             hide();
         } else {
             show();
         }
-    }
+    }*/
 
-    private void hide() {
+   private void hide() {
         // Hide UI first
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
@@ -212,17 +204,17 @@ public class StartupActivity extends Activity {
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
-    @SuppressLint("InlinedApi")
+    /*@SuppressLint("InlinedApi")
     private void show() {
         // Show the system bar
         /*mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);*/
-        mVisible = true;
+        /*mVisible = true;
 
         // Schedule a runnable to display UI elements after a delay
         mHideHandler.removeCallbacks(mHidePart2Runnable);
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
-    }
+    }*/
 
     /**
      * Schedules a call to hide() in [delay] milliseconds, canceling any
