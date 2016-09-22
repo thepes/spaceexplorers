@@ -74,6 +74,7 @@ public class CurrentMission {
         lifeFormsByUUID = new Hashtable<>();
 
         graveyard = new ArrayList<>();
+        initDoors();
         loadGame(g);
     }
 
@@ -410,5 +411,13 @@ public class CurrentMission {
 
     public Long getGameId() {
         return gameId;
+    }
+
+    public int getMissionMode() {
+        return missionMode;
+    }
+
+    public void setMissionMode(int missionMode) {
+        this.missionMode = missionMode;
     }
 }

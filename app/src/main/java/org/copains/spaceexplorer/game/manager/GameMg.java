@@ -129,6 +129,13 @@ public class GameMg {
                 api.insert(turn).execute();
                 action.delete();
             } catch (IOException e) {
+                Log.w("spaceexplorers","Retrying end turn");
+                try {
+                    api.insert(turn).execute();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                action.delete();
                 e.printStackTrace();
             }
         }
@@ -137,6 +144,12 @@ public class GameMg {
             gameApi.endPlayerTurn(gameId,ProfileMg.getPlayerProfile().getOnlineId()).execute();
         } catch (IOException e) {
             e.printStackTrace();
+            Log.w("spaceexplorers","Retrying end turn");
+            try {
+                gameApi.endPlayerTurn(gameId,ProfileMg.getPlayerProfile().getOnlineId()).execute();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         }
         //api.
         return true;

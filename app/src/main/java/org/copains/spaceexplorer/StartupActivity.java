@@ -33,6 +33,9 @@ public class StartupActivity extends Activity {
      */
     private static final boolean AUTO_HIDE = true;
 
+    private List<Game> masterGames;
+    private UserProfile prof;
+
     /**
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
      * user interaction before hiding the system UI.
@@ -137,9 +140,9 @@ public class StartupActivity extends Activity {
         // are available.
 
         delayedHide(0);
-        UserProfile prof = ProfileMg.getPlayerProfile();
+        prof = ProfileMg.getPlayerProfile();
         List<Game> playerGames = GameMg.getPlayerGames(prof);
-        List<Game> masterGames = GameMg.getMasterGames(prof);
+        masterGames = GameMg.getMasterGames(prof);
         int masterGamesCount = 0;
         int masterPending = 0;
         if (null != playerGames) {
@@ -227,8 +230,6 @@ public class StartupActivity extends Activity {
 
     public boolean onNewGame(View v) {
         Log.i("spaceexplorers","Click");
-        UserProfile prof = ProfileMg.getPlayerProfile();
-
 
         // Initialize map and Current Mission
         // TODO : save the map on server (or mapID)
@@ -249,6 +250,25 @@ public class StartupActivity extends Activity {
 
         Intent intent = new Intent(this,CreateGameActivity.class);
         startActivity(intent);
+        return true;
+    }
+
+    public boolean onContinueMaster(View v) {
+        StarshipMap map = StarshipMap.getInstance(getResources().openRawResource(R.raw.first_ship));
+        // get first pending game
+        for (Game game : masterGames) {
+            if (null != game.getStatus()) {
+                if (game.getStatus() == GameMg.STATUS_MASTER_TURN) {
+                    if (prof.getOnlineId().equals(game.getMasterId())) {
+                        CurrentMission mission = CurrentMission.getInstance(game);
+                        mission.setMissionMode(CurrentMission.MISSION_MODE_MASTER);
+                        Intent intent = new Intent(this,SpaceExplorer.class);
+                        startActivity(intent);
+                        return true;
+                    }
+                }
+            }
+        }
         return true;
     }
 

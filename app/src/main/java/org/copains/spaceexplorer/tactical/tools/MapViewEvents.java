@@ -76,6 +76,8 @@ public class MapViewEvents {
 	 * @return the viewMode
 	 */
 	public MapViewMode getViewMode() {
+        if (viewMode == null)
+            viewMode = MapViewMode.STANDARD;
 		return viewMode;
 	}
 
@@ -158,10 +160,18 @@ public class MapViewEvents {
                         // use context
                         LifeForm form = block.getLifeForm();
                         selectedLifeForm = form;
-                        if (selectedLifeForm instanceof Human) {
-                            createHumanActionMenu(form);
-                        } else if (selectedLifeForm instanceof Alien) {
-                            displayLifeFormDetails(form);
+                        if (mission.getMissionMode() == CurrentMission.MISSION_MODE_PLAYER) {
+                            if (selectedLifeForm instanceof Human) {
+                                createHumanActionMenu(form);
+                            } else if (selectedLifeForm instanceof Alien) {
+                                displayLifeFormDetails(form);
+                            }
+                        } else if (mission.getMissionMode() == CurrentMission.MISSION_MODE_MASTER) {
+                            if (selectedLifeForm instanceof Alien) {
+                                createAlienActionMenu(form);
+                            } else if (selectedLifeForm instanceof Human) {
+                                displayLifeFormDetails(form);
+                            }
                         }
                     }
                 }
@@ -275,6 +285,47 @@ public class MapViewEvents {
         if (form.canOpenDoor()) {
             list.add(context.getResources().getText(R.string.open));
             currentActions.add(R.string.open);
+        }
+        if (form.canDoAction()) {
+            list.add(context.getResources().getText(R.string.action));
+            currentActions.add(R.string.action);
+        }
+        list.add(context.getString(R.string.info));
+        currentActions.add(R.string.info);
+        list.add(context.getResources().getText(R.string.cancel));
+        currentActions.add(R.string.cancel);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context);
+        dialogBuilder.setTitle(context.getResources().getText(R.string.action_box_title));
+        CharSequence[] contents = new CharSequence[1];
+        dialogBuilder.setItems(list.toArray(contents), new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (currentActions.get(which) == R.string.cancel)
+                    return;
+                if (currentActions.get(which) == R.string.info) {
+                    Log.i("spaceexplorers","Info selectionné");
+                    displayLifeFormDetails(getSelectedLifeForm());
+                    return;
+                }
+                Log.i("Space","Item selected: (" +which+") " );
+                Log.i("Space","Action: " +context.getResources().getText(currentActions.get(which)));
+                viewMode = MapViewMode.ACTION_HIGLIGHT;
+                highlightAction = currentActions.get(which);
+                parentView.invalidate();
+            }
+
+        });
+        AlertDialog alert = dialogBuilder.create();
+        alert.show();
+    }
+
+    private void createAlienActionMenu(LifeForm form) {
+        ArrayList<CharSequence> list = new ArrayList<>();
+        currentActions = new ArrayList<>();
+        if (form.canMove()) {
+            list.add(context.getResources().getText(R.string.move));
+            currentActions.add(R.string.move);
         }
         if (form.canDoAction()) {
             list.add(context.getResources().getText(R.string.action));

@@ -27,7 +27,7 @@ public class LifeFormMg {
         switch (lf.getName()) {
             case "Marine":
                 return new Marine(lf);
-            case "HeavyMarine":
+            case "Marine blindé":
                 return new HeavyMarine(lf);
             case "Clone Blindé":
                 return new AlienHeavyClone(lf);

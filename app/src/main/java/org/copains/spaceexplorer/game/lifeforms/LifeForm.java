@@ -7,7 +7,7 @@ import org.copains.spaceexplorer.tactical.tools.PathFinder;
 
 import java.util.UUID;
 
-public abstract class LifeForm {
+public class LifeForm {
 
     private UUID uuid = UUID.randomUUID();
 
@@ -67,7 +67,9 @@ public abstract class LifeForm {
 				|| (mission.doorIsOpenable(new Coordinates(posX, posY+1))));
 	}
 
-    public abstract int getSpriteId();
+    public int getSpriteId() {
+        return -1;
+    }
 	
 	public boolean openDoor() {
 		return (true);
@@ -174,7 +176,9 @@ public abstract class LifeForm {
 		this.movementPoints = movementPoints;
 	}
 
-	public abstract void endTurn();
+	public void endTurn() {
+
+	}
 
 	public String getName() {
         return name;
