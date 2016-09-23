@@ -221,9 +221,9 @@ public class MapViewEvents {
                         // a unit can only shoot once
                         if (highlightAction == R.string.action) {
                             Coordinates coord = block.getMapPosition();
-                            selectedLifeForm.setActionPoints((short) 0);
                             AttackResult attackResult = AttackMg.shoot(selectedLifeForm,coord);
                             if (!attackResult.hasError()) {
+                                selectedLifeForm.setActionPoints((short) 0);
                                 AttackDetails details = new AttackDetails(attackResult);
                                 // TODO: do this only when in multiplayer
                                 LifeFormActionMg.recordAttackResult(selectedLifeForm,attackResult);

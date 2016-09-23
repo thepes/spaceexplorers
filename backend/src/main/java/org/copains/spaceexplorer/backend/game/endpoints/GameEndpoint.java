@@ -10,6 +10,8 @@ import com.google.appengine.api.datastore.QueryResultIterator;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.cmd.Query;
 
+import org.copains.spaceexplorer.backend.game.manager.PlayerGameStatusMg;
+import org.copains.spaceexplorer.backend.game.objects.PlayerGameStatus;
 import org.copains.spaceexplorer.backend.game.objects.Game;
 
 import java.util.ArrayList;
@@ -293,6 +295,9 @@ public class GameEndpoint {
 
         }
         ofy().save().entity(game).now();
+        PlayerGameStatus pgs = new PlayerGameStatus(game.getId(),playerId);
+        pgs.setLastPlayedTurn(game.getCurrentTurnId()-1);
+        PlayerGameStatusMg.save(pgs);
         return game;
     }
 

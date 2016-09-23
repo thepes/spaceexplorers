@@ -166,11 +166,20 @@ public class CurrentMission {
                         if (attackResult.isAttackIsSuccess()) {
                             if (null != attackResult.getDefender()) {
                                 LifeForm defender = attackResult.getDefender();
-                                lifeFormsByUUID.get(defender.getUuid()).setLife(defender.getLife());
+                                LifeForm localLf = lifeFormsByUUID.get(defender.getUuid());
+                                localLf.setLife(defender.getLife());
+                                if (defender.getLife() == 0) {
+                                    removeLifeFormFromMap(localLf);
+                                }
                             }
                             if (null != attackResult.getMultipleDefenders()) {
-                                for (LifeForm defender : attackResult.getMultipleDefenders())
+                                for (LifeForm defender : attackResult.getMultipleDefenders()) {
                                     lifeFormsByUUID.get(defender.getUuid()).setLife(defender.getLife());
+                                    LifeForm localLf = lifeFormsByUUID.get(defender.getUuid());
+                                    if (defender.getLife() == 0) {
+                                        removeLifeFormFromMap(localLf);
+                                    }
+                                }
                             }
                         }
                     }

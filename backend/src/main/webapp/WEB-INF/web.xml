@@ -18,7 +18,8 @@
                 org.copains.spaceexplorer.backend.UserRecordEndpoint,
                 org.copains.spaceexplorer.backend.game.endpoints.GameEndpoint,
                 org.copains.spaceexplorer.backend.game.endpoints.GameTurnEndpoint,
-                org.copains.spaceexplorer.backend.game.endpoints.GameMapEndpoint</param-value>
+                org.copains.spaceexplorer.backend.game.endpoints.GameMapEndpoint,
+                org.copains.spaceexplorer.backend.game.endpoints.PlayerGameStatusEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

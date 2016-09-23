@@ -7,4 +7,8 @@
     <datastore-index kind="Game">
         <property name="playersIds" direction="asc" />
     </datastore-index>-->
+    <datastore-index kind="PlayerGameStatus">
+        <property name="playerId" direction="asc" />
+        <property name="gameId" direction="asc" />
+    </datastore-index>
 </datastore-indexes>
