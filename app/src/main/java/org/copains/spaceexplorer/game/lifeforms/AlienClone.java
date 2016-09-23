@@ -23,7 +23,7 @@ public class AlienClone extends LifeForm implements Alien {
 
 	@Override
 	public int getSpriteId() {
-		return R.drawable.alien;
+		return R.drawable.clone;
 	}
 
 	@Override
