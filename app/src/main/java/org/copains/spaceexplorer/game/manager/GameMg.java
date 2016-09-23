@@ -66,6 +66,23 @@ public class GameMg {
         return apiBuilder.build();
     }
 
+    public static Game get(Long id) {
+        GameApi api = getGameApi();
+        Game game = null;
+        try {
+            game = api.get(id).execute();
+        } catch (IOException e) {
+            // retry once
+            try {
+                game = api.get(id).execute();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        return game;
+    }
+
     public static Game createGame(UserProfile prof, String localMapName) {
         GameApi api = getGameApi();
         Game game = new Game();
@@ -75,6 +92,7 @@ public class GameMg {
         DateTime dt = new DateTime(Calendar.getInstance().getTime());
         game.setCreationDate(dt);
         game.setLocalMapName(localMapName);
+        game.setCurrentTurnId(0);
         Game result;
         try {
             result = api.insert(game).execute();
@@ -116,6 +134,7 @@ public class GameMg {
     public static final boolean endGameTurn(Long gameId) {
         // sending actions to server
         List<LifeFormAction> actions = LifeFormActionMg.list();
+        Game game = get(gameId);
         for (LifeFormAction action : actions) {
             Log.i("spaceexplorers","Action id : " + action.getId());
             // TODO: send action to server / delete action
@@ -125,6 +144,7 @@ public class GameMg {
             turn.setCreationDate(dt);
             turn.setGameId(gameId);
             turn.setPlayerId(ProfileMg.getPlayerProfile().getOnlineId());
+            turn.setTurnId(game.getCurrentTurnId());
             try {
                 api.insert(turn).execute();
                 action.delete();

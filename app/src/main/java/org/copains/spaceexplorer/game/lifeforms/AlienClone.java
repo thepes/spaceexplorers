@@ -14,6 +14,7 @@ public class AlienClone extends LifeForm implements Alien {
 		setMaxLife((short) 4);
 		setMeleeWeaponDamage((short) 1);
 		setName("Clone");
+		setInternalId(101);
 	}
 
 	public AlienClone(LifeForm lf) {

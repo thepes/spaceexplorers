@@ -36,6 +36,7 @@ public class ProfileMg {
             Log.i("spaceexplorers", "Profile Not found, creating it");
         } else {
             ret = profiles.get(0);
+            profile = ret;
             Log.i("spaceexplorers", "Profile found created : " + ret.getCreationDate().toString());
         }
         return ret;

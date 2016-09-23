@@ -15,6 +15,7 @@ public class Marine extends LifeForm implements Human {
 		setMaxLife((short) 6);
         setMeleeWeaponDamage((short) 1);
 		setName("Marine");
+		setInternalId(1);
 	}
 
 	public Marine(LifeForm lf) {

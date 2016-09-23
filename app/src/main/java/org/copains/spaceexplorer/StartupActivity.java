@@ -34,6 +34,7 @@ public class StartupActivity extends Activity {
     private static final boolean AUTO_HIDE = true;
 
     private List<Game> masterGames;
+    private List<Game> playerGames;
     private UserProfile prof;
 
     /**
@@ -141,7 +142,7 @@ public class StartupActivity extends Activity {
 
         delayedHide(0);
         prof = ProfileMg.getPlayerProfile();
-        List<Game> playerGames = GameMg.getPlayerGames(prof);
+        playerGames = GameMg.getPlayerGames(prof);
         masterGames = GameMg.getMasterGames(prof);
         int masterGamesCount = 0;
         int masterPending = 0;
@@ -185,13 +186,6 @@ public class StartupActivity extends Activity {
         }
     }
 
-    /*private void toggle() {
-        if (mVisible) {
-            hide();
-        } else {
-            show();
-        }
-    }*/
 
    private void hide() {
         // Hide UI first
@@ -207,17 +201,6 @@ public class StartupActivity extends Activity {
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
     }
 
-    /*@SuppressLint("InlinedApi")
-    private void show() {
-        // Show the system bar
-        /*mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);*/
-        /*mVisible = true;
-
-        // Schedule a runnable to display UI elements after a delay
-        mHideHandler.removeCallbacks(mHidePart2Runnable);
-        mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
-    }*/
 
     /**
      * Schedules a call to hide() in [delay] milliseconds, canceling any
@@ -262,6 +245,24 @@ public class StartupActivity extends Activity {
                     if (prof.getOnlineId().equals(game.getMasterId())) {
                         CurrentMission mission = CurrentMission.getInstance(game);
                         mission.setMissionMode(CurrentMission.MISSION_MODE_MASTER);
+                        Intent intent = new Intent(this,SpaceExplorer.class);
+                        startActivity(intent);
+                        return true;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean onContinue(View v) {
+        StarshipMap map = StarshipMap.getInstance(getResources().openRawResource(R.raw.first_ship));
+        for (Game game : playerGames) {
+            if (null != game.getStatus()) {
+                if (game.getStatus() == GameMg.STATUS_PLAYER_TURN) {
+                    if (prof.getOnlineId().equals(game.getNextPlayer())) {
+                        CurrentMission mission = CurrentMission.getInstance(game);
+                        mission.setMissionMode(CurrentMission.MISSION_MODE_PLAYER);
                         Intent intent = new Intent(this,SpaceExplorer.class);
                         startActivity(intent);
                         return true;

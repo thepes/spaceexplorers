@@ -20,6 +20,7 @@ public class LifeForm {
 	private short meleeWeaponDamage;
 	private short armor;
 	private String name;
+    private int internalId;
 	
 	private short posX = -1;
 	private short posY = -1;
@@ -220,5 +221,13 @@ public class LifeForm {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
+    }
+
+    public int getInternalId() {
+        return internalId;
+    }
+
+    public void setInternalId(int internalId) {
+        this.internalId = internalId;
     }
 }

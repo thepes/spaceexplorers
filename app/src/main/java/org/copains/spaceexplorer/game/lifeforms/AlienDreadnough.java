@@ -14,6 +14,7 @@ public class AlienDreadnough extends LifeForm implements Alien {
 		setMaxLife((short) 4);
 		setMeleeWeaponDamage((short) 1);
 		setName("Dreadnough");
+		setInternalId(104);
 	}
 
 	public AlienDreadnough(LifeForm lf) {

@@ -14,6 +14,7 @@ public class HeavyMarine extends LifeForm implements Human {
         setMaxLife((short) 6);
         setMeleeWeaponDamage((short) 1);
 		setName("Marine blindé");
+		setInternalId(2);
 	}
 
 	public HeavyMarine(LifeForm lf) {

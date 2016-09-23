@@ -28,7 +28,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/continue_btn"
             android:text="@string/continue_btn_lbl"
-            android:enabled="false" />
+            android:enabled="false"
+            android:onClick="onContinue" />
 
         <Button
             android:text="@string/continue_master_lbl"

@@ -36,6 +36,7 @@ public class Game {
     private Short freeSlots;
     // limit duration for each player turn (in hours)
     private Integer turnLimitByPlayer;
+    private Integer currentTurnId;
 
     public Long getId() {
         return id;
@@ -123,5 +124,13 @@ public class Game {
 
     public void setTurnLimitByPlayer(Integer turnLimitByPlayer) {
         this.turnLimitByPlayer = turnLimitByPlayer;
+    }
+
+    public Integer getCurrentTurnId() {
+        return currentTurnId;
+    }
+
+    public void setCurrentTurnId(Integer currentTurnId) {
+        this.currentTurnId = currentTurnId;
     }
 }

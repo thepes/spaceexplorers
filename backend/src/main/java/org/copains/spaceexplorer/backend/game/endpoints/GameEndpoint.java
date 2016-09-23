@@ -248,8 +248,11 @@ public class GameEndpoint {
             throw new NotFoundException("Could not find Game with ID: " + id);
         }
         List<Long> players = game.getPlayersIds();
+        if (null == game.getCurrentTurnId())
+            game.setCurrentTurnId(0);
         switch (game.getStatus()) {
             case STATUS_INIT:
+                game.setCurrentTurnId(0);
                 if (players.size() == 1) {
                     game.setStatus(STATUS_PLAYER_TURN);
                     game.setNextPlayer(playerId);
@@ -266,6 +269,7 @@ public class GameEndpoint {
                 }
                 break;
             case STATUS_PLAYER_TURN:
+                game.setCurrentTurnId(game.getCurrentTurnId()+1);
                 if (players.size() == 1) {
                     game.setStatus(STATUS_MASTER_TURN);
                     game.setNextPlayer(game.getMasterId());
@@ -282,6 +286,7 @@ public class GameEndpoint {
                 }
                 break;
             case STATUS_MASTER_TURN:
+                game.setCurrentTurnId(game.getCurrentTurnId()+1);
                 game.setStatus(STATUS_PLAYER_TURN);
                 game.setNextPlayer(players.get(0));
                 break;

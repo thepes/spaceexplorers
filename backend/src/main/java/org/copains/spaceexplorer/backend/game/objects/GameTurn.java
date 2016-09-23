@@ -25,8 +25,9 @@ public class GameTurn {
     private String actorUuid;
     private String targetId;
     private String actionData;
-
     private Date creationDate;
+    @Index
+    private Integer turnId;
 
     public Long getId() {
         return id;
@@ -98,5 +99,13 @@ public class GameTurn {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Integer getTurnId() {
+        return turnId;
+    }
+
+    public void setTurnId(Integer turnId) {
+        this.turnId = turnId;
     }
 }

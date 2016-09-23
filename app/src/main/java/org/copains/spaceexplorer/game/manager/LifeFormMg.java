@@ -24,20 +24,21 @@ public class LifeFormMg {
     public static final LifeForm getFromTurnData(String actionData) {
         LifeForm lf = new Gson().fromJson(actionData,LifeForm.class);
         Log.i("spaceexplorers","lf type : " + lf.getName());
-        switch (lf.getName()) {
-            case "Marine":
+        switch (lf.getInternalId()) {
+            case 1:
                 return new Marine(lf);
-            case "Marine blindé":
+            case 2:
                 return new HeavyMarine(lf);
-            case "Clone Blindé":
+            case 102:
                 return new AlienHeavyClone(lf);
-            case "Clone":
+            case 101:
                 return new AlienClone(lf);
-            case "Crawler":
+            case 103:
                 return new AlienCrawler(lf);
-            case "Dreadnough":
+            case 104:
                 return new AlienDreadnough(lf);
         }
+        Log.e("spaceexplorers","LifeForm not found "+ lf.getName());
         return null;
     }
 

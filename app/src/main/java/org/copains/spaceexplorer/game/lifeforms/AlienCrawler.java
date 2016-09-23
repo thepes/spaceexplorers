@@ -20,6 +20,7 @@ public class AlienCrawler extends LifeForm implements Alien {
 		setMaxLife((short) 6);
 		setMeleeWeaponDamage((short) 2);
 		setName("Crawler");
+		setInternalId(103);
 	}
 
 	public AlienCrawler(LifeForm lf) {
