@@ -34,7 +34,7 @@ public class HeavyMarine extends LifeForm implements Human {
 
 	@Override
 	public int getSpriteId() {
-		return R.drawable.marine;
+		return R.drawable.heavymarine;
 	}
 
 }
