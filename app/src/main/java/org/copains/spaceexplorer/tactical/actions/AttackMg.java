@@ -2,6 +2,7 @@ package org.copains.spaceexplorer.tactical.actions;
 
 import android.util.Log;
 
+import org.copains.spaceexplorer.game.lifeforms.Alien;
 import org.copains.spaceexplorer.game.lifeforms.Human;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.game.weapons.WeaponMg;
@@ -30,7 +31,8 @@ public class AttackMg {
             res.setErrorMessage("Pas d'ennemi ici");
             return res;
         }
-        if (attackedLf instanceof Human) {
+        if ((attackedLf instanceof Human && attacker instanceof Human)
+                || (attackedLf instanceof Alien && attacker instanceof Alien)) {
             res.setHasError(true);
             res.setErrorMessage("Pas de tir ami");
             return res;

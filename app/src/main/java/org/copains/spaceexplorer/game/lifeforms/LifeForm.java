@@ -44,6 +44,7 @@ public class LifeForm {
         this.posX = lf.getPosX();
         this.posY = lf.getPosY();
         this.visibleOnMap = lf.isVisibleOnMap();
+        this.internalId = lf.getInternalId();
     }
 	
 	public boolean canMove() {
