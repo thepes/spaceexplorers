@@ -40,7 +40,7 @@ public class AlienCrawler extends LifeForm implements Alien {
 
 	@Override
 	public int getSpriteId() {
-		return R.drawable.alien;
+		return R.drawable.crawler;
 	}
 
 }
