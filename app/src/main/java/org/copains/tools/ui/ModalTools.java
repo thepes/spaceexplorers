@@ -5,6 +5,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
+import java.util.StringTokenizer;
+
 /**
  * Created by Sébastien Delaire <the.pes@gmail.com>
  * on 20/06/2016.
@@ -29,5 +31,40 @@ public class ModalTools {
         canvas.drawRect(rect, paint);
         boxCoords.set(left,top,right,bottom);
         return boxCoords;
+    }
+
+    public static void drawText(Canvas canvas, Rect box, String text, Paint paint) {
+        StringTokenizer st = new StringTokenizer(text," ");
+
+        int textSize = StringAndFontTools.getStandardTextSize(canvas);
+        int charCount = paint.breakText(text,true,box.width()-10,null);
+        int currentChars = 0;
+        int verticalOffset = textSize + 5;
+        String textLine = "";
+        while (charCount > 0) {
+
+            if (!st.hasMoreTokens()) {
+                canvas.drawText(textLine,box.left+5,box.top+verticalOffset,paint);
+                return;
+            }
+            String token = st.nextToken();
+            if (textLine.length() + token.length() > charCount) {
+                canvas.drawText(textLine,box.left+5,box.top+verticalOffset,paint);
+                textLine = "";
+                String endString = token;
+                while (st.hasMoreTokens()) {
+                    endString += " " + st.nextToken();
+                }
+                st = new StringTokenizer(endString," ");
+                verticalOffset += textSize+5;
+                charCount = paint.breakText(endString,true,box.width()-10,null);
+                if (charCount == endString.length()) {
+                    canvas.drawText(endString,box.left+5,box.top+verticalOffset,paint);
+                    return;
+                }
+            } else {
+                textLine += token + " ";
+            }
+        }
     }
 }
