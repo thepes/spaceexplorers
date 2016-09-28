@@ -158,6 +158,7 @@ public class PathFinder {
 		// lifeform move action
 		case R.string.move:
 			moveGrid = new Hashtable<String, Coordinates>();
+			events.reinitVisibleMapEvents();
 			buildMovementGrid(form.getPosX(), form.getPosY(), form.getMovementPoints());
 			for (Coordinates tile : moveGrid.values()) {
 				RectF rect = viewHelper.convertTileToDisplayRect(tile);
