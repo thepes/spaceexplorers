@@ -2,5 +2,8 @@
 
     <color name="black_overlay">#66000000</color>
     <color name="spaceexplorers_blue">#0099cc</color>
+    <color name="modal_background">#96A3A9FF</color>
+    <color name="modal_attackers">#FF267F00</color>
+    <color name="modal_defenders">#FF930E0E</color>
 
 </resources>

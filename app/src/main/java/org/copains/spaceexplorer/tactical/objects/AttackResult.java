@@ -2,17 +2,15 @@ package org.copains.spaceexplorer.tactical.objects;
 
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by DELAIRE on 10/06/2016.
+ * Created by Sébastien Delaire <the.pes@gmail.com>
+ * on 10/06/2016.
  */
 
 public class AttackResult {
-
-    private static final long serialVersionUID = 1L;
 
     private boolean hasError;
     private String errorMessage;
