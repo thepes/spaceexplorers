@@ -7,6 +7,6 @@ package org.copains.spaceexplorer.game.lifeforms;
 
 public interface Alien {
 
-    public boolean isAlien();
+    boolean isAlien();
 
 }

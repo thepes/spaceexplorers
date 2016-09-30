@@ -6,6 +6,6 @@ package org.copains.spaceexplorer.game.lifeforms;
 
 public interface Human {
 
-    public boolean isHuman();
+    boolean isHuman();
 
 }

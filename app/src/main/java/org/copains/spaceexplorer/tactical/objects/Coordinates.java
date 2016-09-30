@@ -12,7 +12,11 @@ public class Coordinates {
 		this.x = x;
 		this.y = y;
 	}
-	
+
+	public Coordinates() {
+
+	}
+
 	public void setBounds(int x, int y) {
 		boundsX = x;
 		boundsY = y;
@@ -62,7 +66,10 @@ public class Coordinates {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
-	
-	
+
+
+	public void set(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 }

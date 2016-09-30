@@ -54,14 +54,16 @@ public class MapView extends View {
 		events.setParentView(this);
 		events.reinitVisibleMapEvents();
 		CurrentMission mission = CurrentMission.getInstance();
+		RectF r = new RectF();
+		Paint paint = new Paint();
+        Coordinates mapPos = new Coordinates();
 		for (int y = 0 ; y < MapViewHelper.getVerticalTilesCount(canvas) ; y++) {
 			for (int x = 0 ; x < MapViewHelper.getHorizontalTilesCount(canvas) ; x++) {
-				RectF r = new RectF((x*TILE_SIZE), (y*TILE_SIZE), TILE_SIZE+(x*TILE_SIZE), TILE_SIZE+(y*TILE_SIZE));
-				Paint paint = new Paint();
+				r.set((x*TILE_SIZE), (y*TILE_SIZE), TILE_SIZE+(x*TILE_SIZE), TILE_SIZE+(y*TILE_SIZE));
 				paint.setStyle(Style.FILL);
 				paint.setAntiAlias(true);
 				int tile = map.getRelief(x+display.getX(), y+display.getY());
-				Coordinates mapPos = new Coordinates(x+display.getX(), y+display.getY());
+				mapPos.set(x+display.getX(), y+display.getY());
 				events.addVisibleMapEvent((x*TILE_SIZE), (y*TILE_SIZE),
 						TILE_SIZE+(x*TILE_SIZE), TILE_SIZE+(y*TILE_SIZE), mapPos);
 				switch (tile) {

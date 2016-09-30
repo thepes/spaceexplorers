@@ -43,6 +43,9 @@ public class DiceMg {
                 drawable = (BitmapDrawable)context.getDrawable(R.drawable.dice6);
                 break;
         }
-        return drawable.getBitmap();
+        if (drawable != null) {
+            return drawable.getBitmap();
+        }
+        return null;
     }
 }

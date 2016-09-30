@@ -10,8 +10,8 @@ import android.graphics.Canvas;
 
 public interface ModalInfo {
 
-    public static final int MARGIN = 30;
+    int MARGIN = 30;
 
-    public boolean draw(Canvas canvas, Context context);
+    boolean draw(Canvas canvas, Context context);
 
 }
