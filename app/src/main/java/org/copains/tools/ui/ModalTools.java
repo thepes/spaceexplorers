@@ -34,37 +34,44 @@ public class ModalTools {
     }
 
     public static void drawText(Canvas canvas, Rect box, String text, Paint paint) {
-        StringTokenizer st = new StringTokenizer(text," ");
+        StringTokenizer lines = new StringTokenizer(text,"\n");
+        if (!lines.hasMoreTokens())
+            return;
 
         int textSize = StringAndFontTools.getStandardTextSize(canvas);
-        int charCount = paint.breakText(text,true,box.width()-10,null);
-        int currentChars = 0;
         int verticalOffset = textSize + 5;
-        String textLine = "";
-        while (charCount > 0) {
+        while (lines.hasMoreTokens()) {
+            StringTokenizer st = new StringTokenizer(lines.nextToken()," ");
+            int charCount = paint.breakText(text, true, box.width() - 10, null);
+            int currentChars = 0;
 
-            if (!st.hasMoreTokens()) {
-                canvas.drawText(textLine,box.left+5,box.top+verticalOffset,paint);
-                return;
-            }
-            String token = st.nextToken();
-            if (textLine.length() + token.length() > charCount) {
-                canvas.drawText(textLine,box.left+5,box.top+verticalOffset,paint);
-                textLine = "";
-                String endString = token;
-                while (st.hasMoreTokens()) {
-                    endString += " " + st.nextToken();
-                }
-                st = new StringTokenizer(endString," ");
-                verticalOffset += textSize+5;
-                charCount = paint.breakText(endString,true,box.width()-10,null);
-                if (charCount == endString.length()) {
-                    canvas.drawText(endString,box.left+5,box.top+verticalOffset,paint);
+            String textLine = "";
+            while (charCount > 0) {
+
+                if (!st.hasMoreTokens()) {
+                    canvas.drawText(textLine, box.left + 5, box.top + verticalOffset, paint);
                     return;
                 }
-            } else {
-                textLine += token + " ";
+                String token = st.nextToken();
+                if (textLine.length() + token.length() > charCount) {
+                    canvas.drawText(textLine, box.left + 5, box.top + verticalOffset, paint);
+                    textLine = "";
+                    String endString = token;
+                    while (st.hasMoreTokens()) {
+                        endString += " " + st.nextToken();
+                    }
+                    st = new StringTokenizer(endString, " ");
+                    verticalOffset += textSize + 5;
+                    charCount = paint.breakText(endString, true, box.width() - 10, null);
+                    if (charCount == endString.length()) {
+                        canvas.drawText(endString, box.left + 5, box.top + verticalOffset, paint);
+                        return;
+                    }
+                } else {
+                    textLine += token + " ";
+                }
             }
+            verticalOffset += textSize + 5;
         }
     }
 }

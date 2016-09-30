@@ -64,7 +64,12 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_create_game"
             android:theme="@style/FullscreenTheme" />
-        <activity android:name=".NewGameSelectorActivity"></activity>
+        <activity android:name=".NewGameSelectorActivity" />
+
+        <service
+            android:name=".network.services.PendingGameCheckService"
+            android:enabled="true"
+            android:exported="false"></service>
     </application>
 
 </manifest>
