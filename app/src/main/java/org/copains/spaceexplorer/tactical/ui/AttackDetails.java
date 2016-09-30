@@ -14,6 +14,7 @@ import org.copains.spaceexplorer.game.lifeforms.LifeForm;
 import org.copains.spaceexplorer.tactical.objects.AttackResult;
 import org.copains.spaceexplorer.tactical.views.MapView;
 import org.copains.tools.dice.DiceMg;
+import org.copains.tools.ui.StringAndFontTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +99,14 @@ public class AttackDetails implements ModalInfo {
             lfIcon = (BitmapDrawable)context.getDrawable(defender.getSpriteId());
             canvas.drawBitmap(lfIcon.getBitmap(),null,defenders,null);
         }
+        String title = damage == 0 ? context.getString(R.string.attack_is_failed) :
+                context.getString(R.string.attack_is_success);
+        paint.setTextSize(MapView.TILE_SIZE-10);
+        int titleWidth = StringAndFontTools.getTextWidth(title,paint);
+        int titleX = ((right-left)/2) - (titleWidth/2) + left;
+        int titleY = top + 10 + MapView.TILE_SIZE-10;
+        paint.setColor(context.getResources().getColor(R.color.modal_title));
+        canvas.drawText(title, titleX, titleY, paint);
         canvas.drawBitmap(DiceMg.getBitmap(context,dice),null,r,null);
 
         return true;

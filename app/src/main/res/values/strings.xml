@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, SpaceExplorer!</string>
     <string name="app_name">SpaceExplorer</string>
     <string name="move">Déplacer</string>
     <string name="open">Ouvrir</string>
@@ -22,4 +21,6 @@
     <string name="choose_map_lbl">Carte</string>
     <string name="turn_duration_lbl">Durée Max d\'un tour</string>
     <string name="continue_master_lbl">Continuer MJ</string>
+    <string name="attack_is_success">Succès</string>
+    <string name="attack_is_failed">Echec</string>
 </resources>
