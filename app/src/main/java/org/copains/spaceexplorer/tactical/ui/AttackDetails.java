@@ -107,6 +107,9 @@ public class AttackDetails implements ModalInfo {
         int titleY = top + 10 + MapView.TILE_SIZE-10;
         paint.setColor(context.getResources().getColor(R.color.modal_title));
         canvas.drawText(title, titleX, titleY, paint);
+        if (damage > 0)
+            canvas.drawText("- "+damage, defenders.bottom + MapView.TILE_SIZE + 10,
+                    defenders.left+10,paint);
         canvas.drawBitmap(DiceMg.getBitmap(context,dice),null,r,null);
 
         return true;
