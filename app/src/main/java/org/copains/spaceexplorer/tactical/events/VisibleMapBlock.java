@@ -12,7 +12,7 @@ public class VisibleMapBlock extends EventBlock {
 	}
 
 	public boolean isHumanStartZone() {
-        StarshipMap map = StarshipMap.getInstance();
+		StarshipMap map = StarshipMap.getInstance();
         if (map.getRelief(mapPosition.getX(),mapPosition.getY()) == StarshipMap.START)
             return true;
         return false;

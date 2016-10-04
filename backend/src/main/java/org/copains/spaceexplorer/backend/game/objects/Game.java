@@ -28,6 +28,8 @@ public class Game {
     private Long nextPlayer;
     @Index
     private Date creationDate;
+    @Index
+    private Date lastActionDate;
 
     private String localMapName;
     private Long onlineMapId;
@@ -132,5 +134,13 @@ public class Game {
 
     public void setCurrentTurnId(Integer currentTurnId) {
         this.currentTurnId = currentTurnId;
+    }
+
+    public Date getLastActionDate() {
+        return lastActionDate;
+    }
+
+    public void setLastActionDate(Date lastActionDate) {
+        this.lastActionDate = lastActionDate;
     }
 }

@@ -15,6 +15,7 @@ import org.copains.spaceexplorer.backend.game.objects.PlayerGameStatus;
 import org.copains.spaceexplorer.backend.game.objects.Game;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -151,7 +152,7 @@ public class GameEndpoint {
             query = query.startAt(Cursor.fromWebSafeString(cursor));
         }
         QueryResultIterator<Game> queryIterator = query.iterator();
-        List<Game> gameList = new ArrayList<Game>(limit);
+        List<Game> gameList = new ArrayList<>(limit);
         while (queryIterator.hasNext()) {
             gameList.add(queryIterator.next());
         }
@@ -200,7 +201,7 @@ public class GameEndpoint {
                 "playersIds", com.google.appengine.api.datastore.Query.FilterOperator.EQUAL, id));
 
         QueryResultIterator<Game> queryIterator = query.iterator();
-        List<Game> gameList = new ArrayList<Game>();
+        List<Game> gameList = new ArrayList<>();
         while (queryIterator.hasNext()) {
             gameList.add(queryIterator.next());
         }
@@ -218,7 +219,7 @@ public class GameEndpoint {
                 "masterId", com.google.appengine.api.datastore.Query.FilterOperator.EQUAL, id));
 
         QueryResultIterator<Game> queryIterator = query.iterator();
-        List<Game> gameList = new ArrayList<Game>();
+        List<Game> gameList = new ArrayList<>();
         while (queryIterator.hasNext()) {
             gameList.add(queryIterator.next());
         }
@@ -252,6 +253,7 @@ public class GameEndpoint {
         List<Long> players = game.getPlayersIds();
         if (null == game.getCurrentTurnId())
             game.setCurrentTurnId(0);
+        game.setLastActionDate(Calendar.getInstance().getTime());
         switch (game.getStatus()) {
             case STATUS_INIT:
                 game.setCurrentTurnId(0);

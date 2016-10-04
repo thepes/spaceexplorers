@@ -21,6 +21,11 @@ public class UserProperty extends SugarRecord {
 
     }
 
+    public UserProperty(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
+
     @Override
     public Long getId() {
         return id;

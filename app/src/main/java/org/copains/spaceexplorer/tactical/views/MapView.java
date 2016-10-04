@@ -19,6 +19,7 @@ import android.graphics.RectF;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -63,7 +64,7 @@ public class MapView extends View {
 				paint.setStyle(Style.FILL);
 				paint.setAntiAlias(true);
 				int tile = map.getRelief(x+display.getX(), y+display.getY());
-				mapPos.set(x+display.getX(), y+display.getY());
+				mapPos = new Coordinates(x+display.getX(), y+display.getY());
 				events.addVisibleMapEvent((x*TILE_SIZE), (y*TILE_SIZE),
 						TILE_SIZE+(x*TILE_SIZE), TILE_SIZE+(y*TILE_SIZE), mapPos);
 				switch (tile) {
