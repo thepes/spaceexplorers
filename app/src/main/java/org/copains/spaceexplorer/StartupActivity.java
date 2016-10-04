@@ -15,6 +15,7 @@ import android.widget.Button;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
 import org.copains.spaceexplorer.game.manager.GameMg;
 import org.copains.spaceexplorer.gamemaster.activities.CreateGameActivity;
+import org.copains.spaceexplorer.network.services.PendingGameCheckService;
 import org.copains.spaceexplorer.profile.manager.ProfileMg;
 import org.copains.spaceexplorer.profile.objects.UserProfile;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
@@ -110,6 +111,9 @@ public class StartupActivity extends Activity {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
+
+        Intent in = new Intent(this, PendingGameCheckService.class);
+        startService(in);
 
         setContentView(R.layout.startup_menu);
 

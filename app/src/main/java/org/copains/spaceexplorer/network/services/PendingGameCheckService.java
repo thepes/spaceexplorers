@@ -8,11 +8,20 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
+import android.util.Log;
+
+import java.util.Calendar;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class PendingGameCheckService extends Service {
 
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
+
+    private final ScheduledExecutorService scheduler =
+            Executors.newScheduledThreadPool(1);
 
     public PendingGameCheckService() {
     }
@@ -21,11 +30,12 @@ public class PendingGameCheckService extends Service {
     public void onCreate() {
         HandlerThread thread = new HandlerThread("ServiceStartArguments",
                 Process.THREAD_PRIORITY_BACKGROUND);
-        thread.start();
+        /*thread.start();
 
         // Get the HandlerThread's Looper and use it for our Handler
         mServiceLooper = thread.getLooper();
-        mServiceHandler = new ServiceHandler(mServiceLooper);
+        mServiceHandler = new ServiceHandler(mServiceLooper);*/
+        //scheduler.scheduleAtFixedRate(thread,0,60, TimeUnit.MINUTES);
     }
 
     @Override
@@ -36,33 +46,23 @@ public class PendingGameCheckService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Message msg = mServiceHandler.obtainMessage();
+        /*Message msg = mServiceHandler.obtainMessage();
         msg.arg1 = startId;
-        mServiceHandler.sendMessage(msg);
-
+        mServiceHandler.sendMessage(msg);*/
+        Log.i("spaceexplorers","Sarting service");
+        ServiceHandler thread = new ServiceHandler();
         // If we get killed, after returning from here, restart
+        scheduler.scheduleAtFixedRate(thread,0,2, TimeUnit.MINUTES);
+
         return START_STICKY;
     }
 
-    private class ServiceHandler extends Handler {
-
-        public ServiceHandler(Looper looper) {
-            super(looper);
-        }
+    private class ServiceHandler extends Thread {
 
         @Override
-        public void handleMessage(Message msg) {
-            // Normally we would do some work here, like download a file.
-            // For our sample, we just sleep for 5 seconds.
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                // Restore interrupt status.
-                Thread.currentThread().interrupt();
-            }
-            // Stop the service using the startId, so that we don't stop
-            // the service in the middle of handling another job
-            stopSelf(msg.arg1);
+        public void run() {
+            Log.i("spaceexplorers", "Service Handler Tread launched : " +
+                    Calendar.getInstance().getTime());
         }
     }
 }
