@@ -1,11 +1,16 @@
 package org.copains.spaceexplorer.network.services;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.Looper;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import org.copains.spaceexplorer.R;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
 import org.copains.spaceexplorer.game.manager.GameMg;
 import org.copains.spaceexplorer.profile.manager.ProfileMg;
@@ -66,17 +71,32 @@ public class PendingGameCheckService extends Service {
 
             if (null != pendingPlayerGames) {
                 if (shouldNotify(pendingPlayerGames,PropLastRetrievedPendingPlayerGame)) {
-                    // TODO: notify
+                    notify("player");
                 }
             }
             List<Game> pendingMasterGames = GameMg.getMasterGames(prof);
             if (null != pendingMasterGames) {
                 if (shouldNotify(pendingMasterGames,PropLastRetrievedPendingMasterGame)) {
-                    // TODO: notify
+                    notify("master");
                 }
             }
 
 
+        }
+
+        private void notify(String mode) {
+            String notifText = getApplicationContext().getString(R.string.pending_game_player_text);
+            if (mode.compareToIgnoreCase("master") == 0) {
+                notifText = getApplicationContext().getString(R.string.pending_game_master_text);
+            }
+            Notification notif =  new NotificationCompat.Builder(getApplicationContext())
+                    .setSmallIcon(R.drawable.ic_status_notify_alien)
+                    .setContentTitle(getApplicationContext().getString(R.string.pending_game_notif_title))
+                    .setContentText(notifText).build();
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+            mNotificationManager.notify(1,notif);
         }
 
         private boolean shouldNotify(List<Game> games, String propertyName) {
