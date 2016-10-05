@@ -44,9 +44,6 @@ public class PendingGameCheckService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        /*Message msg = mServiceHandler.obtainMessage();
-        msg.arg1 = startId;
-        mServiceHandler.sendMessage(msg);*/
         Log.i("spaceexplorers","Sarting service");
         ServiceHandler thread = new ServiceHandler();
         // If we get killed, after returning from here, restart
@@ -58,6 +55,7 @@ public class PendingGameCheckService extends Service {
     private class ServiceHandler extends Thread {
 
         private String PropLastRetrievedPendingPlayerGame = "last_retrieved_player_game";
+        private String PropLastRetrievedPendingMasterGame = "last_retrieved_master_game";
 
         @Override
         public void run() {
@@ -65,37 +63,52 @@ public class PendingGameCheckService extends Service {
                     Calendar.getInstance().getTime());
             UserProfile prof = ProfileMg.getPlayerProfile();
             List<Game> pendingPlayerGames = GameMg.getPlayerGames(prof);
-            Date dt = null;
+
             if (null != pendingPlayerGames) {
-                for (Game g : pendingPlayerGames) {
-                    if (null == dt) {
-                        dt = new Date(0);
-                    }
-                    if (null != g.getLastActionDate()) {
-                        Date lastAction = new Date(g.getLastActionDate().getValue());
-                        if (lastAction.after(dt)) {
-                            dt = lastAction;
-                        }
-                    }
+                if (shouldNotify(pendingPlayerGames,PropLastRetrievedPendingPlayerGame)) {
+                    // TODO: notify
                 }
-                if (null != dt) {
-                    UserProperty lastPlayer = PropertyMg.getByName(PropLastRetrievedPendingPlayerGame);
-                    if (null != lastPlayer) {
-                        Date last = new Date(Long.parseLong(lastPlayer.getValue()));
-                        if (last.before(dt)) {
-                            // TODO: notify
-                            Log.i("spaceexplorers", "New Pending game : " + dt);
-                            lastPlayer.setValue("" + dt.getTime());
-                            PropertyMg.save(lastPlayer);
-                        }
-                    } else {
-                        // TODO: Notify
-                        lastPlayer = new UserProperty(PropLastRetrievedPendingPlayerGame, "" + dt.getTime());
-                        PropertyMg.save(lastPlayer);
-                    }
+            }
+            List<Game> pendingMasterGames = GameMg.getMasterGames(prof);
+            if (null != pendingMasterGames) {
+                if (shouldNotify(pendingMasterGames,PropLastRetrievedPendingMasterGame)) {
+                    // TODO: notify
                 }
             }
 
+
+        }
+
+        private boolean shouldNotify(List<Game> games, String propertyName) {
+            Date dt = null;
+            for (Game g : games) {
+                if (null == dt) {
+                    dt = new Date(0);
+                }
+                if (null != g.getLastActionDate()) {
+                    Date lastAction = new Date(g.getLastActionDate().getValue());
+                    if (lastAction.after(dt)) {
+                        dt = lastAction;
+                    }
+                }
+            }
+            if (null != dt) {
+                UserProperty lastPlayer = PropertyMg.getByName(propertyName);
+                if (null != lastPlayer) {
+                    Date last = new Date(Long.parseLong(lastPlayer.getValue()));
+                    if (last.before(dt)) {
+                        Log.i("spaceexplorers", "New Pending game : " + dt);
+                        lastPlayer.setValue("" + dt.getTime());
+                        PropertyMg.save(lastPlayer);
+                        return true;
+                    }
+                } else {
+                    lastPlayer = new UserProperty(propertyName, "" + dt.getTime());
+                    PropertyMg.save(lastPlayer);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

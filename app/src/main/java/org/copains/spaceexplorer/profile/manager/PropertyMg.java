@@ -15,7 +15,7 @@ public class PropertyMg {
 
     public static final UserProperty getByName(String name) {
         List<UserProperty> props = UserProperty.find(UserProperty.class, "name = ?", name);
-        if (null == props)
+        if ((null == props) || (props.size() == 0))
             return null;
         return props.get(0);
     }

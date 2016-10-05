@@ -17,6 +17,7 @@ import org.copains.spaceexplorer.game.manager.GameMg;
 import org.copains.spaceexplorer.gamemaster.activities.CreateGameActivity;
 import org.copains.spaceexplorer.network.services.PendingGameCheckService;
 import org.copains.spaceexplorer.profile.manager.ProfileMg;
+import org.copains.spaceexplorer.profile.manager.PropertyMg;
 import org.copains.spaceexplorer.profile.objects.UserProfile;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
 import org.copains.spaceexplorer.tactical.objects.StarshipMap;
@@ -119,21 +120,9 @@ public class StartupActivity extends Activity {
 
         mVisible = true;
         mControlsView = findViewById(R.id.fullscreen_content_controls);
-        //mContentView = findViewById(R.id.fullscreen_content);
 
-
-        // Set up the user interaction to manually show or hide the system UI.
-        /*mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggle();
-            }
-        });*/
-
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
         findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        PropertyMg.getByName("test");
     }
 
     @Override
