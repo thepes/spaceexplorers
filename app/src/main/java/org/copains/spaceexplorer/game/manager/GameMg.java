@@ -115,6 +115,23 @@ public class GameMg {
         return null;
     }
 
+    public static List<Game> getPendingPlayerGames(UserProfile profile) {
+        List<Game> playerGames = getPlayerGames(profile);
+        if (null == playerGames)
+            return null;
+        List<Game> pending = new ArrayList<>();
+        for (Game game : playerGames) {
+            if (null != game.getStatus()) {
+                if (game.getStatus() == GameMg.STATUS_PLAYER_TURN) {
+                    if (profile.getOnlineId().equals(game.getNextPlayer())) {
+                       pending.add(game);
+                    }
+                }
+            }
+        }
+        return pending;
+    }
+
     /**
      * returns all game for a given gameMaster
      * @param profile the user profile
@@ -129,6 +146,23 @@ public class GameMg {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static List<Game> getPendingMasterGames(UserProfile profile) {
+        List<Game> masterGames = getMasterGames(profile);
+        if (null == masterGames)
+            return null;
+        List<Game> ret = new ArrayList<>();
+        for (Game game : masterGames) {
+            if (null != game.getStatus()) {
+                if (game.getStatus() == GameMg.STATUS_MASTER_TURN) {
+                    if (profile.getOnlineId().equals(game.getMasterId())) {
+                        ret.add(game);
+                    }
+                }
+            }
+        }
+        return ret;
     }
 
     public static final boolean endGameTurn(Long gameId) {

@@ -2,15 +2,18 @@ package org.copains.spaceexplorer.network.services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
 import org.copains.spaceexplorer.R;
+import org.copains.spaceexplorer.StartupActivity;
 import org.copains.spaceexplorer.backend.game.endpoints.gameApi.model.Game;
 import org.copains.spaceexplorer.game.manager.GameMg;
 import org.copains.spaceexplorer.profile.manager.ProfileMg;
@@ -67,14 +70,14 @@ public class PendingGameCheckService extends Service {
             Log.i("spaceexplorers", "Service Handler Tread launched : " +
                     Calendar.getInstance().getTime());
             UserProfile prof = ProfileMg.getPlayerProfile();
-            List<Game> pendingPlayerGames = GameMg.getPlayerGames(prof);
+            List<Game> pendingPlayerGames = GameMg.getPendingPlayerGames(prof);
 
             if (null != pendingPlayerGames) {
                 if (shouldNotify(pendingPlayerGames,PropLastRetrievedPendingPlayerGame)) {
                     notify("player");
                 }
             }
-            List<Game> pendingMasterGames = GameMg.getMasterGames(prof);
+            List<Game> pendingMasterGames = GameMg.getPendingMasterGames(prof);
             if (null != pendingMasterGames) {
                 if (shouldNotify(pendingMasterGames,PropLastRetrievedPendingMasterGame)) {
                     notify("master");
@@ -89,10 +92,22 @@ public class PendingGameCheckService extends Service {
             if (mode.compareToIgnoreCase("master") == 0) {
                 notifText = getApplicationContext().getString(R.string.pending_game_master_text);
             }
+
+            Intent resultIntent = new Intent(getApplication(), StartupActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplication());
+            stackBuilder.addParentStack(StartupActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+
             Notification notif =  new NotificationCompat.Builder(getApplicationContext())
                     .setSmallIcon(R.drawable.ic_status_notify_alien)
                     .setContentTitle(getApplicationContext().getString(R.string.pending_game_notif_title))
-                    .setContentText(notifText).build();
+                    .setContentText(notifText)
+                    .setContentIntent(resultPendingIntent).build();
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
 // mId allows you to update the notification later on.
