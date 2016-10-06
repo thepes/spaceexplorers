@@ -1,7 +1,9 @@
 package org.copains.spaceexplorer.tactical.views;
 
 import org.copains.spaceexplorer.R;
+import org.copains.spaceexplorer.game.lifeforms.Alien;
 import org.copains.spaceexplorer.game.lifeforms.LifeForm;
+import org.copains.spaceexplorer.game.objects.Room;
 import org.copains.spaceexplorer.tactical.objects.Coordinates;
 import org.copains.spaceexplorer.tactical.objects.CurrentMission;
 import org.copains.spaceexplorer.tactical.objects.StarshipMap;
@@ -97,6 +99,16 @@ public class MapView extends View {
 					//paint.setARGB(255, 250, 50, 250);
 					//canvas.drawRect(r, paint);
                     BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(lf.getSpriteId());
+                    if (lf instanceof Alien) {
+                        Room room = map.getRoom(mapPos.getX(),mapPos.getY());
+                        if (null != room) {
+                            Log.i("spaceexplorers","Lf in Room " + room.getCode());
+                            if (!room.isOpen()) {
+                                Log.i("spaceexplorers", "Room not open");
+                                drawable = (BitmapDrawable)getResources().getDrawable(R.drawable.plip);
+                            }
+                        }
+                    }
                     canvas.drawBitmap(drawable.getBitmap(), null, r, null);
 				}
 			}

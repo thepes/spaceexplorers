@@ -121,7 +121,7 @@ public class CreateGameActivity extends Activity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    public boolean createMasterGame(View v) {
+    public void createMasterGame(View v) {
         Spinner spinner = (Spinner)findViewById(R.id.map_select_fld);
         String map = spinner.getSelectedItem().toString();
         Log.i("spaceexplorers","Selected map : " + map);
@@ -173,6 +173,5 @@ public class CreateGameActivity extends Activity {
         game = GameMg.createGame(game);
         // for now we will place master units randomly
         // TODO: redirect the master to the unit placement activity (not yet created)
-        return true;
     }
 }

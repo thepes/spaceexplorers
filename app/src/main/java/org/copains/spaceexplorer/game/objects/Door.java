@@ -76,6 +76,11 @@ public class Door {
 	 */
 	public void setOpen(boolean open) {
 		this.open = open;
+		if (null != adjacentRooms) {
+			for (Room r : adjacentRooms) {
+                r.setOpen(true);
+            }
+		}
 	}
 	
 	@Override

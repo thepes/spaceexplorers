@@ -110,7 +110,6 @@ public class PendingGameCheckService extends Service {
                     .setContentIntent(resultPendingIntent).build();
             NotificationManager mNotificationManager =
                     (NotificationManager) getSystemService(getApplicationContext().NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
             mNotificationManager.notify(1,notif);
         }
 

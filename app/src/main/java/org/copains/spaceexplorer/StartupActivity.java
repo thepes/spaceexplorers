@@ -204,7 +204,7 @@ public class StartupActivity extends Activity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    public boolean onNewGame(View v) {
+    public void onNewGame(View v) {
         Log.i("spaceexplorers","Click");
 
         // Initialize map and Current Mission
@@ -218,18 +218,16 @@ public class StartupActivity extends Activity {
         mission.setGameId(game.getId());
         Intent intent = new Intent(this,SpaceExplorer.class);
         startActivity(intent);
-        return true;
     }
 
-    public boolean onMaster(View v) {
+    public void onMaster(View v) {
         Log.i("spaceexplorers","Click Master");
 
         Intent intent = new Intent(this,CreateGameActivity.class);
         startActivity(intent);
-        return true;
     }
 
-    public boolean onContinueMaster(View v) {
+    public void onContinueMaster(View v) {
         StarshipMap map = StarshipMap.getInstance(getResources().openRawResource(R.raw.first_ship));
         // get first pending game
         for (Game game : masterGames) {
@@ -240,15 +238,14 @@ public class StartupActivity extends Activity {
                         mission.setMissionMode(CurrentMission.MISSION_MODE_MASTER);
                         Intent intent = new Intent(this,SpaceExplorer.class);
                         startActivity(intent);
-                        return true;
+                        return;
                     }
                 }
             }
         }
-        return true;
     }
 
-    public boolean onContinue(View v) {
+    public void onContinue(View v) {
         StarshipMap map = StarshipMap.getInstance(getResources().openRawResource(R.raw.first_ship));
         for (Game game : playerGames) {
             if (null != game.getStatus()) {
@@ -258,19 +255,17 @@ public class StartupActivity extends Activity {
                         mission.setMissionMode(CurrentMission.MISSION_MODE_PLAYER);
                         Intent intent = new Intent(this,SpaceExplorer.class);
                         startActivity(intent);
-                        return true;
+                        return;
                     }
                 }
             }
         }
-        return true;
     }
 
-    public boolean onStartNetworkGame(View v) {
+    public void onStartNetworkGame(View v) {
         Log.i("spaceexplorers","Click Master");
 
         Intent intent = new Intent(this,NewGameSelectorActivity.class);
         startActivity(intent);
-        return true;
     }
 }

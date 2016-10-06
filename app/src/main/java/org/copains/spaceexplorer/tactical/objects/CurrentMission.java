@@ -136,13 +136,15 @@ public class CurrentMission {
             switch (turn.getActionType()) {
                 case LifeFormAction.ACTION_CREATION:
                     LifeForm lf = LifeFormMg.getFromTurnData(turn.getActionData());
-                    if (lf instanceof Alien) {
-                        aliens.add(lf);
-                    } else {
-                        team[currentTeamMember] = lf;
-                        currentTeamMember ++;
+                    if (null != lf) {
+                        if (lf instanceof Alien) {
+                            aliens.add(lf);
+                        } else {
+                            team[currentTeamMember] = lf;
+                            currentTeamMember++;
+                        }
+                        lifeFormsByUUID.put(lf.getUuid(), lf);
                     }
-                    lifeFormsByUUID.put(lf.getUuid(),lf);
                     break;
                 case LifeFormAction.ACTION_OPEN:
                     Door d = new Gson().fromJson(turn.getActionData(),Door.class);

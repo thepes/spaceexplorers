@@ -130,6 +130,7 @@ public class StarshipMap implements Serializable {
     				if (null == room) {
     					room = new Room();
                         room.setOpen(false);
+                        room.setCode(cell);
     					rooms.put(cell, room);
     				}
     				Coordinates coord = new Coordinates(x, y-sizeY);

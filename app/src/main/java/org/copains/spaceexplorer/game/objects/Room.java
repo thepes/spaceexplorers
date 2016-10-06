@@ -14,6 +14,7 @@ public class Room {
 
     private List<Coordinates> cells;
     private boolean open;
+    private String code;
 
     public void addCell(Coordinates coord) {
         if (null == cells) {
@@ -30,4 +31,11 @@ public class Room {
         this.open = open;
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }
