@@ -13,6 +13,7 @@ import org.copains.spaceexplorer.tactical.tools.PathFinder;
 import org.copains.spaceexplorer.tactical.tools.MapViewEvents.MapViewMode;
 import org.copains.spaceexplorer.tactical.ui.LifeFormDetails;
 import org.copains.spaceexplorer.tactical.ui.ModalInfo;
+import org.copains.spaceexplorer.tactical.ui.ModalMessage;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -125,6 +126,17 @@ public class MapView extends View {
                 PathFinder.getInstance().drawHighlight(canvas);
                 break;
             case LIFEFORM_DETAILS:
+                LifeForm lf = events.getSelectedLifeForm();
+                if (lf instanceof Alien) {
+                    Room room = map.getRoom(lf.getPosX(),lf.getPosY());
+                    if (null != room)
+                        if (!room.isOpen()) {
+                            ModalMessage msg = new ModalMessage(getResources()
+                                    .getString(R.string.modal_plip_hidden_info));
+                            msg.draw(canvas,getContext());
+                            break;
+                        }
+                }
                 LifeFormDetails.drawModal(canvas, events.getSelectedLifeForm());
                 break;
 			case MODAL_DISPLAYED:

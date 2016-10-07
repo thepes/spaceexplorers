@@ -24,6 +24,8 @@
     <string name="attack_is_success">Succès</string>
     <string name="attack_is_failed">Echec</string>
 
+    <string name="modal_plip_hidden_info">Information indisponible</string>
+
     <string name="pending_game_notif_title">Partie en Attente</string>
     <string name="pending_game_master_text">Maitre, les joueurs attendent vos actions</string>
     <string name="pending_game_player_text">A vous de jouer !</string>
