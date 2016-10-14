@@ -48,6 +48,8 @@ public class LifeForm {
     }
 	
 	public boolean canMove() {
+		if (!visibleOnMap)
+            return false;
 		if (movementPoints == 0) {
 			return (false);
 		}
@@ -55,10 +57,14 @@ public class LifeForm {
 	}
 	
 	public boolean canDoAction() {
-		return (actionPoints > 0);
+		if (!visibleOnMap)
+            return false;
+        return (actionPoints > 0);
 	}
 	
 	public boolean canOpenDoor() {
+        if (!visibleOnMap)
+            return false;
 		if (movementPoints == 0) {
 			return (false);
 		}

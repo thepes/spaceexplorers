@@ -102,11 +102,13 @@ public class MapView extends View {
                     BitmapDrawable drawable = (BitmapDrawable) getResources().getDrawable(lf.getSpriteId());
                     if (lf instanceof Alien) {
                         Room room = map.getRoom(mapPos.getX(),mapPos.getY());
+						lf.setVisibleOnMap(true);
                         if (null != room) {
                             Log.i("spaceexplorers","Lf in Room " + room.getCode());
                             if (!room.isOpen()) {
                                 Log.i("spaceexplorers", "Room not open");
                                 drawable = (BitmapDrawable)getResources().getDrawable(R.drawable.plip);
+								lf.setVisibleOnMap(false);
                             }
                         }
                     }
@@ -179,18 +181,7 @@ public class MapView extends View {
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		gestureDetector.onTouchEvent(event);
-        /*int action = event.getAction();
-        switch (action) {
-        	case MotionEvent.ACTION_DOWN:
-        		Log.i("Space","action down");
-        		break;
-        	case MotionEvent.ACTION_MOVE:
-        		Log.i("Space","action move");
-        		break;
-        	case MotionEvent.ACTION_UP:
-        		Log.i("Space","action up");
-        		break;
-        }*/
+
 		return (true);
 	}
 
